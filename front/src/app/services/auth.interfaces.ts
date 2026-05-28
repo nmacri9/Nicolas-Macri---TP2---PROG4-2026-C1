@@ -9,3 +9,8 @@ export interface IRegistro {
   descripcion?: string;
   perfil: string;
 }
+
+export interface ILogin {
+  correo: string; 
+  password: string;
+}
