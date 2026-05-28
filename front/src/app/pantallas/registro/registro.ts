@@ -80,10 +80,6 @@ export class Registro {
     formData.append('fechaNacimiento', this.formulario.get('fechaNacimiento')?.value || '');
     formData.append('descripcion', this.formulario.get('descripcion')?.value || '');
     formData.append('perfil', this.formulario.get('perfil')?.value || '');
-    if (this.imagenSeleccionada) {
-    formData.append('imagen', this.imagenSeleccionada);
-    }
-    try {
       
       await this.authService.registrar(formData);
       this.router.navigate(['/login']); // Lo mandamos al login tras registrarse
