@@ -8,7 +8,7 @@ import { Usuario, UsuarioDocument } from '../usuarios/entities/usuario.schema';
 @Injectable()
 export class AutenticacionService {
   
-}  constructor(
+  constructor(
     @InjectModel(Usuario.name) private usuarioModel: Model<UsuarioDocument>
   ) {}
 
@@ -25,7 +25,7 @@ export class AutenticacionService {
 
       return {
         status: 'success',
-        mensaje: '¡Usuario registrado en la base de datos!',
+        mensaje: '¡Usuario registrado correctamente en la base de datos!',
       };
 
     } catch (error: any) {
@@ -39,3 +39,4 @@ export class AutenticacionService {
   async loginUsuario(body: any) {
     return { mensaje: 'Login en construcción' };
   }
+}
