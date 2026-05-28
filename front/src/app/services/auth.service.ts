@@ -13,7 +13,7 @@ export class AuthService {
   
   private apiUrl = 'https://nicolas-macri-tp-2-prog-4-2026-c1.vercel.app'; 
 
-  async registrar(datos: IRegistro) {
+  async registrar(datos: IRegistro | FormData) {
     try {
       const respuesta = await firstValueFrom(
         this.http.post(`${this.apiUrl}/auth/registro`, datos)

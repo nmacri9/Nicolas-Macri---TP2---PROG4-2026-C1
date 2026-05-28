@@ -11,6 +11,6 @@ export interface IRegistro {
 }
 
 export interface ILogin {
-  correo: string; 
+  identificador: string; 
   password: string;
 }
