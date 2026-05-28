@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
 import { CreateUsuarioDto } from '../usuarios/dto/create-usuario.dto';
-import { Usuario, UsuarioDocument } from '../usuarios/schemas/usuario.schema';
+import { Usuario, UsuarioDocument } from '../usuarios/entities/usuario.schema';
 
 @Injectable()
 export class AutenticacionService {
@@ -39,4 +39,3 @@ export class AutenticacionService {
   async loginUsuario(body: any) {
     return { mensaje: 'Login en construcción' };
   }
-}
