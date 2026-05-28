@@ -63,11 +63,11 @@ export class Registro {
       this.formulario.markAllAsTouched(); 
       return;
     }
-
-    if (!this.imagenSeleccionada) {
-      this.mensajeError = 'Debes subir una imagen de perfil.';
-      return;
-    }
+//
+ //   if (!this.imagenSeleccionada) {
+  //    this.mensajeError = 'Debes subir una imagen de perfil.';
+    //  return;
+    //}
 
     this.mensajeError = '';
 
