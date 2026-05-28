@@ -71,18 +71,23 @@ export class Registro {
 
     this.mensajeError = '';
 
-    const formData = new FormData();
-    formData.append('nombre', this.formulario.get('nombre')?.value || '');
-    formData.append('apellido', this.formulario.get('apellido')?.value || '');
-    formData.append('correo', this.formulario.get('correo')?.value || '');
-    formData.append('username', this.formulario.get('username')?.value || '');
-    formData.append('password', this.formulario.get('password')?.value || '');
-    formData.append('fechaNacimiento', this.formulario.get('fechaNacimiento')?.value || '');
-    formData.append('descripcion', this.formulario.get('descripcion')?.value || '');
-    formData.append('perfil', this.formulario.get('perfil')?.value || '');
+this.mensajeError = '';
+
+    try {
+        const datosUsuario = {
+        nombre: this.formulario.get('nombre')?.value || '',
+        apellido: this.formulario.get('apellido')?.value || '',
+        correo: this.formulario.get('correo')?.value || '',
+        username: this.formulario.get('username')?.value || '',
+        password: this.formulario.get('password')?.value || '',
+        fechaNacimiento: this.formulario.get('fechaNacimiento')?.value || '',
+        descripcion: this.formulario.get('descripcion')?.value || '',
+        perfil: this.formulario.get('perfil')?.value || ''
+      };
       
-      await this.authService.registrar(formData);
-      this.router.navigate(['/login']); // Lo mandamos al login tras registrarse
+      await this.authService.registrar(datosUsuario);
+      this.router.navigate(['/login']); 
+
     } catch (err: any) {
       console.error('Error atrapado:', err);
       this.mensajeError = err.error?.message || 'Ocurrió un error al registrarse.';
