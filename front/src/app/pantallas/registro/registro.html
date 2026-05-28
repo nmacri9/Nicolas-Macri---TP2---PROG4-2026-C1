@@ -1,5 +1,6 @@
-<form [formGroup]="formulario" (ngSubmit)="accion()">
-  
+<div class="contenedor-form">
+  <form [formGroup]="formulario" (ngSubmit)="accion()">
+    
   <div>
     <input type="text" formControlName="nombre" placeholder="Nombre" />
     @if (formulario.get('nombre')?.invalid && formulario.get('nombre')?.touched) {
@@ -13,21 +14,21 @@
       <div class="mensaje-error-input"><span>El apellido es obligatorio y solo letras.</span></div>
     }
   </div>
-
+  
   <div>
     <input type="email" formControlName="correo" placeholder="Correo electrónico" />
     @if (formulario.get('correo')?.invalid && formulario.get('correo')?.touched) {
       <div class="mensaje-error-input"><span>Email obligatorio y válido.</span></div>
     }
   </div>
-
+  
   <div>
     <input type="text" formControlName="username" placeholder="Nombre de usuario" />
     @if (formulario.get('username')?.invalid && formulario.get('username')?.touched) {
       <div class="mensaje-error-input"><span>El nombre de usuario es obligatorio.</span></div>
     }
   </div>
-
+  
   <div>
     <input type="date" formControlName="fechaNacimiento" />
     @if (formulario.get('fechaNacimiento')?.invalid && formulario.get('fechaNacimiento')?.touched) {
@@ -38,19 +39,19 @@
   <div>
     <textarea formControlName="descripcion" placeholder="Descripción breve..."></textarea>
   </div>
-
+  
   <div>
     <select formControlName="perfil">
       <option value="usuario">Usuario</option>
       <option value="administrador">Administrador</option>
     </select>
   </div>
-
+  
   <div>
     <label>Imagen de Perfil:</label>
     <input type="file" (change)="onFileSelected($event)" accept="image/*" />
   </div>
-
+  
   <div>
     <input type="password" formControlName="password" placeholder="Contraseña" />
     @if (formulario.get('password')?.invalid && formulario.get('password')?.touched) {
@@ -68,10 +69,12 @@
       </div>
     } 
   </div> 
-
+  
   @if (mensajeError) {
     <div class="mensaje-error">{{ mensajeError }}</div>
   }
   
   <button type="submit" [disabled]="!formulario.valid">Registrarse</button>
 </form>
+
+</div>
