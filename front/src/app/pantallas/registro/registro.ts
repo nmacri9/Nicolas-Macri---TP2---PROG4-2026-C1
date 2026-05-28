@@ -88,4 +88,3 @@ export class Registro {
       this.mensajeError = err.error?.message || 'Ocurrió un error al registrarse.';
     }
   }
-}
