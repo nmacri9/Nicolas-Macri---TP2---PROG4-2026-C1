@@ -67,7 +67,7 @@ export class Registro {
  //   if (!this.imagenSeleccionada) {
   //    this.mensajeError = 'Debes subir una imagen de perfil.';
     //  return;
-    //}
+    //} COMENTADO PARA UQE NO DE ERRROR
 
     this.mensajeError = '';
 
@@ -80,8 +80,9 @@ export class Registro {
     formData.append('fechaNacimiento', this.formulario.get('fechaNacimiento')?.value || '');
     formData.append('descripcion', this.formulario.get('descripcion')?.value || '');
     formData.append('perfil', this.formulario.get('perfil')?.value || '');
-    formData.append('file', this.imagenSeleccionada); 
-
+    if (this.imagenSeleccionada) {
+    formData.append('imagen', this.imagenSeleccionada);
+    }
     try {
       
       await this.authService.registrar(formData);
