@@ -1,0 +1,48 @@
+<div class="login-card">
+  <div class="card-header">
+    <h2>Login</h2>
+  </div>
+
+  <div class="card-body">
+    <form [formGroup]="formulario" (ngSubmit)="accion()">
+      
+      <div class="input-group">
+        <input type="text" formControlName="identificador" placeholder="Correo o Nombre de usuario">
+      </div>
+      @if (formulario.get('identificador')?.invalid && formulario.get('identificador')?.touched) {
+        <div class="mensaje-error-input">
+          <span>Ingresa tu correo o usuario.</span>
+        </div>
+      }
+      
+      <div class="input-group input-espaciado">
+        <input type="password" formControlName="password" placeholder="Contraseña">
+      </div>
+      @if (formulario.get('password')?.invalid && formulario.get('password')?.touched) {
+        <div class="mensaje-error-input">
+          <span>Debe tener al menos 8 caracteres, 1 mayúscula y 1 número.</span>
+        </div>
+      }
+
+      @if (errorMensaje) {
+        <p class="error-text">{{ errorMensaje }}</p>
+      }
+
+      <button type="submit" class="btn-principal" [disabled]="formulario.invalid">
+        Iniciar Sesión
+      </button>
+    </form>
+
+    <div class="separator">O probá con:</div>
+
+    <div class="botones-rapidos">
+      <button type="button" (click)="BotonCompletar('admin@test.com', 'Admin123')">Admin</button>
+      <button type="button" (click)="BotonCompletar('profes@test.com', 'Profe123')">Profes</button>
+      <button type="button" (click)="BotonCompletar('nicolas_macri', 'Nico1234')">Usuario</button>
+    </div>
+  </div>
+
+  <div class="card-footer">
+    <p>{{ "Nicolas Macri - 2026" }}</p>
+  </div>
+</div>
