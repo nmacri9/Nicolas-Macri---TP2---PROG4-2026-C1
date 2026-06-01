@@ -18,4 +18,8 @@ export const routes: Routes = [
         path: 'mi-perfil', 
         loadComponent: () => import('./pantallas/mi-perfil/mi-perfil').then(m => m.MiPerfil) 
       },
+     {
+      path: '',
+      loadComponent: () => import ('./pantallas/inicio/inicio').then(m => m.Inicio)
+     }
 ];
