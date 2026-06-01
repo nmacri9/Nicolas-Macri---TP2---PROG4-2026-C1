@@ -2,6 +2,7 @@ import { Injectable, BadRequestException, UnauthorizedException } from '@nestjs/
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
+import { sign } from 'jsonwebtoken'; 
 import { CreateUsuarioDto } from '../usuarios/dto/create-usuario.dto';
 import { Usuario, UsuarioDocument } from '../usuarios/entities/usuarios.schema';
 
@@ -23,7 +24,7 @@ export class AutenticacionService {
 
       await nuevoUsuario.save();
 
-      // NestJS detecta que esto salió bien y automáticamente devuelve un Status 201 Created
+      // NestJS devuelve un Status 201 Created
       return {
         status: 'success',
         mensaje: '¡Usuario registrado correctamente en la base de datos!',
@@ -31,7 +32,6 @@ export class AutenticacionService {
 
     } catch (error: any) {
       if (error.code === 11000) {
-        // Acá cumplimos el punto 5: Status 400 Bad Request
         throw new BadRequestException('El correo o nombre de usuario ya está registrado en el sistema.');
       }
       throw new BadRequestException('Error interno al intentar registrar el usuario.');
@@ -49,14 +49,26 @@ export class AutenticacionService {
 
     const passwordGenerada = await bcrypt.compare(body.password, usuario.password);
 
-    // 4. Si la contraseña no coincide, va un Status 401 Unauthorized 
     if (!passwordGenerada) {
       throw new UnauthorizedException('Usuario o contraseña incorrectos.');
     }
 
+    // MAGIA DEL JWT ACÁ 
+    const payload = {
+      _id: usuario._id,
+      correo: usuario.correo,
+    };
+
+    const tokenGenerado = sign(payload, process.env.CLAVE_SECRETA!, {
+      algorithm: 'HS256',
+      expiresIn: '15 minutes', 
+    });
+    // -------------------------
+
     return { 
       status: 'success',
       mensaje: 'Login exitoso',
+      token: tokenGenerado, // 7. Devolvemos el token al front
       usuario: {
         nombre: usuario.nombre,
         correo: usuario.correo,
