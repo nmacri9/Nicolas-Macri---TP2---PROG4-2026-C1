@@ -1,0 +1,36 @@
+/* Centramos el feed en la pantalla como en X */
+.feed-contenedor {
+  width: 100%;
+  max-width: 600px; /* Ancho típico de un feed de red social */
+  margin: 0 auto; /* Lo centra horizontalmente */
+  border-left: 1px solid #2f3336;
+  border-right: 1px solid #2f3336;
+  min-height: 100vh;
+  background-color: #000000;
+  color: #e7e9ea;
+}
+
+/* El encabezado fijo arriba */
+.feed-cabecera {
+  padding: 15px 20px;
+  border-bottom: 1px solid #2f3336;
+  background-color: rgba(0, 0, 0, 0.65); /* Un negro un poco transparente */
+  backdrop-filter: blur(12px); /* Efecto difuminado tipo vidrio */
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.feed-cabecera h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/* Estilo para el mensaje de cuando no hay posteos */
+.mensaje-vacio {
+  text-align: center;
+  color: #71767b;
+  padding: 40px 20px;
+  font-size: 15px;
+}
