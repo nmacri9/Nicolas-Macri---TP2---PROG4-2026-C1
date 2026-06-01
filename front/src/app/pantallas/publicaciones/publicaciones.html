@@ -1,1 +1,24 @@
-<p>publicaciones works!</p>
+<div class="feed-contenedor">
+  
+  <div class="feed-cabecera">
+    <h2>Inicio</h2>
+  </div>
+
+  <div class="feed-lista">
+    
+    @for (posteo of listaPublicaciones; track posteo.id) {
+      <app-publicacion
+        [publicacion]="posteo" 
+        (darLike)="manejarLike($event)"
+        (eliminarPost)="manejarEliminar($event)">
+      </app-publicacion>
+    } 
+    @empty {
+      <div class="mensaje-vacio">
+        No hay publicaciones para mostrar.
+      </div>
+    }
+
+  </div>
+
+</div>

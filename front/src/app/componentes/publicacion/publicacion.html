@@ -1,0 +1,31 @@
+<div class="tweet-contenedor" *ngIf="publicacion">
+  
+  <div class="tweet-avatar">
+    <div class="avatar-placeholder"></div>
+  </div>
+
+  <div class="tweet-cuerpo">
+    
+    <div class="tweet-cabecera">
+      <span class="nombre-usuario">{{ publicacion.usuario.nombre }}</span>
+      <span class="arroba-usuario">{{ publicacion.usuario.username }}</span>
+      <span class="fecha">· {{ publicacion.fecha | date:'shortDate' }}</span>
+    </div>
+
+    <div class="tweet-texto">
+      {{ publicacion.texto }}
+    </div>
+
+    <div class="tweet-acciones">
+      
+      <button class="btn-accion btn-like" [class.like-activo]="publicacion.leDiLike" (click)="clickLike()">
+        Fav {{ publicacion.likes }}
+      </button>
+
+      <button class="btn-accion btn-eliminar" (click)="clickEliminar()">
+        Eliminar
+      </button>
+
+    </div>
+  </div>
+</div>
