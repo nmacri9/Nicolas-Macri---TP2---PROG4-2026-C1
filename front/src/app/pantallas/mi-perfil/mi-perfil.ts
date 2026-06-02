@@ -7,7 +7,7 @@ import { Publicacion } from '../../componentes/publicacion/publicacion';
   templateUrl: './mi-perfil.html',
   styleUrls: ['./mi-perfil.css']
 })
-export class Perfil {
+export class MiPerfil {
   // 1. Datos del usuario logueado
   usuarioPerfil = {
     nombre: 'Nico Macri',
