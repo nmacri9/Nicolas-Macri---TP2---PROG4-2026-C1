@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "@supabase/server": "^1.2.0-rc.69",
+    "cloudinary": "^2.10.0",
+    "multer": "^2.1.1"
+  },
+  "devDependencies": {
+    "@types/multer": "^2.1.0"
+  }
+}
