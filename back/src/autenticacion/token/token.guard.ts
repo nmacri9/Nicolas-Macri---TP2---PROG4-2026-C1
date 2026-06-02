@@ -1,43 +1,29 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import {
-  CanActivate,
-  ExecutionContext,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
-import { Request } from 'express';
+import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { verify } from 'jsonwebtoken';
-import { Observable } from 'rxjs';
+import { Request } from 'express';
 
 @Injectable()
 export class TokenGuard implements CanActivate {
-  canActivate(
-    context: ExecutionContext,
-  ): boolean | Promise<boolean> | Observable<boolean> {
+  canActivate(context: ExecutionContext): boolean {
+    const request = context.switchToHttp().getRequest<Request>();
     
-    const http = context.switchToHttp();
-    const req: Request = http.getRequest();
-    const authorization = req.headers.authorization; // "Bearer eyj...token..."
-    const token = authorization?.replace('Bearer ', '') || '';
+    //Buscamos el token adentro de la cookie que configuró el profe
+    const token = request.cookies['Authorization']; 
+
+    if (!token) {
+      throw new UnauthorizedException('No tenés la cookie VIP para entrar.');
+    }
 
     try {
-      // 1. Verificamos que la firma sea válida
-      const verificado = verify(token, process.env.CLAVE_SUPERSECRETA!); 
-
-      // 2. Extraigo el _id en lugar del email (porque lo guarde así en el Service)
-      const { _id } = verificado as { _id: string };
-
-      if (!req.body) {
-        req.body = { usuarioId: _id };
-      } else {
-        req.body.usuarioId = _id; 
-      }
-
-      return true; // Token válido, lo dejamos pasar.
+      // Verificamos que la firma sea válida
+      const payload = verify(token, process.env.CLAVE_SUPERSECRETA!);
       
+      //Le pegamos los datos del usuario a la request por si el controlador los necesita
+      request.body.usuarioLogueado = payload;
+      
+      return true; 
     } catch (error) {
-      console.error('El token no es válido o expiró:', error);
-      throw new UnauthorizedException('Tu sesión expiró o no iniciaste sesión.');
+      throw new UnauthorizedException('La cookie está vencida o es trucha.');
     }
   }
 }

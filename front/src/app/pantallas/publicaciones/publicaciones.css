@@ -1,8 +1,8 @@
 /* Centramos el feed en la pantalla como en X */
 .feed-contenedor {
   width: 100%;
-  max-width: 600px; /* Ancho típico de un feed de red social */
-  margin: 0 auto; /* Lo centra horizontalmente */
+  max-width: 600px; 
+  margin: 0 auto; 
   border-left: 1px solid #2f3336;
   border-right: 1px solid #2f3336;
   min-height: 100vh;
@@ -14,8 +14,8 @@
 .feed-cabecera {
   padding: 15px 20px;
   border-bottom: 1px solid #2f3336;
-  background-color: rgba(0, 0, 0, 0.65); /* Un negro un poco transparente */
-  backdrop-filter: blur(12px); /* Efecto difuminado tipo vidrio */
+  background-color: rgba(0, 0, 0, 0.65); 
+  backdrop-filter: blur(12px);
   position: sticky;
   top: 0;
   z-index: 10;

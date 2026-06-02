@@ -1,0 +1,129 @@
+.perfil-contenedor {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  border-left: 1px solid #2f3336;
+  border-right: 1px solid #2f3336;
+  min-height: 100vh;
+  background-color: #000000;
+  color: #e7e9ea;
+}
+
+.perfil-cabecera {
+  padding: 5px 20px;
+  position: sticky;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(12px);
+  z-index: 10;
+}
+
+.perfil-cabecera h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.perfil-cabecera .subtitulo {
+  font-size: 13px;
+  color: #71767b;
+}
+
+/* Portada Gris */
+.perfil-portada {
+  height: 200px;
+  background-color: #333639;
+}
+
+/* Sección de info y avatar superpuesto */
+.perfil-info-seccion {
+  padding: 15px 20px;
+}
+
+.perfil-avatar-fila {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: -70px; /* Esto hace que el avatar suba y pise la portada */
+}
+
+.avatar-grande {
+  width: 130px;
+  height: 130px;
+  background-color: #15202b;
+  border: 4px solid #000000; /* Borde negro para separarlo de la portada */
+  border-radius: 50%;
+}
+
+.btn-editar {
+  margin-top: 80px;
+  background: transparent;
+  color: #eff3f4;
+  border: 1px solid #536471;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-editar:hover {
+  background-color: rgba(239, 243, 244, 0.1);
+}
+
+.perfil-datos {
+  margin-top: 10px;
+}
+
+.nombre-grande {
+  margin: 0;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.arroba, .correo {
+  display: block;
+  color: #71767b;
+  font-size: 15px;
+}
+
+.biografia {
+  margin: 15px 0;
+  font-size: 15px;
+  line-height: 20px;
+}
+
+.fecha-union {
+  color: #71767b;
+  font-size: 15px;
+  margin-bottom: 20px;
+}
+
+/* Pestañas estilo X */
+.perfil-pestanas {
+  display: flex;
+  border-bottom: 1px solid #2f3336;
+}
+
+.pestana {
+  flex: 1;
+  text-align: center;
+  padding: 15px 0;
+  color: #71767b;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.pestana:hover {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+.pestana.activa {
+  color: #eff3f4;
+  border-bottom: 4px solid #1d9bf0; /* Color azul de selección */
+}
+
+.mensaje-vacio {
+  text-align: center;
+  padding: 40px;
+  color: #71767b;
+}

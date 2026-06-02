@@ -1,4 +1,5 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Res } from '@nestjs/common';
+import type { Response } from 'express';
 import { AutenticacionService } from './autenticacion.service';
 import { CreateUsuarioDto } from '../usuarios/dto/create-usuario.dto'; 
 
@@ -13,8 +14,23 @@ export class AutenticacionController {
   }
 
   @Post('login')
-  async login(@Body() body: any) { 
-    // Acá recibp correo/username y sin encriptar
-    return this.autenticacionService.loginUsuario(body);
+  async login(
+    @Body() body: any,
+    @Res({ passthrough: true }) response: Response 
+  ) {
+    const respuestaServicio = await this.autenticacionService.loginUsuario(body);
+
+    response.cookie('Authorization', respuestaServicio.token, {
+      httpOnly: true,
+      sameSite: 'strict',
+      secure: true, 
+      expires: new Date(Date.now() + 1000 * 60 * 15), 
+    });
+
+    return {
+      status: respuestaServicio.status,
+      mensaje: respuestaServicio.mensaje,
+      usuario: respuestaServicio.usuario
+    };
   }
 }
