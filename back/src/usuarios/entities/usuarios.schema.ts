@@ -3,31 +3,31 @@ import { Document } from 'mongoose';
 
 export type UsuarioDocument = Usuario & Document;
 
-@Schema({ timestamps: true }) // genera automatico fecha de creación y actualización
+@Schema({ timestamps: true }) // genera automatica fecha de creacion y actualizacion
 export class Usuario {
   @Prop({ required: true })
-  nombre: string;
+  nombre!: string;
 
   @Prop({ required: true })
-  apellido: string;
+  apellido!: string;
 
   @Prop({ required: true, unique: true })
-  correo: string;
+  correo!: string;
 
   @Prop({ required: true, unique: true })
-  username: string;
+  username!: string;
 
   @Prop({ required: true })
-  password: string; 
+  password!: string;
 
   @Prop({ required: true })
-  fechaNacimiento: Date;
+  fechaNacimiento!: Date;
 
   @Prop({ maxlength: 150 })
-  descripcion: string;
+  descripcion!: string;
 
   @Prop({ required: true, default: 'usuario', enum: ['usuario', 'administrador'] })
-  perfil: string;
+  perfil!: string;
 
   @Prop()
   imagenPerfilUrl?: string; 

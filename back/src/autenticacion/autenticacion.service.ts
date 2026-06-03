@@ -13,21 +13,28 @@ export class AutenticacionService {
     @InjectModel(Usuario.name) private usuarioModel: Model<UsuarioDocument>
   ) {}
 
-  async registrarUsuario(body: CreateUsuarioDto) {
+  async registrarUsuario(body: CreateUsuarioDto, file?: Express.Multer.File) {
     try {
+      // 1. Encriptamos la contraseña como ya hacías
       const hashedPassword = await bcrypt.hash(body.password, 10);
 
-      const nuevoUsuario = new this.usuarioModel({
+      const urlFoto = file ? file.path : undefined;
+
+      const datosNuevoUsuario: any = {
         ...body,
         password: hashedPassword,
-      });
+      };
 
+      if (urlFoto) {
+        datosNuevoUsuario.imagenPerfilUrl = urlFoto; 
+      }
+
+      const nuevoUsuario = new this.usuarioModel(datosNuevoUsuario);
       await nuevoUsuario.save();
 
-      // NestJS devuelve un Status 201 Created
       return {
         status: 'success',
-        mensaje: '¡Usuario registrado correctamente en la base de datos!',
+        mensaje: '¡Usuario registrado correctamente con su foto en la base de datos!',
       };
 
     } catch (error: any) {
@@ -53,7 +60,7 @@ export class AutenticacionService {
       throw new UnauthorizedException('Usuario o contraseña incorrectos.');
     }
 
-    // MAGIA DEL JWT ACÁ 
+    // JWT ACÁ 
     const payload = {
       _id: usuario._id,
       correo: usuario.correo,
@@ -63,7 +70,6 @@ export class AutenticacionService {
       algorithm: 'HS256',
       expiresIn: '15 minutes', 
     });
-    // -------------------------
 
     return { 
       status: 'success',
