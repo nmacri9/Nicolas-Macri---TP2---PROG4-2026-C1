@@ -46,7 +46,7 @@
 .btn-editar {
   margin-top: 15px;
   background: transparent;
-  color: #00a2ff;
+  color: #068ddb;
   border: 1px solid #00a2ff;
   padding: 8px 24px;
   border-radius: 20px;
@@ -57,7 +57,7 @@
 }
 
 .btn-editar:hover {
-  background-color: #00a2ff;
+  background-color: #252525;
   color: #ffffff;
   box-shadow: 0 0 10px rgba(0, 162, 255, 0.4);
 }
