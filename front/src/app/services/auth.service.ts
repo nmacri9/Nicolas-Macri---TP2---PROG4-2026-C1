@@ -26,7 +26,7 @@ export class AuthService {
   async loguear(datos: ILogin) {
     try {
       const respuesta = await firstValueFrom(
-        this.http.post(`${this.apiUrl}/pantallas/login`, datos)
+        this.http.post(`${this.apiUrl}/auth/login`, datos)
       );
       return respuesta;
     } catch (error) {
