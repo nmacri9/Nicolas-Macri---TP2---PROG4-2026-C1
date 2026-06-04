@@ -42,6 +42,7 @@ export class Login {
     try {
       const response = await this.authService.loguear(datosLogin);
       console.log('Login exitoso', response);
+      this.router.navigate(['/publicaciones']);
       
       
     } catch (error: any) {
