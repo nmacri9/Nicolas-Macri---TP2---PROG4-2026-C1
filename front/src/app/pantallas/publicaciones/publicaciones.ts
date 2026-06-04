@@ -27,7 +27,17 @@ export class Publicaciones {
       likes: 42,
       leDiLike: true,
       fecha: new Date()
+    },
+    {
+      id: 3,
+      usuario: { nombre: 'Profe', username: '@hola' },
+      texto: 'Hola profee esto es de prueba hay que borrarrrrrlo',
+      likes: 42,
+      leDiLike: true,
+      fecha: new Date()
     }
+
+
   ];
 
   // El padre escucha que el hijo emitió el evento "darLike"
