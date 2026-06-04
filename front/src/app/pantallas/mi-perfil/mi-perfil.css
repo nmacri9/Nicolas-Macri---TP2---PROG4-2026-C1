@@ -4,7 +4,7 @@
   max-width: 600px;
   margin: 40px auto;
   background-color: #131518; 
-  border: 1px solid #24272a;
+  border: 1px solid #38444d;
   border-radius: 10px; 
   overflow: hidden; 
   color: #e7e9ea;
@@ -37,7 +37,7 @@
   width: 140px;
   height: 140px;
   background-color: #15202b;
-  border: 5px solid #15181c; 
+  border: 4px solid #38444d;
   border-radius: 50%;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
   object-fit: cover;
