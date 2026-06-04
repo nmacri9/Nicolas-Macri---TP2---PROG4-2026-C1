@@ -25,7 +25,7 @@ export class Publicaciones {
       usuario: { nombre: 'Profe', username: '@elprofe' },
       texto: 'Acordate de que la comunicación Padre-Hijo es clave para aprobar.',
       likes: 42,
-      leDiLike: true,
+      leDiLike: false,
       fecha: new Date()
     },
     {
@@ -33,7 +33,7 @@ export class Publicaciones {
       usuario: { nombre: 'Profe', username: '@hola' },
       texto: 'Hola profee esto es de prueba hay que borrarrrrrlo',
       likes: 42,
-      leDiLike: true,
+      leDiLike: false,
       fecha: new Date()
     }
 
