@@ -14,9 +14,8 @@ async function bootstrap() {
 
   app.enableCors({
     origin: [
-      'http://localhost:4200', 
-      'nicolas-macri-tp-2-prog-4-2026-c1-rho.vercel.app' 
-    ], 
+      'https://nicolas-macri-tp-2-prog-4-2026-c1-rho.vercel.app',
+    ],
     credentials: true,
   });
   
