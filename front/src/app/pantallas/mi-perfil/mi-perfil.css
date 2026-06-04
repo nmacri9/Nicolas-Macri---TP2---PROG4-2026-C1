@@ -1,125 +1,132 @@
+ /* Contenedor tipo Tarjeta Flotante */
 .perfil-contenedor {
-  width: 100%;
+  width: 90%;
   max-width: 600px;
-  margin: 0 auto;
-  border-left: 1px solid #2f3336;
-  border-right: 1px solid #2f3336;
-  min-height: 100vh;
-  background-color: #000000;
+  margin: 40px auto;
+  background-color: #15181c; 
+  border: 1px solid #2f3336;
+  border-radius: 10px; 
+  overflow: hidden; 
   color: #e7e9ea;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6); /* Sombra suave */
 }
 
 .perfil-cabecera {
-  padding: 5px 20px;
-  position: sticky;
-  top: 0;
-  background-color: rgba(0, 0, 0, 0.65);
-  backdrop-filter: blur(12px);
-  z-index: 10;
+  display: none; 
 }
 
-.perfil-cabecera h2 {
-  margin: 0;
-  font-size: 20px;
-}
-
-.perfil-cabecera .subtitulo {
-  font-size: 13px;
-  color: #71767b;
-}
-
-/* Portada Gris */
+/* Portada con degradado en vez de gris plano */
 .perfil-portada {
-  height: 200px;
-  background-color: #333639;
+  height: 150px;
+  background: linear-gradient(135deg, #0b2239, #1a4a76, #15181c);
 }
 
-/* Sección de info y avatar superpuesto */
 .perfil-info-seccion {
-  padding: 15px 20px;
+  padding: 15px 30px;
 }
 
+/* Avatar y botón centrados */
 .perfil-avatar-fila {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-top: -70px; /* Esto hace que el avatar suba y pise la portada */
+  flex-direction: column; /* Apila uno arriba del otro */
+  align-items: center; /* Centra todo */
+  margin-top: -75px; 
+  position: relative;
 }
 
 .avatar-grande {
-  width: 130px;
-  height: 130px;
+  width: 140px;
+  height: 140px;
   background-color: #15202b;
-  border: 4px solid #000000; /* Borde negro para separarlo de la portada */
+  border: 5px solid #15181c; 
   border-radius: 50%;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  object-fit: cover;
 }
 
 .btn-editar {
-  margin-top: 80px;
+  margin-top: 15px;
   background: transparent;
-  color: #eff3f4;
-  border: 1px solid #536471;
-  padding: 8px 16px;
+  color: #00a2ff;
+  border: 1px solid #00a2ff;
+  padding: 8px 24px;
   border-radius: 20px;
   font-weight: bold;
+  font-size: 14px;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .btn-editar:hover {
-  background-color: rgba(239, 243, 244, 0.1);
+  background-color: #00a2ff;
+  color: #ffffff;
+  box-shadow: 0 0 10px rgba(0, 162, 255, 0.4);
 }
 
+/* Textos e Info centrada */
 .perfil-datos {
-  margin-top: 10px;
+  text-align: center;
+  margin-top: 15px;
 }
 
 .nombre-grande {
   margin: 0;
-  font-size: 20px;
-  font-weight: bold;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
 }
 
 .arroba, .correo {
   display: block;
-  color: #71767b;
-  font-size: 15px;
+  color: #8b9298;
+  font-size: 14px;
+  margin-top: 3px;
 }
 
 .biografia {
-  margin: 15px 0;
+  margin: 20px auto;
   font-size: 15px;
-  line-height: 20px;
+  line-height: 1.6;
+  max-width: 85%;
+  color: #d1d5d8;
 }
 
 .fecha-union {
-  color: #71767b;
-  font-size: 15px;
-  margin-bottom: 20px;
+  color: #8b9298;
+  font-size: 14px;
+  margin-bottom: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
 }
 
-/* Pestañas estilo X */
+/* Pestañas modernas */
 .perfil-pestanas {
   display: flex;
-  border-bottom: 1px solid #2f3336;
+  border-top: 1px solid #2f3336;
+  background-color: #0d1013; 
 }
 
 .pestana {
   flex: 1;
   text-align: center;
-  padding: 15px 0;
-  color: #71767b;
-  font-weight: bold;
+  padding: 16px 0;
+  color: #8b9298;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.2s ease;
 }
 
 .pestana:hover {
-  background-color: rgba(255, 255, 255, 0.03);
+  background-color: rgba(0, 162, 255, 0.05);
+  color: #00a2ff;
 }
 
 .pestana.activa {
-  color: #eff3f4;
-  border-bottom: 4px solid #1d9bf0; /* Color azul de selección */
+  color: #00a2ff;
+  background-color: rgba(0, 162, 255, 0.05);
+  border-bottom: 3px solid #00a2ff;
 }
 
 .mensaje-vacio {
