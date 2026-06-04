@@ -3,8 +3,8 @@
   width: 90%;
   max-width: 600px;
   margin: 40px auto;
-  background-color: #15181c; 
-  border: 1px solid #2f3336;
+  background-color: #131518; 
+  border: 1px solid #24272a;
   border-radius: 10px; 
   overflow: hidden; 
   color: #e7e9ea;
@@ -18,14 +18,13 @@
 /* Portada con degradado en vez de gris plano */
 .perfil-portada {
   height: 150px;
-  background: linear-gradient(135deg, #0b2239, #1a4a76, #15181c);
+  background: linear-gradient(135deg, #0f2841, #0f2841, #15181c);
 }
 
 .perfil-info-seccion {
   padding: 15px 30px;
 }
 
-/* Avatar y botón centrados */
 .perfil-avatar-fila {
   display: flex;
   flex-direction: column; /* Apila uno arriba del otro */
