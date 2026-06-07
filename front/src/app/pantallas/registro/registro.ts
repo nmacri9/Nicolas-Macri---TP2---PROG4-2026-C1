@@ -63,29 +63,26 @@ export class Registro {
       this.formulario.markAllAsTouched(); 
       return;
     }
-//
- //   if (!this.imagenSeleccionada) {
-  //    this.mensajeError = 'Debes subir una imagen de perfil.';
-    //  return;
-    //} COMENTADO PARA UQE NO DE ERRROR
 
     this.mensajeError = '';
 
-this.mensajeError = '';
-
     try {
-        const datosUsuario = {
-        nombre: this.formulario.get('nombre')?.value || '',
-        apellido: this.formulario.get('apellido')?.value || '',
-        correo: this.formulario.get('correo')?.value || '',
-        username: this.formulario.get('username')?.value || '',
-        password: this.formulario.get('password')?.value || '',
-        fechaNacimiento: this.formulario.get('fechaNacimiento')?.value || '',
-        descripcion: this.formulario.get('descripcion')?.value || '',
-        perfil: this.formulario.get('perfil')?.value || ''
-      };
-      
-      await this.authService.registrar(datosUsuario);
+      const formData = new FormData();
+
+      // 2. Metemos todos los campos de texto
+      formData.append('nombre', this.formulario.get('nombre')?.value || '');
+      formData.append('apellido', this.formulario.get('apellido')?.value || '');
+      formData.append('correo', this.formulario.get('correo')?.value || '');
+      formData.append('username', this.formulario.get('username')?.value || '');
+      formData.append('password', this.formulario.get('password')?.value || '');
+      formData.append('fechaNacimiento', this.formulario.get('fechaNacimiento')?.value || '');
+      formData.append('descripcion', this.formulario.get('descripcion')?.value || '');
+      formData.append('perfil', this.formulario.get('perfil')?.value || '');
+
+      if (this.imagenSeleccionada) {
+        formData.append('imagenPerfil', this.imagenSeleccionada);
+      }
+      await this.authService.registrar(formData);
       this.router.navigate(['/login']); 
 
     } catch (err: any) {
