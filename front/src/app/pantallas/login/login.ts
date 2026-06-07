@@ -40,10 +40,13 @@ export class Login {
     };
 
     try {
-      const response = await this.authService.loguear(datosLogin);
+      // Le pongo any para que TypeScript no moleste al leer usuario._id
+      const response: any = await this.authService.loguear(datosLogin);
       console.log('Login exitoso', response);
-      this.router.navigate(['/publicaciones']);
       
+      localStorage.setItem('usuario_id', response.usuario._id);
+      
+      this.router.navigate(['/publicaciones']);
       
     } catch (error: any) {
       // Atrapamos el error (ej: 401 Unauthorized o 400 Bad Request)

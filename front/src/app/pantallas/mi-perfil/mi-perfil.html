@@ -9,7 +9,8 @@
   
   <div class="perfil-info-seccion">
     <div class="perfil-avatar-fila">
-      <div class="avatar-grande"></div>
+      <img [src]="usuarioPerfil.imagenPerfilUrl" alt="Foto de perfil" class="avatar-grande">
+      
       <button class="btn-editar">Editar perfil</button>
     </div>
 
@@ -21,7 +22,7 @@
       <p class="biografia">{{ usuarioPerfil.biografia }}</p>
       
       <div class="fecha-union">
-        📅 Se unió en {{ usuarioPerfil.fechaUnion }}
+        Se unió en {{ usuarioPerfil.fechaUnion }}
       </div>
     </div>
   </div>

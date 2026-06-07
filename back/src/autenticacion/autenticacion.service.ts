@@ -74,8 +74,9 @@ export class AutenticacionService {
     return { 
       status: 'success',
       mensaje: 'Login exitoso',
-      token: tokenGenerado, // 7. Devolvemos el token al front
+      token: tokenGenerado,
       usuario: {
+        _id: usuario._id,
         nombre: usuario.nombre,
         correo: usuario.correo,
         username: usuario.username

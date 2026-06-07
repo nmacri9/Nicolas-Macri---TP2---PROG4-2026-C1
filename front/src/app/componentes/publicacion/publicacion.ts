@@ -12,8 +12,8 @@ export class Publicacion {
 
   @Input() publicacion: any; 
 
-  @Output() darLike = new EventEmitter<number>();
-  @Output() eliminarPost = new EventEmitter<number>();
+  @Output() darLike = new EventEmitter<string>();
+  @Output() eliminarPost = new EventEmitter<string>();
 
   constructor() {}
 

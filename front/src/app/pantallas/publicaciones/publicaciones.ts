@@ -1,55 +1,68 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Publicacion } from '../../componentes/publicacion/publicacion';
+
 @Component({
   selector: 'app-publicaciones',
   standalone: true,
-  imports: [ Publicacion],
+  imports: [Publicacion],
   templateUrl: './publicaciones.html',
   styleUrl: './publicaciones.css',
 })
+export class Publicaciones implements OnInit {
+  
+  private http = inject(HttpClient);
+  
+  miUsuarioId = localStorage.getItem('usuario_id') || '';
+  listaPublicaciones: any[] = [];
 
-export class Publicaciones {
+  ngOnInit() {
+    this.cargarFeed();
+  }
 
-  // Nuestra lista falsa de posteos DESPUES BORRAR ESTOOOOOOOOOOOOO
-  listaPublicaciones = [
-    {
-      id: 1,
-      usuario: { nombre: 'Nico Macri', username: '@nico' },
-      texto: '¡Arrancando el Sprint 2 a toda velocidad! 🚀',
-      likes: 15,
-      leDiLike: false,
-      fecha: new Date()
-    },
-    {
-      id: 2,
-      usuario: { nombre: 'Profe', username: '@elprofe' },
-      texto: 'Acordate de que la comunicación Padre-Hijo es clave para aprobar.',
-      likes: 42,
-      leDiLike: false,
-      fecha: new Date()
-    },
-    {
-      id: 3,
-      usuario: { nombre: 'Profe', username: '@hola' },
-      texto: 'Hola profee esto es de prueba hay que borrarrrrrlo',
-      likes: 42,
-      leDiLike: false,
-      fecha: new Date()
-    }
+  cargarFeed() {
+    this.http.get<any>('https://nicolas-macri-tp-2-prog-4-2026-c1.vercel.app/publicaciones').subscribe({
+      next: (respuesta) => {
+        this.listaPublicaciones = respuesta.data.map((publi: any) => ({
+          id: publi._id,
+          usuario: publi.autor,
+          texto: publi.descripcion,
+          likes: publi.cantidadLikes,
+          leDiLike: publi.likes.includes(this.miUsuarioId),
+          fecha: publi.createdAt
+        }));
+      },
+      error: (err) => console.error('Error al cargar el feed', err)
+    });
+  }
 
+  manejarLike(idPublicacion: string) {
+    const post = this.listaPublicaciones.find(p => p.id === idPublicacion);
+    if (!post) return;
 
-  ];
+    const url = `https://nicolas-macri-tp-2-prog-4-2026-c1.vercel.app/publicaciones/${idPublicacion}/like?usuarioId=${this.miUsuarioId}`;
 
-  // El padre escucha que el hijo emitió el evento "darLike"
-  manejarLike(id: number) {
-    const post = this.listaPublicaciones.find(p => p.id === id);
-    if (post) {
-      post.leDiLike = !post.leDiLike; 
-      post.likes += post.leDiLike ? 1 : -1; // Suma o resta 1
+    if (post.leDiLike) {
+      this.http.delete(url).subscribe(() => {
+        post.leDiLike = false;
+        post.likes -= 1;
+      });
+    } else {
+      this.http.post(url, {}).subscribe(() => {
+        post.leDiLike = true;
+        post.likes += 1;
+      });
     }
   }
 
-  manejarEliminar(id: number) {
-    this.listaPublicaciones = this.listaPublicaciones.filter(p => p.id !== id);
+  manejarEliminar(idPublicacion: string) {
+    const url = `https://nicolas-macri-tp-2-prog-4-2026-c1.vercel.app/publicaciones/${idPublicacion}?usuarioId=${this.miUsuarioId}&rol=usuario`;
+    
+    this.http.delete(url).subscribe({
+      next: () => {
+        this.listaPublicaciones = this.listaPublicaciones.filter(p => p.id !== idPublicacion);
+      },
+      error: (err) => console.error('Error al borrar desde el feed', err)
+    });
   }
 }
