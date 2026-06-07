@@ -8,7 +8,7 @@ import { RouterOutlet, Router, RouterLink } from '@angular/router';
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
-export class AppComponent {
+export class App {
   private router = inject(Router);
 
   mostrarSidebar(): boolean {
