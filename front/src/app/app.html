@@ -1,1 +1,28 @@
-<router-outlet></router-outlet>
+<div class="layout-principal">
+
+  @if (mostrarSidebar()) {
+    <aside class="sidebar">
+      <div class="logo-container">
+        <img src="assets/logo.png" alt="Logo My Thing" class="logo-img">
+      </div>
+
+      <nav class="navegacion">
+        <a routerLink="/publicaciones" class="nav-item">
+          <i class="icono">🏠</i> Inicio
+        </a>
+        <a routerLink="/mi-perfil" class="nav-item">
+          <i class="icono">👤</i> Mi Perfil
+        </a>
+      </nav>
+
+      <button class="btn-cerrar-sesion" (click)="cerrarSesion()">
+        Cerrar Sesión
+      </button>
+    </aside>
+  }
+
+  <main class="contenido-dinamico">
+    <router-outlet></router-outlet>
+  </main>
+
+</div>

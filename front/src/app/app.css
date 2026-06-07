@@ -1,0 +1,87 @@
+/* SIDE BAR*/
+
+
+/* Contenedor que divide la pantalla en 2 */
+.layout-principal {
+  display: flex;
+  min-height: 100vh;
+  background-color: #000000; /* Fondo oscuro base */
+  color: #ffffff;
+}
+
+/* La barra lateral fija */
+.sidebar {
+  width: 250px;
+  border-right: 1px solid #2f3336; 
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh; /* Ocupa todo el alto */
+}
+
+/* El logo azul */
+.logo-container {
+  margin-bottom: 30px;
+  padding-left: 10px;
+}
+.logo-img {
+  width: 70px; 
+  height: auto;
+  border-radius: 50%; 
+  cursor: pointer;
+}
+
+/* Los botones de navegación */
+.navegacion {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-grow: 1; 
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 20px;
+  padding: 12px 20px;
+  border-radius: 30px;
+  transition: background-color 0.2s;
+}
+
+.nav-item:hover {
+  background-color: #181818;
+}
+
+/* Botón de cerrar sesión al fondo */
+.btn-cerrar-sesion {
+  background-color: transparent;
+  color: #eff3f4;
+  border: 1px solid #536471;
+  padding: 15px;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-bottom: 20px;
+}
+
+.btn-cerrar-sesion:hover {
+  background-color: rgba(244, 33, 46, 0.1);
+  color: #f4212e;
+  border-color: #f4212e;
+}
+
+/* El espacio donde va el resto de tu app */
+.contenido-dinamico {
+  flex-grow: 1; /* Ocupa el resto del ancho disponible */
+  max-width: 600px; /* Ancho máximo estilo feed de red social */
+  margin: 0 auto; /* Centra el contenido */
+  border-right: 1px solid #2f3336; /* Línea separadora derecha */
+  min-height: 100vh;
+}

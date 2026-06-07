@@ -1,12 +1,24 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-
+import { Component, inject } from '@angular/core';
+import { RouterOutlet, Router, RouterLink } from '@angular/router';
+/*SIDE BAR */ 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  standalone: true,
+  imports: [RouterOutlet, RouterLink], // 
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
-export class App {
-  protected readonly title = signal('front');
+export class AppComponent {
+  private router = inject(Router);
+
+  mostrarSidebar(): boolean {
+    // Si estamos en login o registro, ocultamos la barra
+    const rutasOcultas = ['/login', '/registro'];
+    return !rutasOcultas.includes(this.router.url);
+  }
+
+  cerrarSesion() {
+    localStorage.removeItem('usuario_id');
+    this.router.navigate(['/login']);
+  }
 }
