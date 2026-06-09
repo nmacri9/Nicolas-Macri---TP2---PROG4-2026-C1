@@ -24,6 +24,6 @@ export const routes: Routes = [
         canActivate: [estaLogueadoGuard],
 
       },
-     { path: '', redirectTo: 'login', pathMatch: 'full' }, // Ruta vacía va al login
+     { path: '', redirectTo: 'inicio', pathMatch: 'full' }, // Ruta vacía va al inicio
 ];
 
