@@ -1,7 +1,10 @@
 import { Routes } from '@angular/router';
 import { estaLogueadoGuard, noEstaLogueadoGuard } from './guards/esta-logueado-guard';
 export const routes: Routes = [
-
+    { 
+        path: 'inicio', 
+        loadComponent: () => import('./pantallas/inicio/inicio').then(m => m.Inicio) 
+      },
     { 
         path: 'registro', 
         loadComponent: () => import('./pantallas/registro/registro').then(m => m.Registro),
