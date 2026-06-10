@@ -1,8 +1,7 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
-import { IRegistro } from './auth.interfaces';
-import { ILogin } from './auth.interfaces';
+import { IRegistro, ILogin } from './auth.interfaces';
 
 
 @Injectable({
@@ -10,14 +9,14 @@ import { ILogin } from './auth.interfaces';
 })
 export class AuthService {
   private http = inject(HttpClient);
-  
   private apiUrl = 'https://nicolas-macri-tp-2-prog-4-2026-c1.vercel.app'; 
+
+  usuarioActual = signal<any>(JSON.parse(localStorage.getItem('usuario_data') || 'null'));
 
   async registrar(datos: IRegistro | FormData) {
     try {
       const respuesta = await firstValueFrom(
-        this.http.post(`${this.apiUrl}/auth/registro`, datos)
-      );
+      this.http.post(`${this.apiUrl}/auth/registro`, datos, { withCredentials: true }));
       return respuesta;
     } catch (error) {
       throw error;
@@ -25,14 +24,20 @@ export class AuthService {
   }
   async loguear(datos: ILogin) {
     try {
-      const respuesta = await firstValueFrom(
-        this.http.post(`${this.apiUrl}/auth/login`, datos)
+      const respuesta: any = await firstValueFrom(
+        this.http.post(`${this.apiUrl}/auth/login`, datos, { withCredentials: true })
       );
+      
+      if (respuesta && respuesta.usuario) {
+        localStorage.setItem('usuario_data', JSON.stringify(respuesta.usuario));
+        
+        this.usuarioActual.set(respuesta.usuario); 
+      }
+      
       return respuesta;
     } catch (error) {
       throw error;
     }
   }
-
 }
-//prueba 
+

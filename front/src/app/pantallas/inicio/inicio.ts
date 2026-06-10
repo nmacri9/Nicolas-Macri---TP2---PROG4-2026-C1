@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-inicio',
@@ -9,12 +10,8 @@ import { RouterModule } from '@angular/router';
   styleUrls: ['./inicio.css']
 })
 export class Inicio {
-  
   constructor() {}
-
   // Devuelve true si el usuario está logueado
-  usuarioTieneSesion(): boolean {
-    return !!localStorage.getItem('usuario_id');
+  public authService = inject(AuthService);
   }
   
-}

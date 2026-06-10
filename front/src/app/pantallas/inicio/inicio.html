@@ -1,15 +1,15 @@
 <div class="contenedor-inicio">
   <div class="tarjeta-bienvenida">
     <div class="encabezado-logo">
-      <img src="/logo.png" alt="Logo My Thing" class="logo-img">
-      <h1>My thing</h1>
+      <img src="/logo.png" alt="Logo My Things" class="logo-img">
+      <h1>My things</h1>
     </div>
     
     <p>Bienvenido a la red social más tranquila o charlatana que podes encontrar...</p>
   </div>
 
   <div class="contenedor-botones">
-    @if (!usuarioTieneSesion()) {
+    @if (!authService.usuarioActual()) {
       <button routerLink="/login" class="btn-celeste">Login</button>
       <button routerLink="/registro" class="btn-celeste">Registro</button>
     } 
