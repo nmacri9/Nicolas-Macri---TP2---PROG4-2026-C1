@@ -20,7 +20,7 @@ export class App {
     return !rutasOcultas.includes(this.router.url);
   }
   CerrarSesion() {
-    this.authService.cerrarSesion();
+    this.authService.CerrarSesion();
     this.router.navigate(['/login']);
   }
 }

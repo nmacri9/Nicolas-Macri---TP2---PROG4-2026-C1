@@ -39,7 +39,7 @@ export class AuthService {
       throw error;
     }
   }
-  cerrarSesion() {
+  CerrarSesion() {
     localStorage.removeItem('usuario_data');
     this.usuarioActual.set(null); 
   }
