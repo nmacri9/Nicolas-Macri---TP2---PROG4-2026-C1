@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Publicacion } from '../../componentes/publicacion/publicacion';
-
+import { AuthService } from '../../services/auth.service';
 @Component({
   selector: 'app-publicaciones',
   standalone: true,
@@ -10,11 +10,10 @@ import { Publicacion } from '../../componentes/publicacion/publicacion';
   styleUrl: './publicaciones.css',
 })
 export class Publicaciones implements OnInit {
-  
+  public authService = inject(AuthService);
   private http = inject(HttpClient);
   
-  miUsuarioId = localStorage.getItem('usuario_id') || '';
-  listaPublicaciones: any[] = [];
+  miUsuarioId = this.authService.usuarioActual()?._id;  listaPublicaciones: any[] = [];
 
   ngOnInit() {
     this.cargarFeed();

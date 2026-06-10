@@ -39,5 +39,9 @@ export class AuthService {
       throw error;
     }
   }
+  cerrarSesion() {
+    localStorage.removeItem('usuario_data');
+    this.usuarioActual.set(null); 
+  }
 }
 

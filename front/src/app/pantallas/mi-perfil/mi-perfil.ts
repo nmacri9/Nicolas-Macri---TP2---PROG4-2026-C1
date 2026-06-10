@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Publicacion } from '../../componentes/publicacion/publicacion';
-
+import { AuthService } from '../../services/auth.service';
 @Component({
   selector: 'app-perfil',
   standalone: true,
@@ -9,29 +9,36 @@ import { Publicacion } from '../../componentes/publicacion/publicacion';
   templateUrl: './mi-perfil.html',
   styleUrls: ['./mi-perfil.css']
 })
+
+
 export class MiPerfil implements OnInit { 
-  
+  public authService = inject(AuthService);
   private http = inject(HttpClient);
-  miUsuarioId = localStorage.getItem('usuario_id') || '';
+  miUsuarioId = this.authService.usuarioActual()?._id;
   usuarioPerfil = {
-    nombre: '',
-    username: '',
+    nombre: 'Cargando...',
+    username: '...',
     correo: '',
-    biografia: '',
+    biografia: 'Cargando...',
     imagenPerfilUrl: 'assets/avatar-por-defecto.png', 
-    fechaUnion: 'Junio 2026'
+    fechaUnion: ''
   };
 
   misPublicaciones: any[] = []; 
 
   ngOnInit() {
-    this.cargarDatosUsuario();
-    this.cargarMisPublicaciones();
+    if (this.miUsuarioId) {
+      this.cargarDatosUsuario();
+      this.cargarMisPublicaciones();
+    } else {
+      console.error('No se encontró el ID del usuario, algo falló en la sesión.');
+    }
   }
 
   cargarDatosUsuario() {
     this.http.get<any>(`https://nicolas-macri-tp-2-prog-4-2026-c1.vercel.app/usuarios/${this.miUsuarioId}`).subscribe({
       next: (usuarioDeMongo) => {
+
         this.usuarioPerfil = {
           nombre: `${usuarioDeMongo.nombre} ${usuarioDeMongo.apellido}`,
           username: `@${usuarioDeMongo.username}`,
