@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core'; 
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
@@ -14,15 +14,15 @@ import { ILogin } from '../../services/auth.interfaces';
 export class Login {
   authService = inject(AuthService);
   router = inject(Router);
-  errorMensaje: string | null = null;
+  
+  errorMensaje = signal<string | null>(null);
 
   formulario = new FormGroup({
-    // le puse identificador porque puede ser correo o nombre de usuario
     identificador: new FormControl('', [Validators.required]),
     password: new FormControl('', [
       Validators.required,
       Validators.minLength(8),
-      Validators.pattern('^(?=.*[A-Z])(?=.*\\d).{8,}$') // 1 mayúscula, 1 número, mín 8 chars
+      Validators.pattern('^(?=.*[A-Z])(?=.*\\d).{8,}$') 
     ]),
   });
   
@@ -32,7 +32,7 @@ export class Login {
       return;
     }
 
-    this.errorMensaje = null;
+    this.errorMensaje.set(null);
 
     const datosLogin: ILogin = {
       identificador: this.formulario.value.identificador || '',
@@ -40,17 +40,15 @@ export class Login {
     };
 
     try {
-      // Le pongo any para que TypeScript no moleste al leer usuario._id
-      const response: any = await this.authService.loguear(datosLogin);
-      console.log('Login exitoso', response);
+      await this.authService.loguear(datosLogin);
       
-      localStorage.setItem('usuario_id', response.usuario._id);
-      
+      console.log('Login exitoso');
       this.router.navigate(['/publicaciones']);
       
     } catch (error: any) {
-      // Atrapamos el error (ej: 401 Unauthorized o 400 Bad Request)
-      this.errorMensaje = error.error?.message || "Correo/Usuario o contraseña incorrectos.";
+     
+      const mensaje = error.error?.message || "Usuario o contraseña incorrectos!!.";
+      this.errorMensaje.set(mensaje); 
       console.log("Detalle del error:", error);
     }
   }

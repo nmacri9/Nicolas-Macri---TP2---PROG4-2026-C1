@@ -24,13 +24,14 @@
         </div>
       }
 
-      @if (errorMensaje) {
-        <p class="error-text">{{ errorMensaje }}</p>
+      @if (errorMensaje()) {
+        <p class="error-text">{{ errorMensaje() }}</p>
       }
 
       <button type="submit" class="btn-principal" [disabled]="formulario.invalid">
         Iniciar Sesión
       </button>
+
     </form>
 
     <div class="separator">O probá con:</div>

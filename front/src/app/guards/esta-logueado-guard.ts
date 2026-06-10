@@ -1,12 +1,12 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 export const estaLogueadoGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
+  const authService = inject(AuthService);
 
-  const usuarioId = localStorage.getItem('usuario_id');
-
-  if (usuarioId) {
+  if (authService.usuarioActual()) {
     return true;
   } else {
     return router.navigateByUrl('/login');
@@ -15,10 +15,9 @@ export const estaLogueadoGuard: CanActivateFn = (route, state) => {
 
 export const noEstaLogueadoGuard: CanActivateFn = () => {
   const router = inject(Router);
+  const authService = inject(AuthService);
 
-  const usuarioId = localStorage.getItem('usuario_id');
-
-  if (usuarioId) {
+  if (authService.usuarioActual()) {
     return router.navigateByUrl('/publicaciones'); 
   } else {
     return true; 
