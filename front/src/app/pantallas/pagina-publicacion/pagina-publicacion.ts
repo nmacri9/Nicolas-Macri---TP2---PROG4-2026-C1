@@ -22,18 +22,17 @@ export class PaginaPublicacion implements OnInit {
   nuevoComentario: string = '';
   miUsuarioId = this.authService.usuarioActual()?._id;
   
-  // Acá s guarda la publicación real cuando llegue de la API
   datosDeLaPublicacion: any = null;
 
   comentarios: any[] = [];
-  paginaComentarios = 1;
 
   ngOnInit() {
-    //  ID de la URL
+    // ID de la URL
     this.idPublicacion = this.route.snapshot.paramMap.get('id');
     
     if (this.idPublicacion) {
-      this.cargarPublicacionReal();
+      this.cargarPublicacionReal(); // Trae la publi de MongoDB
+      this.cargarComentarios();     // Trae los comentarios del localStorage
     }
   }
 
@@ -61,26 +60,49 @@ export class PaginaPublicacion implements OnInit {
     });
   }
 
+  // --- MÉTODOS DE COMENTARIOSLOCALSTORAGE ---
+
+  cargarComentarios() {
+    if (!this.idPublicacion) return;
+    
+    // Recuperamos los comentarios de la memoria del navegador
+    const guardados = localStorage.getItem(`comentarios_${this.idPublicacion}`);
+    if (guardados) {
+      this.comentarios = JSON.parse(guardados);
+    }
+  }
+
   publicarComentario() {
     if (!this.nuevoComentario.trim()) return;
+
     this.comentarios.push({
-      id: Date.now(),
-      autor: 'Yo',
+      id: Date.now().toString(),
+      autor: this.authService.usuarioActual()?.username || 'Usuario', // Usa tu username real
       texto: this.nuevoComentario,
       editado: false
     });
-    this.nuevoComentario = '';
-  }
 
-  cargarMasComentarios() {
-    console.log("Cargando más comentarios...");
+    if (this.idPublicacion) {
+      localStorage.setItem(`comentarios_${this.idPublicacion}`, JSON.stringify(this.comentarios));
+    }
+    
+    this.nuevoComentario = ''; 
   }
 
   editarComentario(coment: any) {
     const nuevoTexto = prompt("Editá tu comentario:", coment.texto);
+    
     if (nuevoTexto && nuevoTexto !== coment.texto) {
       coment.texto = nuevoTexto;
       coment.editado = true;
+      
+      if (this.idPublicacion) {
+        localStorage.setItem(`comentarios_${this.idPublicacion}`, JSON.stringify(this.comentarios));
+      }
     }
+  }
+
+  cargarMasComentarios() {
+    console.log("Todos los comentarios locales ya están cargados.");
   }
 }
