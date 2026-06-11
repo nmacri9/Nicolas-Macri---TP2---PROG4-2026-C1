@@ -7,7 +7,7 @@
   border-right: 1px solid #2f3336;
   min-height: 100vh;
   background-color: #000000;
-  color: #e7e9ea;
+  color: #1d1d1d;
 }
 
 /* El encabezado fijo arriba */
@@ -42,7 +42,7 @@
   padding: 15px; 
   border: 1px solid #6b6b6b; 
   border-radius: 8px; 
-  background: white;
+  background: rgb(18, 18, 18);
   box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Sombrita suave */
 }
 
