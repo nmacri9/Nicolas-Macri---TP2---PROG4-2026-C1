@@ -1,0 +1,33 @@
+<div class="pagina-contenedor">
+  
+  <div class="publicacion-grande">
+    <h2>Publicación {{ idPublicacion }}</h2>
+    <p>Acá se ve el contenido de la publicación en tamaño gigante para que resalte.</p>
+  </div>
+
+  <hr>
+
+  <div class="seccion-comentarios">
+    <h3>Comentarios</h3>
+
+    <div class="caja-escribir">
+      <textarea [(ngModel)]="nuevoComentario" placeholder="Escribí un comentario..."></textarea>
+      <button class="btn-celeste" (click)="publicarComentario()">Comentar</button>
+    </div>
+
+    <div class="lista-comentarios">
+      @for (coment of comentarios; track coment.id) {
+        <div class="comentario-item">
+          <strong>{{ coment.autor }}</strong> 
+          <span class="etiqueta-editado" *ngIf="coment.editado">(Editado)</span>
+          <p>{{ coment.texto }}</p>
+          
+          <button class="btn-chico" (click)="editarComentario(coment)">Editar</button>
+        </div>
+      }
+    </div>
+
+    <button class="btn-cargar-mas" (click)="cargarMasComentarios()">Cargar más comentarios</button>
+
+  </div>
+</div>

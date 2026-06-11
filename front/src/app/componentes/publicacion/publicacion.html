@@ -1,4 +1,4 @@
-<div class="tweet-contenedor" *ngIf="publicacion">
+<div class="tweet-contenedor" *ngIf="publicacion" [routerLink]="['/publicacion', publicacion.id]" style="cursor: pointer;">
   
   <div class="tweet-avatar">
     <div class="avatar-placeholder"></div>
@@ -18,11 +18,11 @@
 
     <div class="tweet-acciones">
       
-      <button class="btn-accion btn-like" [class.like-activo]="publicacion.leDiLike" (click)="clickLike()">
+      <button class="btn-accion btn-like" [class.like-activo]="publicacion.leDiLike" (click)="clickLike(); $event.stopPropagation()">
         Fav {{ publicacion.likes }}
       </button>
 
-      <button class="btn-accion btn-eliminar" (click)="clickEliminar()">
+      <button class="btn-accion btn-eliminar" (click)="clickEliminar(); $event.stopPropagation()">
         Eliminar
       </button>
 

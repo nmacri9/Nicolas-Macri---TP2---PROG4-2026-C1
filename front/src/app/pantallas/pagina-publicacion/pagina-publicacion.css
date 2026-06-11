@@ -1,0 +1,74 @@
+.pagina-contenedor {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  color: white;
+}
+
+.publicacion-grande {
+  background-color: #1a1a1a;
+  padding: 30px;
+  border-radius: 10px;
+  border: 1px solid #333;
+  margin-bottom: 20px;
+  font-size: 1.2rem;
+}
+
+.caja-escribir {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #222;
+  color: white;
+  border: 1px solid #444;
+  resize: vertical;
+  min-height: 80px;
+}
+
+.comentario-item {
+  background-color: #111;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #333;
+}
+
+.etiqueta-editado {
+  font-size: 0.8rem;
+  color: #aaa;
+  margin-left: 10px;
+  font-style: italic;
+}
+
+.btn-celeste, .btn-cargar-mas {
+  background-color: #1da1f2;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn-chico {
+  background: transparent;
+  color: #1da1f2;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 0;
+  margin-top: 5px;
+}
+
+.btn-cargar-mas {
+  width: 100%;
+  background-color: #333;
+  margin-top: 15px;
+}

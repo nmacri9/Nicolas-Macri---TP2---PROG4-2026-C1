@@ -25,7 +25,11 @@ export const routes: Routes = [
         path: 'mi-perfil', 
         loadComponent: () => import('./pantallas/mi-perfil/mi-perfil').then(m => m.MiPerfil),
         canActivate: [estaLogueadoGuard],
-
+      },
+      { 
+        path: 'publicacion/:id', 
+        loadComponent: () => import('./pantallas/pagina-publicacion/pagina-publicacion').then(m => m.PaginaPublicacion), 
+        canActivate: [estaLogueadoGuard]
       },
      { path: '', redirectTo: 'inicio', pathMatch: 'full' }, // Ruta vacía va al inicio
 ];
