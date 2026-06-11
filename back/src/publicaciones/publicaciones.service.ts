@@ -71,11 +71,53 @@ export class PublicacionesService {
     }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} publicacione`;
-  }
-  update(id: number, updatePublicacionDto: any) {
-    return `This action updates a #${id} publicacion`;
+  async findOne(id: string) {
+    try {
+      // Buscamos la publicación por ID y que esté activa, trayendo también los datos del autor
+      const publicacion = await this.publicacionModel.findOne({ _id: id, activo: true })
+        .populate('autor', 'nombre apellido username imagenPerfilUrl')
+        .exec();
+
+      if (!publicacion) {
+        throw new BadRequestException('La publicación no existe o fue eliminada.');
+      }
+
+      return {
+        status: 'success',
+        data: publicacion
+      };
+
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new BadRequestException('Error al buscar la publicación: ' + error.message);
+      }
+      throw new BadRequestException('Error desconocido al buscar la publicación');
+    }}
+
+
+  async update(id: string, updatePublicacionDto: any) {
+    try {
+      const publicacionActualizada = await this.publicacionModel.findByIdAndUpdate(
+        id, 
+        updatePublicacionDto, 
+        { new: true }
+      ).exec();
+
+      if (!publicacionActualizada) {
+        throw new BadRequestException('No se encontró la publicación para actualizar.');
+      }
+
+      return {
+        status: 'success',
+        mensaje: 'Publicación actualizada correctamente',
+        data: publicacionActualizada
+      };
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new BadRequestException('Error al actualizar la publicación: ' + error.message);
+      }
+      throw new BadRequestException('Error desconocido al actualizar la publicación');
+    }
   }
 
   async remove(idPublicacion: string, idUsuarioSolicitante: string, rolUsuario: string) {
