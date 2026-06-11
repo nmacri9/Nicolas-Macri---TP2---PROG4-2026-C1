@@ -74,40 +74,52 @@ export class Publicaciones implements OnInit {
     });
   }
 
- manejarLike(idPublicacion: string) {
+manejarLike(idPublicacion: string) {
     const post = this.listaPublicaciones.find(p => p.id === idPublicacion);
     if (!post) return;
 
     const idUsuarioActual = this.authService.usuarioActual()?._id;
-    
-    if (!idUsuarioActual) {
-      alert("Error: No se detectó tu sesión. Por favor, recargá la página.");
-      return;
-    }
+    if (!idUsuarioActual) return;
 
     const url = `https://nicolas-macri-tp-2-prog-4-2026-c1.vercel.app/publicaciones/${idPublicacion}/like?usuarioId=${idUsuarioActual}`;
 
-    if (post.leDiLike) {
-      // SACAR LIKE
-      this.http.delete(url).subscribe({
-        next: () => {
-          post.leDiLike = false;
-          post.likes -= 1;
+    // Determinamos qué operación hacer basado en el estado actual de "post.leDiLike"
+    const operacion$ = post.leDiLike 
+      ? this.http.delete(url) 
+      : this.http.post(url, {});
+
+    operacion$.subscribe({
+      next: () => {
+        // En lugar de sumar/restar a mano, volvemos a cargar el dato real del servidor
+        this.cargarUnaPublicacion(idPublicacion);
+      },
+      error: (err) => {
+        console.error('Error al procesar el like:', err);
+        // Si falla, recargamos para corregir cualquier desincronización
+        this.cargarUnaPublicacion(idPublicacion);
+      }
+    });
+  }
+
+  // Nueva función auxiliar para traer solo una publicación y actualizarla
+  cargarUnaPublicacion(id: string) {
+    this.http.get<any>(`https://nicolas-macri-tp-2-prog-4-2026-c1.vercel.app/publicaciones/${id}`).subscribe({
+      next: (respuesta) => {
+        const pub = respuesta.data;
+        const index = this.listaPublicaciones.findIndex(p => p.id === id);
+        if (index !== -1) {
+          this.listaPublicaciones[index] = {
+            id: pub._id,
+            usuario: pub.autor,
+            texto: pub.descripcion,
+            likes: pub.cantidadLikes,
+            leDiLike: pub.likes.includes(this.authService.usuarioActual()?._id),
+            fecha: pub.createdAt
+          };
           this.cdr.detectChanges();
-        },
-        error: (err) => console.error('Error al sacar el like:', err)
-      });
-    } else {
-      // DAR LIKE
-      this.http.post(url, {}).subscribe({
-        next: () => {
-          post.leDiLike = true;
-          post.likes += 1;
-          this.cdr.detectChanges(); 
-        },
-        error: (err) => console.error('Error al dar like:', err)
-      });
-    }
+        }
+      }
+    });
   }
 
   manejarEliminar(idPublicacion: string) {
