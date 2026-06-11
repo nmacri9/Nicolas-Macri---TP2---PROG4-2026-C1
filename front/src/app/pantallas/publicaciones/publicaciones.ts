@@ -22,6 +22,7 @@ export class Publicaciones implements OnInit {
   cargarFeed() {
     this.http.get<any>('https://nicolas-macri-tp-2-prog-4-2026-c1.vercel.app/publicaciones').subscribe({
       next: (respuesta) => {
+        console.log("Respuesta de la API al entrar:", respuesta); 
         this.listaPublicaciones = respuesta.data.map((publi: any) => ({
           id: publi._id,
           usuario: publi.autor,

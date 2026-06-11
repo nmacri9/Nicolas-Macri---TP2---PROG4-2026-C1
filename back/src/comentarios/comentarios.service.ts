@@ -11,7 +11,12 @@ export class ComentariosService {
 
   // POST: Crear comentario
   async crear(datos: { publicacionId: string; usuarioId: string; texto: string }) {
-    const nuevoComentario = new this.comentarioModel(datos);
+    // 👈 Adaptamos los nombres para que coincidan con tu schema
+    const nuevoComentario = new this.comentarioModel({
+      texto: datos.texto,
+      publicacion: datos.publicacionId, 
+      autor: datos.usuarioId            
+    });
     return nuevoComentario.save();
   }
 
@@ -32,10 +37,11 @@ export class ComentariosService {
     const saltar = (pagina - 1) * limite;
 
     const comentarios = await this.comentarioModel
-      .find({ publicacionId })
+      .find({ publicacion: publicacionId }) 
       .sort({ createdAt: -1 }) 
       .skip(saltar) 
-      .limit(limite) 
+      .limit(limite)
+      .populate('autor', 'nombre apellido username imagenPerfilUrl') 
       .exec();
 
     return comentarios;

@@ -1,19 +1,18 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
-
+import { Document, Types } from 'mongoose';
 @Schema({ timestamps: true }) 
-export class Comentario extends Document {
+export class Comentario {
   @Prop({ required: true })
-  publicacionId!: string; // id de la publi
+  texto!: string;
 
-  @Prop({ required: true })
-  usuarioId!: string; // id usuario q escribio
+  @Prop({ type: Types.ObjectId, ref: 'Usuario', required: true })
+  autor!: Types.ObjectId;
 
-  @Prop({ required: true })
-  texto!: string; //guarda el coment
+  @Prop({ type: Types.ObjectId, ref: 'Publicacion', required: true })
+  publicacion!: Types.ObjectId;
 
   @Prop({ default: false })
-  modificado!: boolean; // para modificar
+  modificado!: boolean; // Arranca en falso, cuando lo editan pasa a true
 }
 
 export const ComentarioSchema = SchemaFactory.createForClass(Comentario);

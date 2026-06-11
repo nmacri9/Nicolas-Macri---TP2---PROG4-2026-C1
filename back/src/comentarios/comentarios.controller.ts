@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Body, Param, Query } from '@nestjs/common';
+import { Controller, Get, Post, Put, Body, Param, Query, BadRequestException } from '@nestjs/common';
 import { ComentariosService } from './comentarios.service';
 
 @Controller('comentarios')
@@ -6,22 +6,26 @@ export class ComentariosController {
   constructor(private readonly comentariosService: ComentariosService) {}
 
   @Post()
-  crear(@Body() body: { publicacionId: string; usuarioId: string; texto: string }) {
-    return this.comentariosService.crear(body);
+  async crear(@Body() body: { publicacionId: string; usuarioId: string; texto: string }) {
+    try {
+      return await this.comentariosService.crear(body);
+    } catch (error) {
+      throw new BadRequestException('Error al crear el comentario. Verificá los datos.');
+    }
   }
 
   @Put(':id')
-  editar(@Param('id') id: string, @Body('texto') texto: string) {
-    return this.comentariosService.editar(id, texto);
+  async editar(@Param('id') id: string, @Body('texto') texto: string) {
+    return await this.comentariosService.editar(id, texto);
   }
 
   @Get('publicacion/:publicacionId')
-  traer(
+  async traer(
     @Param('publicacionId') publicacionId: string,
-    @Query('pagina') pagina: string, // Viene de la URL ej: ?pagina=1
-    @Query('limite') limite: string  // Viene de la URL ej: &limite=5
+    @Query('pagina') pagina: string,
+    @Query('limite') limite: string  
   ) {
-    return this.comentariosService.traerPorPublicacion(
+    return await this.comentariosService.traerPorPublicacion(
       publicacionId, 
       Number(pagina) || 1, 
       Number(limite) || 5
