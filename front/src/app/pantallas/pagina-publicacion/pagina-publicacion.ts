@@ -25,10 +25,7 @@ export class PaginaPublicacion implements OnInit {
   // Acá s guarda la publicación real cuando llegue de la API
   datosDeLaPublicacion: any = null;
 
-  comentarios = [
-    { id: 1, autor: 'Usuario1', texto: '¡Qué buena publicación!', editado: false },
-    { id: 2, autor: 'Usuario2', texto: 'Totalmente de acuerdo.', editado: true }
-  ];
+  comentarios: any[] = [];
 
   ngOnInit() {
     //  ID de la URL
