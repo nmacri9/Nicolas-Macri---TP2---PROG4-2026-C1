@@ -26,6 +26,7 @@ export class PaginaPublicacion implements OnInit {
   datosDeLaPublicacion: any = null;
 
   comentarios: any[] = [];
+  paginaComentarios = 1;
 
   ngOnInit() {
     //  ID de la URL
