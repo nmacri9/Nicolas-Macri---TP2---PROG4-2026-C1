@@ -12,7 +12,7 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './pagina-publicacion.html',
   styleUrls: ['./pagina-publicacion.css']
 })
-export class PaginaPublicacionComponent implements OnInit {
+export class PaginaPublicacion implements OnInit {
   private route = inject(ActivatedRoute);
   private http = inject(HttpClient); 
   private authService = inject(AuthService); 
