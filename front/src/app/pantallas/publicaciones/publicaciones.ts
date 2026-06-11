@@ -32,6 +32,7 @@ export class Publicaciones implements OnInit {
         this.listaPublicaciones = respuesta.data.map((publi: any) => ({
           id: publi._id,
           usuario: publi.autor,
+          titulo: publi.titulo,
           texto: publi.descripcion,
           likes: publi.cantidadLikes,
           leDiLike: publi.likes ? publi.likes.includes(this.miUsuarioId) : false,

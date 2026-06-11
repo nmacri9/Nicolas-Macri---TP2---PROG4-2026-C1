@@ -1,13 +1,14 @@
 /* Centramos el feed en la pantalla como en X */
 .feed-contenedor {
   width: 100%;
-  max-width: 600px; 
+  max-width: 750px; 
   margin: 0 auto; 
   border-left: 1px solid #2f3336;
   border-right: 1px solid #2f3336;
   min-height: 100vh;
   background-color: #000000;
   color: #818080;
+  gap: 20px
 }
 
 /* El encabezado fijo arriba */
@@ -34,8 +35,14 @@
   padding: 40px 20px;
   font-size: 15px;
 }
-
-/* --- ESTILOS PARA CREAR PUBLICACIÓN --- */
+/* LISTA DE POSTEOS */
+.feed-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Espacio entre cada publicación */
+  width: 100%;
+}
+/* ESTILOS PARA CREAR PUBLICACIÓN  */
 
 .crear-publicacion-card {
   margin-bottom: 20px; 
@@ -44,6 +51,7 @@
   border-radius: 8px; 
   background: rgb(13, 13, 13);
   box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Sombrita suave */
+  box-sizing: border-box;
 }
 
 .textarea-publicacion {
