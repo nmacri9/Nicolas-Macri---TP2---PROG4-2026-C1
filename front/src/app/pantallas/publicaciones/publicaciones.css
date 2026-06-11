@@ -34,3 +34,58 @@
   padding: 40px 20px;
   font-size: 15px;
 }
+
+/* --- ESTILOS PARA CREAR PUBLICACIÓN --- */
+
+.crear-publicacion-card {
+  margin-bottom: 20px; 
+  padding: 15px; 
+  border: 1px solid #ddd; 
+  border-radius: 8px; 
+  background: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Sombrita suave */
+}
+
+.textarea-publicacion {
+  width: 100%; 
+  height: 80px; 
+  padding: 10px; 
+  border-radius: 5px; 
+  border: 1px solid #ccc; 
+  margin-bottom: 10px; 
+  resize: none;
+  font-family: inherit; /* Adopta la fuente general de tu página */
+  box-sizing: border-box; /* Evita que el textarea se desborde */
+  transition: border-color 0.2s;
+}
+
+.textarea-publicacion:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.acciones-publicacion {
+  text-align: right;
+}
+
+.btn-publicar {
+  padding: 8px 16px; 
+  background-color: #007bff; 
+  color: white; 
+  border: none; 
+  border-radius: 4px; 
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+/* Efecto al pasar el mouse */
+.btn-publicar:hover:not(:disabled) {
+  background-color: #0056b3;
+}
+
+.btn-publicar:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+  opacity: 0.7;
+}

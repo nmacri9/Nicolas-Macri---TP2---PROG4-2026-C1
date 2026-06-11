@@ -4,8 +4,23 @@
     <h2>Inicio</h2>
   </div>
 
-  <div class="feed-lista">
+  <div class="crear-publicacion-card">
+    <textarea 
+      [formControl]="textoNuevaPublicacion" 
+      placeholder="¿En que estas pensando, {{ authService.usuarioActual()?.nombre }}?"
+      class="textarea-publicacion">
+    </textarea>
     
+    <div class="acciones-publicacion">
+      <button 
+        (click)="crearPublicacion()" 
+        [disabled]="!textoNuevaPublicacion.value"
+        class="btn-publicar">
+        Publicar
+      </button>
+    </div>
+  </div>
+  <div class="feed-lista">
     @for (posteo of listaPublicaciones; track posteo.id) {
       <app-publicacion
         [publicacion]="posteo" 
@@ -18,7 +33,6 @@
         No hay publicaciones para mostrar.
       </div>
     }
-
   </div>
 
 </div>
