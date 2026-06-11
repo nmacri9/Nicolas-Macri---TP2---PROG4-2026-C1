@@ -44,19 +44,33 @@ export class Publicaciones implements OnInit {
     });
   }
 
-  // 👈 FUNCIÓN PARA CREAR POSTEO
   crearPublicacion() {
+    // 1. Leemos los dos valores (Título y Texto)
+    const titulo = this.tituloNuevaPublicacion.value; 
     const texto = this.textoNuevaPublicacion.value;
-    if (!texto || !this.miUsuarioId) return;
+    
+    // 2. Leemos el ID actual del usuario
+    const idUsuarioActual = this.authService.usuarioActual()?._id; 
 
-    // Armamos los datos tal cual los espera tu backend (descripcion y autor)
+    // 3. Validamos que no falte nada
+    if (!texto || !titulo || !idUsuarioActual) {
+      console.error('Error: Faltan datos para publicar.');
+      return;
+    }
+
+    // 4. Armamos el objeto sumando el título que exige el backend
     const nuevaPubli = {
+      titulo: titulo, 
       descripcion: texto, 
-      autor: this.miUsuarioId 
+      autor: idUsuarioActual 
     };
+
+    console.log('Enviando a Vercel...', nuevaPubli);
 
     this.http.post('https://nicolas-macri-tp-2-prog-4-2026-c1.vercel.app/publicaciones', nuevaPubli).subscribe({
       next: () => {
+        // 5. Limpiamos las dos cajitas y recargamos
+        this.tituloNuevaPublicacion.setValue(''); 
         this.textoNuevaPublicacion.setValue(''); 
         this.cargarFeed(); 
       },
