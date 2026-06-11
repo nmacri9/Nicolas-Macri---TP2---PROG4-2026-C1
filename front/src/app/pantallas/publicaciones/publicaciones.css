@@ -89,3 +89,21 @@
   cursor: not-allowed;
   opacity: 0.7;
 }
+
+.input-titulo {
+  width: 100%; 
+  padding: 10px; 
+  border-radius: 5px; 
+  border: 1px solid #ccc; 
+  margin-bottom: 10px; /* Separación con el textarea */
+  font-family: inherit; 
+  font-weight: bold; /* Título en negrita */
+  font-size: 1.1rem; /* Un poquito más grande */
+  box-sizing: border-box; 
+  transition: border-color 0.2s;
+}
+
+.input-titulo:focus {
+  outline: none;
+  border-color: #007bff;
+}

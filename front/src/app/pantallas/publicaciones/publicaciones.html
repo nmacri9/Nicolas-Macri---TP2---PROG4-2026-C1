@@ -5,6 +5,12 @@
   </div>
 
   <div class="crear-publicacion-card">
+    <input 
+      type="text"
+      [formControl]="tituloNuevaPublicacion" 
+      placeholder="Título de la publicación"
+      class="input-titulo">
+
     <textarea 
       [formControl]="textoNuevaPublicacion" 
       placeholder="¿En que estas pensando, {{ authService.usuarioActual()?.nombre }}?"
@@ -14,7 +20,7 @@
     <div class="acciones-publicacion">
       <button 
         (click)="crearPublicacion()" 
-        [disabled]="!textoNuevaPublicacion.value"
+        [disabled]="!textoNuevaPublicacion.value || !tituloNuevaPublicacion.value"
         class="btn-publicar">
         Publicar
       </button>

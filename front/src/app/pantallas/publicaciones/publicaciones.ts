@@ -19,7 +19,7 @@ export class Publicaciones implements OnInit {
   miUsuarioId = this.authService.usuarioActual()?._id;  
   listaPublicaciones: any[] = [];
 
-  // 👈 CONTROL PARA LA CAJA DE TEXTO
+  tituloNuevaPublicacion = new FormControl('');
   textoNuevaPublicacion = new FormControl('');
 
   ngOnInit() {
