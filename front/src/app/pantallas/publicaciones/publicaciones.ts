@@ -1,7 +1,8 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core'; 
 import { HttpClient } from '@angular/common/http';
 import { Publicacion } from '../../componentes/publicacion/publicacion';
 import { AuthService } from '../../services/auth.service';
+
 @Component({
   selector: 'app-publicaciones',
   standalone: true,
@@ -13,7 +14,10 @@ export class Publicaciones implements OnInit {
   public authService = inject(AuthService);
   private http = inject(HttpClient);
   
-  miUsuarioId = this.authService.usuarioActual()?._id;  listaPublicaciones: any[] = [];
+  private cdr = inject(ChangeDetectorRef); 
+  
+  miUsuarioId = this.authService.usuarioActual()?._id;  
+  listaPublicaciones: any[] = [];
 
   ngOnInit() {
     this.cargarFeed();
@@ -22,15 +26,16 @@ export class Publicaciones implements OnInit {
   cargarFeed() {
     this.http.get<any>('https://nicolas-macri-tp-2-prog-4-2026-c1.vercel.app/publicaciones').subscribe({
       next: (respuesta) => {
-        console.log("Respuesta de la API al entrar:", respuesta); 
         this.listaPublicaciones = respuesta.data.map((publi: any) => ({
           id: publi._id,
           usuario: publi.autor,
           texto: publi.descripcion,
           likes: publi.cantidadLikes,
-          leDiLike: publi.likes.includes(this.miUsuarioId),
+          leDiLike: publi.likes ? publi.likes.includes(this.miUsuarioId) : false,
           fecha: publi.createdAt
         }));
+
+        this.cdr.detectChanges(); 
       },
       error: (err) => console.error('Error al cargar el feed', err)
     });
