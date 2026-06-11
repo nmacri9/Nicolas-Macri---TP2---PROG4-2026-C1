@@ -46,20 +46,16 @@ export class Publicaciones implements OnInit {
   }
 
   crearPublicacion() {
-    // 1. Leemos los dos valores (Título y Texto)
     const titulo = this.tituloNuevaPublicacion.value; 
     const texto = this.textoNuevaPublicacion.value;
     
-    // 2. Leemos el ID actual del usuario
     const idUsuarioActual = this.authService.usuarioActual()?._id; 
 
-    // 3. Validamos que no falte nada
     if (!texto || !titulo || !idUsuarioActual) {
       console.error('Error: Faltan datos para publicar.');
       return;
     }
 
-    // 4. Armamos el objeto sumando el título que exige el backend
     const nuevaPubli = {
       titulo: titulo, 
       descripcion: texto, 
@@ -70,7 +66,6 @@ export class Publicaciones implements OnInit {
 
     this.http.post('https://nicolas-macri-tp-2-prog-4-2026-c1.vercel.app/publicaciones', nuevaPubli).subscribe({
       next: () => {
-        // 5. Limpiamos las dos cajitas y recargamos
         this.tituloNuevaPublicacion.setValue(''); 
         this.textoNuevaPublicacion.setValue(''); 
         this.cargarFeed(); 
@@ -79,33 +74,53 @@ export class Publicaciones implements OnInit {
     });
   }
 
-  manejarLike(idPublicacion: string) {
+ manejarLike(idPublicacion: string) {
     const post = this.listaPublicaciones.find(p => p.id === idPublicacion);
     if (!post) return;
 
-    const url = `https://nicolas-macri-tp-2-prog-4-2026-c1.vercel.app/publicaciones/${idPublicacion}/like?usuarioId=${this.miUsuarioId}`;
+    const idUsuarioActual = this.authService.usuarioActual()?._id;
+    
+    if (!idUsuarioActual) {
+      alert("Error: No se detectó tu sesión. Por favor, recargá la página.");
+      return;
+    }
+
+    const url = `https://nicolas-macri-tp-2-prog-4-2026-c1.vercel.app/publicaciones/${idPublicacion}/like?usuarioId=${idUsuarioActual}`;
 
     if (post.leDiLike) {
-      this.http.delete(url).subscribe(() => {
-        post.leDiLike = false;
-        post.likes -= 1;
+      // SACAR LIKE
+      this.http.delete(url).subscribe({
+        next: () => {
+          post.leDiLike = false;
+          post.likes -= 1;
+          this.cdr.detectChanges();
+        },
+        error: (err) => console.error('Error al sacar el like:', err)
       });
     } else {
-      this.http.post(url, {}).subscribe(() => {
-        post.leDiLike = true;
-        post.likes += 1;
+      // DAR LIKE
+      this.http.post(url, {}).subscribe({
+        next: () => {
+          post.leDiLike = true;
+          post.likes += 1;
+          this.cdr.detectChanges(); 
+        },
+        error: (err) => console.error('Error al dar like:', err)
       });
     }
   }
 
   manejarEliminar(idPublicacion: string) {
-    const url = `https://nicolas-macri-tp-2-prog-4-2026-c1.vercel.app/publicaciones/${idPublicacion}?usuarioId=${this.miUsuarioId}&rol=usuario`;
+    const idUsuarioActual = this.authService.usuarioActual()?._id;
+    if (!idUsuarioActual) return;
+
+    const url = `https://nicolas-macri-tp-2-prog-4-2026-c1.vercel.app/publicaciones/${idPublicacion}?usuarioId=${idUsuarioActual}&rol=usuario`;
     
     this.http.delete(url).subscribe({
       next: () => {
         this.listaPublicaciones = this.listaPublicaciones.filter(p => p.id !== idPublicacion);
       },
-      error: (err) => console.error('Error al borrar desde el feed', err)
+      error: (err) => console.error('Error al borrar desde el feed:', err)
     });
   }
 }
