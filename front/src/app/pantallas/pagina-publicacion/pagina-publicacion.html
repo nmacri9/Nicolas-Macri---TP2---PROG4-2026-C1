@@ -1,9 +1,15 @@
 <div class="pagina-contenedor">
   
-  <div class="publicacion-grande">
-    <h2>Publicación {{ idPublicacion }}</h2>
-    <p>Acá se ve el contenido de la publicación en tamaño gigante para que resalte.</p>
-  </div>
+  @if (datosDeLaPublicacion) {
+    <div class="publicacion-grande">
+      <h2>@{{ datosDeLaPublicacion.usuario?.username }}</h2>
+      <p>{{ datosDeLaPublicacion.texto }}</p>
+    </div>
+  } @else {
+    <div class="publicacion-grande">
+      <p>Cargando contenido de la publicación...</p>
+    </div>
+  }
 
   <hr>
 
