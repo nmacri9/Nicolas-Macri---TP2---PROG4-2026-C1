@@ -5,8 +5,10 @@ import { AuthService } from '../services/auth.service';
 export const estaLogueadoGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
   const authService = inject(AuthService);
+  
+  const token = localStorage.getItem('token'); 
 
-  if (authService.usuarioActual()) {
+  if (authService.usuarioActual() || token) {
     return true;
   } else {
     return router.navigateByUrl('/login');

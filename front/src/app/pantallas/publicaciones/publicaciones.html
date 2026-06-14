@@ -1,7 +1,11 @@
 <div class="feed-contenedor">
   
-  <div class="feed-cabecera">
+  <div class="feed-cabecera" style="display: flex; justify-content: space-between; align-items: center;">
     <h2>Inicio</h2>
+    <select (change)="cambiarOrden($event)" style="padding: 5px; border-radius: 5px;">
+      <option value="fecha">Más recientes</option>
+      <option value="likes">Más Me Gusta</option>
+    </select>
   </div>
 
   <div class="crear-publicacion-card">
@@ -26,6 +30,7 @@
       </button>
     </div>
   </div>
+
   <div class="feed-lista">
     @for (posteo of listaPublicaciones; track posteo.id) {
       <app-publicacion
@@ -39,6 +44,12 @@
         No hay publicaciones para mostrar.
       </div>
     }
+  </div>
+
+  <div style="text-align: center; margin-top: 20px;">
+    <button (click)="cargarMas()" class="btn-publicar" style="width: auto; padding: 10px 20px;">
+      Cargar más
+    </button>
   </div>
 
 </div>

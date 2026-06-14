@@ -18,6 +18,10 @@ export class Publicaciones implements OnInit {
   
   miUsuarioId = this.authService.usuarioActual()?._id;  
   listaPublicaciones: any[] = [];
+  limit = 10;
+  offset = 0;
+  orden = 'fecha';
+
 
   tituloNuevaPublicacion = new FormControl('');
   textoNuevaPublicacion = new FormControl('');
@@ -26,10 +30,17 @@ export class Publicaciones implements OnInit {
     this.cargarFeed();
   }
 
-  cargarFeed() {
-    this.http.get<any>('https://nicolas-macri-tp-2-prog-4-2026-c1.vercel.app/publicaciones').subscribe({
+  cargarFeed(reset: boolean = false) {
+    if (reset) {
+      this.offset = 0; // Si cambia de orden, vuelve a la página 1
+    }
+
+    //  parámetros al backend
+    const url = `https://nicolas-macri-tp-2-prog-4-2026-c1.vercel.app/publicaciones?limit=${this.limit}&offset=${this.offset}&orden=${this.orden}`;
+
+    this.http.get<any>(url).subscribe({
       next: (respuesta) => {
-        this.listaPublicaciones = respuesta.data.map((publi: any) => ({
+        const nuevasPublicaciones = respuesta.data.map((publi: any) => ({
           id: publi._id,
           usuario: publi.autor,
           titulo: publi.titulo,
@@ -38,6 +49,14 @@ export class Publicaciones implements OnInit {
           leDiLike: publi.likes ? publi.likes.includes(this.miUsuarioId) : false,
           fecha: publi.createdAt
         }));
+
+        if (reset) {
+          // Si resetea pisa la lista
+          this.listaPublicaciones = nuevasPublicaciones;
+        } else {
+          // Si es cargar mas las nuevas abajo de las viejas
+          this.listaPublicaciones = [...this.listaPublicaciones, ...nuevasPublicaciones];
+        }
 
         this.cdr.detectChanges(); 
       },
@@ -83,25 +102,21 @@ manejarLike(idPublicacion: string) {
 
     const url = `https://nicolas-macri-tp-2-prog-4-2026-c1.vercel.app/publicaciones/${idPublicacion}/like?usuarioId=${idUsuarioActual}`;
 
-    // Determinamos qué operación hacer basado en el estado actual de "post.leDiLike"
     const operacion$ = post.leDiLike 
       ? this.http.delete(url) 
       : this.http.post(url, {});
 
     operacion$.subscribe({
       next: () => {
-        // En lugar de sumar/restar a mano, volvemos a cargar el dato real del servidor
         this.cargarUnaPublicacion(idPublicacion);
       },
       error: (err) => {
         console.error('Error al procesar el like:', err);
-        // Si falla, recargamos para corregir cualquier desincronización
         this.cargarUnaPublicacion(idPublicacion);
       }
     });
   }
 
-  // Nueva función auxiliar para traer solo una publicación y actualizarla
   cargarUnaPublicacion(id: string) {
     this.http.get<any>(`https://nicolas-macri-tp-2-prog-4-2026-c1.vercel.app/publicaciones/${id}`).subscribe({
       next: (respuesta) => {
@@ -134,5 +149,14 @@ manejarLike(idPublicacion: string) {
       },
       error: (err) => console.error('Error al borrar desde el feed:', err)
     });
+  }
+  cambiarOrden(evento: any) {
+    this.orden = evento.target.value; // Captura 'fecha' o 'likes'
+    this.cargarFeed(true); // El 'true' le avisa que formatee la lista y vuelva a la pag 1
+  }
+
+  cargarMas() {
+    this.offset += this.limit; 
+    this.cargarFeed(false); 
   }
 }
