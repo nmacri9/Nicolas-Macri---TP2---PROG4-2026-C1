@@ -1,6 +1,7 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
 import { CommonModule } from '@angular/common'; 
 import { RouterModule } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 @Component({
   selector: 'app-publicacion',
   standalone: true,
@@ -16,7 +17,7 @@ export class Publicacion {
   @Output() eliminarPost = new EventEmitter<string>();
 
   constructor() {}
-
+  public authService = inject(AuthService);
   // Funciones que se ejecutan al tocar los botones en el HTML
   clickLike() {
     this.darLike.emit(this.publicacion.id);
