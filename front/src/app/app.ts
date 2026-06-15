@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { RouterOutlet, Router, RouterLink } from '@angular/router';
 import { AuthService } from './services/auth.service';
 
@@ -12,25 +12,27 @@ import { AuthService } from './services/auth.service';
 export class App implements OnInit {
   private router = inject(Router);
   public authService = inject(AuthService);
+  
+  private cdr = inject(ChangeDetectorRef); 
 
   cargando: boolean = true; 
 
-  async ngOnInit() {
-    try {
-      await this.authService.autorizar();
-      
-      // 2. Si no hay error afuera el spinner
-      this.cargando = false;
-
-      // 3. Si por alguna razón estaba en login o registro, lo forzamos a entrar a publicaciones
-      if (this.router.url === '/login' || this.router.url === '/registro' || this.router.url === '/') {
-        this.router.navigate(['/publicaciones']);
-      }
-    } catch (error) {
-      // Si el backend tira error (ej: 401 token vencido), lo echa
-      this.cargando = false;
-      this.router.navigate(['/login']);
-    }
+  ngOnInit() {
+    this.authService.autorizar()
+      .then(() => {
+        // SI EL TOKEN ES VÁLIDO: Saca el spinner y entramos
+        this.cargando = false;
+        if (this.router.url === '/login' || this.router.url === '/registro' || this.router.url === '/') {
+          this.router.navigate(['/publicaciones']);
+        }
+        this.cdr.detectChanges();
+      })
+      .catch(() => {
+        //si vencio  (401): Lo mandamos al Login
+        this.cargando = false;
+        this.router.navigate(['/login']);
+        this.cdr.detectChanges(); 
+      });
   }
 
   mostrarSidebar(): boolean {
