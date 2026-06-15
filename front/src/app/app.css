@@ -5,7 +5,8 @@
 .layout-principal {
   display: flex;
   min-height: 100vh;
-  background-color: #000000; /* Fondo oscuro base */
+  width: 100%;
+  background-color: #000000; 
   color: #ffffff;
 }
 
@@ -80,8 +81,8 @@
 /* El espacio donde va el resto de tu app */
 .contenido-dinamico {
   flex-grow: 1; /* Ocupa el resto del ancho disponible */
-  max-width: 600px; /* Ancho máximo estilo feed de red social */
+  max-width: 900px;
   margin: 0 auto; /* Centra el contenido */
   border-right: 1px solid #2f3336; /* Línea separadora derecha */
   min-height: 100vh;
-}
+};
