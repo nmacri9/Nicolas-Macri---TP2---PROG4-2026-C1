@@ -29,12 +29,15 @@ export class PaginaPublicacion implements OnInit {
   comentarioEditando: any = null;
   textoEditado: string = '';
 
+  paginaComentarios: number = 1;
+  limiteComentarios: number = 5;
+
   ngOnInit() {
     this.idPublicacion = this.route.snapshot.paramMap.get('id');
     
     if (this.idPublicacion) {
       this.cargarPublicacionReal(); 
-      this.cargarComentarios();     
+      this.cargarComentarios(true);    
     }
   }
 
@@ -56,36 +59,62 @@ export class PaginaPublicacion implements OnInit {
 
         this.cdr.detectChanges();
       },
-      error: (err) => {
-        console.error('Error al cargar la publicación desde el backend', err);
-      }
+      error: (err) => console.error('Error al cargar la publicación', err)
     });
   }
 
-  cargarComentarios() {
+
+  cargarComentarios(resetear: boolean = false) {
     if (!this.idPublicacion) return;
-    const guardados = localStorage.getItem(`comentarios_${this.idPublicacion}`);
-    if (guardados) {
-      this.comentarios = JSON.parse(guardados);
+
+    if (resetear) {
+      this.paginaComentarios = 1;
     }
+
+    const url = `https://nicolas-macri-tp-2-prog-4-2026-c1.vercel.app/comentarios/publicacion/${this.idPublicacion}?pagina=${this.paginaComentarios}&limite=${this.limiteComentarios}`;
+
+    this.http.get<any[]>(url).subscribe({
+      next: (respuesta) => {
+        const comentariosTraidos = respuesta.map(c => ({
+          id: c._id,
+          autor: c.autor?.username || 'Usuario',
+          texto: c.texto,
+          editado: c.modificado
+        }));
+
+        if (resetear) {
+          this.comentarios = comentariosTraidos;
+        } else {
+          this.comentarios = [...this.comentarios, ...comentariosTraidos];
+        }
+      },
+      error: (err) => console.error('Error al cargar comentarios reales', err)
+    });
+  }
+
+  cargarMasComentarios() {
+    this.paginaComentarios += 1;
+    this.cargarComentarios(false); 
   }
 
   publicarComentario() {
-    if (!this.nuevoComentario.trim()) return;
+    if (!this.nuevoComentario.trim() || !this.idPublicacion) return;
 
-    this.comentarios.push({
-      id: Date.now().toString(),
-      autor: this.authService.usuarioActual()?.username || 'Usuario',
-      texto: this.nuevoComentario,
-      editado: false
+    const body = {
+      publicacionId: this.idPublicacion,
+      usuarioId: this.miUsuarioId,
+      texto: this.nuevoComentario
+    };
+
+    this.http.post('https://nicolas-macri-tp-2-prog-4-2026-c1.vercel.app/comentarios', body).subscribe({
+      next: () => {
+        this.nuevoComentario = ''; 
+        this.cargarComentarios(true); 
+      },
+      error: (err) => console.error('Error al publicar comentario', err)
     });
-
-    if (this.idPublicacion) {
-      localStorage.setItem(`comentarios_${this.idPublicacion}`, JSON.stringify(this.comentarios));
-    }
-    
-    this.nuevoComentario = ''; 
   }
+
 
   editarComentario(coment: any) {
     this.comentarioEditando = coment;
@@ -102,18 +131,20 @@ export class PaginaPublicacion implements OnInit {
   guardarEdicion() {
     if (this.comentarioEditando && this.textoEditado.trim() !== '') {
       if (this.textoEditado !== this.comentarioEditando.texto) {
-        this.comentarioEditando.texto = this.textoEditado;
-        this.comentarioEditando.editado = true;
         
-        if (this.idPublicacion) {
-          localStorage.setItem(`comentarios_${this.idPublicacion}`, JSON.stringify(this.comentarios));
-        }
+        const url = `https://nicolas-macri-tp-2-prog-4-2026-c1.vercel.app/comentarios/${this.comentarioEditando.id}`;
+        
+        this.http.put(url, { texto: this.textoEditado }).subscribe({
+          next: () => {
+            this.comentarioEditando.texto = this.textoEditado;
+            this.comentarioEditando.editado = true;
+            this.cerrarModal(); 
+          },
+          error: (err) => console.error('Error al editar en el backend', err)
+        });
+      } else {
+        this.cerrarModal(); 
       }
-      this.cerrarModal(); 
     }
-  }
-
-  cargarMasComentarios() {
-    console.log("Todos los comentarios locales ya están cargados.");
   }
 }
