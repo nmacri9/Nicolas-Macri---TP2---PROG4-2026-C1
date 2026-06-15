@@ -51,6 +51,8 @@ export class PaginaPublicacion implements OnInit {
         this.datosDeLaPublicacion = {
           id: publi._id,
           usuario: publi.autor, 
+          titulo: publi.titulo,       
+          imagenUrl: publi.imagenUrl,
           texto: publi.descripcion,
           likes: publi.cantidadLikes,
           leDiLike: publi.likes ? publi.likes.includes(this.miUsuarioId) : false,
