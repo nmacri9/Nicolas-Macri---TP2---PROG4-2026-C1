@@ -1,4 +1,4 @@
-<div class="tweet-contenedor" *ngIf="publicacion" [routerLink]="['/publicacion', publicacion.id]" style="cursor: pointer;">
+<div class="tweet-contenedor" *ngIf="publicacion" [routerLink]="['/publicacion', publicacion.id || publicacion._id]" style="cursor: pointer;">
   
   <div class="tweet-avatar">
     <div class="avatar-placeholder"></div>
@@ -7,8 +7,8 @@
   <div class="tweet-cuerpo">
     
     <div class="tweet-cabecera">
-      <span class="nombre-usuario">{{ publicacion.usuario.nombre }}</span>
-      <span class="arroba-usuario">{{ publicacion.usuario.username }}</span>
+      <span class="nombre-usuario">{{ publicacion.usuario?.nombre || publicacion.autor?.nombre }}</span>
+      <span class="arroba-usuario">@{{ publicacion.usuario?.username || publicacion.autor?.username }}</span>
       <span class="fecha">· {{ publicacion.fecha | date:'shortDate' }}</span>
     </div>
 
@@ -17,22 +17,22 @@
     </div>
 
     <div class="tweet-texto">
-      {{ publicacion.texto }}
+      {{ publicacion.texto || publicacion.descripcion }}
     </div>
 
-    @if (publicacion.imagenUrl) {
+    @if (publicacion.imagenUrl || publicacion.url || publicacion.imagen) {
       <div class="tweet-imagen" style="margin-top: 10px;">
-        <img [src]="publicacion.imagenUrl" alt="Imagen adjunta" style="max-width: 100%; border-radius: 10px;">
+        <img [src]="publicacion.imagenUrl || publicacion.url || publicacion.imagen" alt="Imagen adjunta" style="max-width: 100%; border-radius: 10px; max-height: 400px; object-fit: cover;">
       </div>
     }
 
     <div class="tweet-acciones">
       
       <button class="btn-accion btn-like" [class.like-activo]="publicacion.leDiLike" (click)="clickLike(); $event.stopPropagation()">
-        Fav {{ publicacion.likes }}
+        Fav {{ publicacion.likes || publicacion.cantidadLikes || 0 }}
       </button>
 
-      @if (publicacion.usuario._id === authService.usuarioActual()?._id || authService.usuarioActual()?.rol === 'admin') {
+      @if (publicacion.usuario?._id === authService.usuarioActual()?._id || publicacion.autor?._id === authService.usuarioActual()?._id || authService.usuarioActual()?.rol === 'admin') {
         <button class="btn-accion btn-eliminar" (click)="clickEliminar(); $event.stopPropagation()">
           Eliminar
         </button>
