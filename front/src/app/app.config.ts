@@ -2,10 +2,17 @@ import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+
+// Importamos AMBOS guardias
+import { apiKeyInterceptor } from './interceptors/api-key.interceptor';
+import { authInterceptor } from './interceptors/auth.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
-    provideRouter(routes)
-  ]
+    provideRouter(routes),
+    // ¡Listos para trabajar juntos!
+    provideHttpClient(withInterceptors([apiKeyInterceptor, authInterceptor])), 
+  ],
 };

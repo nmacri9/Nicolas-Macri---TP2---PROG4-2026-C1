@@ -52,8 +52,8 @@ export class App implements OnInit {
   iniciarCronometro() {
     clearTimeout(this.relojAviso);
     // PARA LA ENTREGA FINAL (10 minutos):
-    // const TIEMPO_ESPERA = 10 * 60 * 1000;
-    const TIEMPO_ESPERA = 5000; 
+    const TIEMPO_ESPERA = 10 * 60 * 1000;
+    // const TIEMPO_ESPERA = 5000; para mostrarlo rapido
     
     this.relojAviso = setTimeout(() => {
       this.mostrarModalRenovar = true;
@@ -75,6 +75,7 @@ export class App implements OnInit {
 
   ignorarRenovacion() {
     this.mostrarModalRenovar = false;
+    this.CerrarSesion();
   }
 
   
