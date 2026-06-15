@@ -4,3 +4,100 @@
   margin: 5px 0;
   color: #9c9e9f;
 }
+
+.tweet-imagen-contenedor {
+  display: flex;
+  justify-content: center;
+  margin-top: 12px;
+  width: 100%;
+}
+
+.tweet-img {
+  width: 100%; 
+  max-height: 350px; 
+  object-fit: cover;
+  border-radius: 14px; 
+  border: 1px solid #2f3336;
+}
+/* --- NUEVO DISEÑO PREMIUM PARA LOS POSTEOS --- */
+
+.tweet-contenedor {
+  display: flex;
+  gap: 12px;
+  padding: 16px;
+  border-bottom: 1px solid #2f3336;
+  background-color: #000000;
+  transition: background-color 0.2s ease;
+}
+
+.tweet-contenedor:hover {
+  background-color: rgba(255, 255, 255, 0.02); /* Efecto sutil al pasar el mouse */
+}
+
+/* Manejo de Avatares */
+.tweet-avatar {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+}
+
+.avatar-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #2f3336;
+}
+
+.avatar-placeholder {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #1d9bf0;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+/* Lógica de Acciones Horizontales */
+.tweet-acciones {
+  display: flex;
+  gap: 24px;
+  margin-top: 12px;
+}
+
+.btn-accion-moderno {
+  background: none;
+  border: none;
+  color: #71767b;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  transition: all 0.2s ease;
+}
+
+.icono-accion {
+  font-size: 15px;
+}
+
+.btn-like-moderno:hover {
+  color: #f91880;
+  background-color: rgba(249, 24, 128, 0.1);
+}
+
+.btn-like-moderno.like-activo {
+  color: #f91880;
+}
+
+.btn-eliminar-moderno:hover {
+  color: #f4212e;
+  background-color: rgba(244, 33, 46, 0.1);
+}
