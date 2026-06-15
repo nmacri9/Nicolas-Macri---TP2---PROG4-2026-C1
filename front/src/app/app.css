@@ -1,9 +1,7 @@
-/* SIDE BAR*/
-
-
 /* Contenedor que divide la pantalla en 2 */
 .layout-principal {
   display: flex;
+  justify-content: center; /* 👈 ESTO CENTRA TODO EN EL MEDIO DE TU MONITOR */
   min-height: 100vh;
   width: 100%;
   background-color: #000000; 
@@ -13,13 +11,14 @@
 /* La barra lateral fija */
 .sidebar {
   width: 250px;
+  min-width: 250px;
   border-right: 1px solid #2f3336; 
   padding: 20px;
   display: flex;
   flex-direction: column;
   position: sticky;
   top: 0;
-  height: 100vh; /* Ocupa todo el alto */
+  height: 100vh; 
 }
 
 /* El logo azul */
@@ -58,7 +57,6 @@
   background-color: #181818;
 }
 
-/* Botón de cerrar sesión al fondo */
 .btn-cerrar-sesion {
   background-color: transparent;
   color: #eff3f4;
@@ -78,11 +76,47 @@
   border-color: #f4212e;
 }
 
-/* El espacio donde va el resto de tu app */
 .contenido-dinamico {
-  flex-grow: 1; /* Ocupa el resto del ancho disponible */
-  max-width: 900px;
-  margin: 0 auto; /* Centra el contenido */
-  border-right: 1px solid #2f3336; /* Línea separadora derecha */
+  width: 100%; 
+  max-width: 750px; 
+  border-right: 1px solid #2f3336; 
   min-height: 100vh;
-};
+}
+
+/* --- ESTILOS DE LA PANTALLA DE CARGA --- */
+.pantalla-carga {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  background-color: #000000;
+  color: #1da1f2; /* Azul de Twitter */
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+}
+
+.spinner {
+  width: 60px;
+  height: 60px;
+  border: 5px solid #333; /* Borde gris oscuro */
+  border-top-color: #1da1f2; 
+  border-radius: 50%;
+  animation: girar 1s linear infinite; /* Hace que ruede para siempre */
+  margin-bottom: 20px;
+}
+
+.pantalla-carga h2 {
+  color: white;
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+}
+
+@keyframes girar {
+  to {
+    transform: rotate(360deg);
+  }
+}

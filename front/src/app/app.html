@@ -1,28 +1,35 @@
-<div class="layout-principal">
+@if (cargando) {
+  <div class="pantalla-carga">
+    <div class="spinner"></div>
+    <h2>Autenticando...</h2>
+  </div>
+} @else {
+  <div class="layout-principal">
 
-  @if (mostrarSidebar()) {
-    <aside class="sidebar">
-      <div class="logo-container">
-        <img src="/logo.png" alt="Logo My Things" class="logo-img">
-      </div>
+    @if (mostrarSidebar()) {
+      <aside class="sidebar">
+        <div class="logo-container">
+          <img src="/logo.png" alt="Logo My Things" class="logo-img">
+        </div>
 
-      <nav class="navegacion">
-        <a routerLink="/publicaciones" class="nav-item">
-          <i class="icono"> "logocasa"</i> Inicio
-        </a>
-        <a routerLink="/mi-perfil" class="nav-item">
-          <i class="icono">"logopersona"</i> Mi Perfil
-        </a>
-      </nav>
+        <nav class="navegacion">
+          <a routerLink="/publicaciones" class="nav-item">
+            <i class="icono"> "logocasa"</i> Inicio
+          </a>
+          <a routerLink="/mi-perfil" class="nav-item">
+            <i class="icono">"logopersona"</i> Mi Perfil
+          </a>
+        </nav>
 
-      <button class="btn-cerrar-sesion" (click)="CerrarSesion()">
-        Cerrar Sesión
-      </button>
-    </aside>
-  }
+        <button class="btn-cerrar-sesion" (click)="CerrarSesion()">
+          Cerrar Sesión
+        </button>
+      </aside>
+    }
 
-  <main class="contenido-dinamico">
-    <router-outlet></router-outlet>
-  </main>
+    <main class="contenido-dinamico">
+      <router-outlet></router-outlet>
+    </main>
 
-</div>
+  </div>
+}
