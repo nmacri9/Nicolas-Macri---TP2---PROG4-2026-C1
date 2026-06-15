@@ -207,3 +207,72 @@
   width: auto;
   padding: 10px 20px;
 }
+/* Estilo para que las imágenes de los posteos queden bien */
+.imagen-publicacion {
+  width: 100%;
+  max-height: 450px;
+  object-fit: cover; 
+  border-radius: 16px;
+  border: 1px solid #2f3336;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  display: block;
+}
+/* --- ESTILOS DE PUBLICACIONES Y DETALLE (SIN INLINE STYLES) --- */
+.feed-cabecera {
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.select-orden {
+  padding: 8px 12px; 
+  border-radius: 20px;
+  background-color: #000000;
+  color: #ffffff;
+  border: 1px solid #2f3336;
+  cursor: pointer;
+}
+
+.input-imagen-separador {
+  margin-top: 10px;
+}
+
+.contenedor-cargar-mas {
+  text-align: center; 
+  margin-top: 20px;
+  margin-bottom: 40px;
+}
+
+/* Estilos de la página de detalle */
+.post-autor {
+  color: #536471;
+  margin: 0;
+  font-size: 16px;
+}
+
+.post-titulo-detalle {
+  color: #ffffff;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-size: 28px;
+}
+
+.post-descripcion-detalle {
+  color: #e7e9ea;
+  font-size: 18px;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.divisor-comentarios {
+  border: 0;
+  border-top: 1px solid #2f3336;
+  margin: 20px 0;
+}
+
+.modal-titulo-edicion {
+  margin-top: 0;
+  color: #ffffff;
+}

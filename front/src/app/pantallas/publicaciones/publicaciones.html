@@ -1,8 +1,8 @@
 <div class="feed-contenedor">
   
-  <div class="feed-cabecera" style="display: flex; justify-content: space-between; align-items: center;">
+  <div class="feed-cabecera">
     <h2>Inicio</h2>
-    <select (change)="cambiarOrden($event)" style="padding: 5px; border-radius: 5px;">
+    <select (change)="cambiarOrden($event)" class="select-orden">
       <option value="fecha">Más recientes</option>
       <option value="likes">Más Me Gusta</option>
     </select>
@@ -19,8 +19,7 @@
       type="text"
       [formControl]="imagenNuevaPublicacion" 
       placeholder="URL de la imagen (opcional)"
-      class="input-titulo"
-      style="margin-top: 10px;">
+      class="input-titulo input-imagen-separador">
 
     <textarea 
       [formControl]="textoNuevaPublicacion" 
@@ -53,8 +52,8 @@
     }
   </div>
 
-  <div style="text-align: center; margin-top: 20px;">
-    <button (click)="cargarMas()" class="btn-publicar" style="width: auto; padding: 10px 20px;">
+  <div class="contenedor-cargar-mas">
+    <button (click)="cargarMas()" class="btn-publicar btn-ancho">
       Cargar más
     </button>
   </div>
