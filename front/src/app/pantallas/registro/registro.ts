@@ -41,13 +41,11 @@ export class Registro {
     password: new FormControl('', [
       Validators.required, 
       Validators.minLength(8),
-      // al menos 1 mayus, al menos 1 número y minimo 8 caracteres
       Validators.pattern('^(?=.*[A-Z])(?=.*\\d).{8,}$') 
     ]),
     repetirPassword: new FormControl('', [Validators.required]),
     fechaNacimiento: new FormControl('', [Validators.required]),
-    descripcion: new FormControl('', [Validators.maxLength(150)]),
-    perfil: new FormControl('usuario', [Validators.required]) 
+    descripcion: new FormControl('', [Validators.maxLength(150)])
   }, { validators: passwordMatchValidator });
 
   // Función para capturar el archivo cuando el usuario lo selecciona
@@ -77,7 +75,8 @@ export class Registro {
       formData.append('password', this.formulario.get('password')?.value || '');
       formData.append('fechaNacimiento', this.formulario.get('fechaNacimiento')?.value || '');
       formData.append('descripcion', this.formulario.get('descripcion')?.value || '');
-      formData.append('perfil', this.formulario.get('perfil')?.value || '');
+      
+      formData.append('perfil', 'usuario'); 
 
       if (this.imagenSeleccionada) {
         formData.append('imagenPerfil', this.imagenSeleccionada);

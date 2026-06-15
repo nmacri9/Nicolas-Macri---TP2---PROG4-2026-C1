@@ -25,6 +25,7 @@ export class Publicaciones implements OnInit {
 
   tituloNuevaPublicacion = new FormControl('');
   textoNuevaPublicacion = new FormControl('');
+  imagenNuevaPublicacion = new FormControl('');
 
   ngOnInit() {
     this.cargarFeed();
@@ -67,6 +68,7 @@ export class Publicaciones implements OnInit {
   crearPublicacion() {
     const titulo = this.tituloNuevaPublicacion.value; 
     const texto = this.textoNuevaPublicacion.value;
+    const imagenUrl = this.imagenNuevaPublicacion.value;
     
     const idUsuarioActual = this.authService.usuarioActual()?._id; 
 
@@ -78,7 +80,8 @@ export class Publicaciones implements OnInit {
     const nuevaPubli = {
       titulo: titulo, 
       descripcion: texto, 
-      autor: idUsuarioActual 
+      autor: idUsuarioActual,
+      imagenUrl: imagenUrl || ''
     };
 
     console.log('Enviando a Vercel...', nuevaPubli);
@@ -87,7 +90,9 @@ export class Publicaciones implements OnInit {
       next: () => {
         this.tituloNuevaPublicacion.setValue(''); 
         this.textoNuevaPublicacion.setValue(''); 
-        this.cargarFeed(); 
+        this.imagenNuevaPublicacion.setValue(''); 
+        
+        this.cargarFeed(true); // Recarga el feed y volvemos a la pag 1
       },
       error: (err) => console.error('Error al crear la publicación', err)
     });

@@ -23,16 +23,18 @@ export class PaginaPublicacion implements OnInit {
   miUsuarioId = this.authService.usuarioActual()?._id;
   
   datosDeLaPublicacion: any = null;
-
   comentarios: any[] = [];
 
+  modalAbierto: boolean = false;
+  comentarioEditando: any = null;
+  textoEditado: string = '';
+
   ngOnInit() {
-    // ID de la URL
     this.idPublicacion = this.route.snapshot.paramMap.get('id');
     
     if (this.idPublicacion) {
-      this.cargarPublicacionReal(); // Trae la publi de MongoDB
-      this.cargarComentarios();     // Trae los comentarios del localStorage
+      this.cargarPublicacionReal(); 
+      this.cargarComentarios();     
     }
   }
 
@@ -60,12 +62,8 @@ export class PaginaPublicacion implements OnInit {
     });
   }
 
-  // --- MÉTODOS DE COMENTARIOSLOCALSTORAGE ---
-
   cargarComentarios() {
     if (!this.idPublicacion) return;
-    
-    // Recuperamos los comentarios de la memoria del navegador
     const guardados = localStorage.getItem(`comentarios_${this.idPublicacion}`);
     if (guardados) {
       this.comentarios = JSON.parse(guardados);
@@ -77,7 +75,7 @@ export class PaginaPublicacion implements OnInit {
 
     this.comentarios.push({
       id: Date.now().toString(),
-      autor: this.authService.usuarioActual()?.username || 'Usuario', // Usa tu username real
+      autor: this.authService.usuarioActual()?.username || 'Usuario',
       texto: this.nuevoComentario,
       editado: false
     });
@@ -90,15 +88,28 @@ export class PaginaPublicacion implements OnInit {
   }
 
   editarComentario(coment: any) {
-    const nuevoTexto = prompt("Editá tu comentario:", coment.texto);
-    
-    if (nuevoTexto && nuevoTexto !== coment.texto) {
-      coment.texto = nuevoTexto;
-      coment.editado = true;
-      
-      if (this.idPublicacion) {
-        localStorage.setItem(`comentarios_${this.idPublicacion}`, JSON.stringify(this.comentarios));
+    this.comentarioEditando = coment;
+    this.textoEditado = coment.texto; 
+    this.modalAbierto = true; 
+  }
+
+  cerrarModal() {
+    this.modalAbierto = false;
+    this.comentarioEditando = null;
+    this.textoEditado = '';
+  }
+
+  guardarEdicion() {
+    if (this.comentarioEditando && this.textoEditado.trim() !== '') {
+      if (this.textoEditado !== this.comentarioEditando.texto) {
+        this.comentarioEditando.texto = this.textoEditado;
+        this.comentarioEditando.editado = true;
+        
+        if (this.idPublicacion) {
+          localStorage.setItem(`comentarios_${this.idPublicacion}`, JSON.stringify(this.comentarios));
+        }
       }
+      this.cerrarModal(); 
     }
   }
 

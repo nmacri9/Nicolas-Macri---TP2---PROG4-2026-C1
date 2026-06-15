@@ -15,6 +15,13 @@
       placeholder="Título de la publicación"
       class="input-titulo">
 
+    <input 
+      type="text"
+      [formControl]="imagenNuevaPublicacion" 
+      placeholder="URL de la imagen (opcional)"
+      class="input-titulo"
+      style="margin-top: 10px;">
+
     <textarea 
       [formControl]="textoNuevaPublicacion" 
       placeholder="¿En que estas pensando, {{ authService.usuarioActual()?.nombre }}?"

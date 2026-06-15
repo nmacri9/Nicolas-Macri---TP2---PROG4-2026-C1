@@ -1,7 +1,8 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject, effect } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Publicacion } from '../../componentes/publicacion/publicacion';
 import { AuthService } from '../../services/auth.service';
+
 @Component({
   selector: 'app-perfil',
   standalone: true,
@@ -9,12 +10,10 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './mi-perfil.html',
   styleUrls: ['./mi-perfil.css']
 })
-
-
-export class MiPerfil implements OnInit { 
+export class MiPerfil { 
   public authService = inject(AuthService);
   private http = inject(HttpClient);
-  miUsuarioId = this.authService.usuarioActual()?._id;
+  
   usuarioPerfil = {
     nombre: 'Cargando...',
     username: '...',
@@ -26,19 +25,21 @@ export class MiPerfil implements OnInit {
 
   misPublicaciones: any[] = []; 
 
-  ngOnInit() {
-    if (this.miUsuarioId) {
-      this.cargarDatosUsuario();
-      this.cargarMisPublicaciones();
-    } else {
-      console.error('No se encontró el ID del usuario, algo falló en la sesión.');
-    }
+  constructor() {
+    // 👈 EL SIGNAL EN ACCIÓN: effect() lee tu señal usuarioActual()
+    // Si la señal cambia, ejecuta este bloque automáticamente.
+    effect(() => {
+      const usuario = this.authService.usuarioActual();
+      if (usuario?._id) {
+        this.cargarDatosUsuario(usuario._id);
+        this.cargarMisPublicaciones(usuario._id);
+      }
+    });
   }
 
-  cargarDatosUsuario() {
-    this.http.get<any>(`https://nicolas-macri-tp-2-prog-4-2026-c1.vercel.app/usuarios/${this.miUsuarioId}`).subscribe({
+  cargarDatosUsuario(id: string) {
+    this.http.get<any>(`https://nicolas-macri-tp-2-prog-4-2026-c1.vercel.app/usuarios/${id}`).subscribe({
       next: (usuarioDeMongo) => {
-
         this.usuarioPerfil = {
           nombre: `${usuarioDeMongo.nombre} ${usuarioDeMongo.apellido}`,
           username: `@${usuarioDeMongo.username}`,
@@ -52,9 +53,8 @@ export class MiPerfil implements OnInit {
     });
   }
 
-  // --- Trae ultimas 3 publicaciones  ---
-  cargarMisPublicaciones() {
-    const url = `https://nicolas-macri-tp-2-prog-4-2026-c1.vercel.app/publicaciones?autor=${this.miUsuarioId}&limit=3`;
+  cargarMisPublicaciones(id: string) {
+    const url = `https://nicolas-macri-tp-2-prog-4-2026-c1.vercel.app/publicaciones?autor=${id}&limit=3`;
     this.http.get<any>(url).subscribe({
       next: (respuesta) => {
         this.misPublicaciones = respuesta.data.map((publi: any) => {
@@ -63,7 +63,7 @@ export class MiPerfil implements OnInit {
             usuario: publi.autor,
             texto: publi.descripcion,
             likes: publi.cantidadLikes,
-            leDiLike: publi.likes.includes(this.miUsuarioId),
+            leDiLike: publi.likes.includes(id),
             fecha: publi.createdAt
           };
         });
@@ -76,16 +76,15 @@ export class MiPerfil implements OnInit {
     const post = this.misPublicaciones.find(p => p.id === idPublicacion);
     if (!post) return;
 
-    const url = `https://nicolas-macri-tp-2-prog-4-2026-c1.vercel.app/publicaciones/${idPublicacion}/like?usuarioId=${this.miUsuarioId}`;
+    const idActual = this.authService.usuarioActual()?._id;
+    const url = `https://nicolas-macri-tp-2-prog-4-2026-c1.vercel.app/publicaciones/${idPublicacion}/like?usuarioId=${idActual}`;
 
     if (post.leDiLike) {
-      // Si ya le dieron like, DELETE para sacarlo
       this.http.delete(url).subscribe(() => {
         post.leDiLike = false;
         post.likes -= 1;
       });
     } else {
-      // Si no le dio like, POST para agregarlo
       this.http.post(url, {}).subscribe(() => {
         post.leDiLike = true;
         post.likes += 1;
@@ -94,11 +93,11 @@ export class MiPerfil implements OnInit {
   }
 
   manejarEliminar(idPublicacion: string) {
-    const url = `https://nicolas-macri-tp-2-prog-4-2026-c1.vercel.app/publicaciones/${idPublicacion}?usuarioId=${this.miUsuarioId}&rol=usuario`;
+    const idActual = this.authService.usuarioActual()?._id;
+    const url = `https://nicolas-macri-tp-2-prog-4-2026-c1.vercel.app/publicaciones/${idPublicacion}?usuarioId=${idActual}&rol=usuario`;
     
     this.http.delete(url).subscribe({
       next: () => {
-        // Si el back lo borró con éxito, lo saco de la pantalla
         this.misPublicaciones = this.misPublicaciones.filter(p => p.id !== idPublicacion);
       },
       error: (err) => console.error('Error al borrar', err)

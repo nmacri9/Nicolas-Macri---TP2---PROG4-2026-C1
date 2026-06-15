@@ -120,7 +120,7 @@ export class AutenticacionService {
   // GENERA  NUEVO TOKEN 
   async refrescarToken(token: string) {
     try {
-      const payloadDecodificado: any = verify(token, process.env.CLAVE_SECRETA!, { ignoreExpiration: true });
+      const payloadDecodificado: any = verify(token, process.env.CLAVE_SECRETA!);
 
       const nuevoPayload = {
         _id: payloadDecodificado._id,
@@ -138,7 +138,8 @@ export class AutenticacionService {
         token: nuevoToken
       };
     } catch (error) {
-      throw new UnauthorizedException('No se pudo refrescar la sesión de forma segura.');
+      // Si el token venció o es inválido, lanza 401
+      throw new UnauthorizedException('El token está vencido o es inválido. No se puede refrescar.');
     }
   }
 }

@@ -37,3 +37,17 @@
 
   </div>
 </div>
+
+@if (modalAbierto) {
+  <div class="modal-overlay">
+    <div class="modal-contenido">
+      <h3 style="margin-top: 0;">Editar Comentario</h3>
+      <textarea [(ngModel)]="textoEditado" rows="4" class="textarea-modal"></textarea>
+      
+      <div class="modal-botones">
+        <button class="btn-cancelar" (click)="cerrarModal()">Cancelar</button>
+        <button class="btn-celeste" (click)="guardarEdicion()">Guardar</button>
+      </div>
+    </div>
+  </div>
+}
