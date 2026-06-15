@@ -57,6 +57,16 @@ export class AuthService {
       throw error;
     }
   }
+  async renovarSesion() {
+    try {
+      const respuesta = await firstValueFrom(
+        this.http.post(`${this.apiUrl}/auth/refrescar`, {}, { withCredentials: true })
+      );
+      return respuesta;
+    } catch (error) {
+      throw error;
+    }
+  }
 
   CerrarSesion() {
     localStorage.removeItem('usuario_data');

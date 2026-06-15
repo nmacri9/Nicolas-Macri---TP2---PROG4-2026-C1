@@ -26,6 +26,22 @@
         </button>
       </aside>
     }
+    @if (mostrarModalRenovar) {
+  <div class="modal-overlay">
+    <div class="modal-contenido modal-centro">
+      <span class="material-symbols-outlined icono-reloj">timer</span>
+      <h3 class="modal-titulo">¡Atención!</h3>
+      <p class="modal-texto">
+        Tu sesión vence en 5 minutos por inactividad.<br>¿Querés extenderla?
+      </p>
+      
+      <div class="modal-botones-centro">
+        <button class="btn-cancelar" (click)="ignorarRenovacion()">No, dejar vencer</button>
+        <button class="btn-celeste btn-ancho" (click)="extenderSesion()">Sí, extender</button>
+      </div>
+    </div>
+  </div>
+}
 
     <main class="contenido-dinamico">
       <router-outlet></router-outlet>

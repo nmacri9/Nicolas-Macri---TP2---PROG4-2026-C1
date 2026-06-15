@@ -1,7 +1,7 @@
 /* Contenedor que divide la pantalla en 2 */
 .layout-principal {
   display: flex;
-  justify-content: center; /* 👈 ESTO CENTRA TODO EN EL MEDIO DE TU MONITOR */
+  justify-content: center; 
   min-height: 100vh;
   width: 100%;
   background-color: #000000; 
@@ -119,4 +119,91 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+/* --- ESTILOS DEL MODAL FLOTANTE GLOBAL --- */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.85); 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000; 
+}
+
+.modal-contenido {
+  background-color: #000000;
+  padding: 30px;
+  border-radius: 16px;
+  border: 1px solid #2f3336;
+  width: 90%;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: column;
+}
+
+.btn-cancelar {
+  background-color: transparent;
+  color: #eff3f4;
+  border: 1px solid #536471;
+  padding: 10px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+.btn-cancelar:hover {
+  background-color: #181818;
+}
+
+.btn-celeste {
+  background-color: #eff3f4;
+  color: #0f1419;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-celeste:hover {
+  background-color: #d7dbdc;
+}
+.modal-centro {
+  text-align: center;
+  max-width: 450px;
+}
+
+.icono-reloj {
+  font-size: 50px;
+  color: #1da1f2;
+  margin-bottom: 10px;
+}
+
+.modal-titulo {
+  margin-top: 0;
+  color: white;
+}
+
+.modal-texto {
+  color: #e7e9ea;
+  margin-bottom: 25px;
+  line-height: 1.5;
+}
+
+.modal-botones-centro {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.btn-ancho {
+  width: auto;
+  padding: 10px 20px;
 }
