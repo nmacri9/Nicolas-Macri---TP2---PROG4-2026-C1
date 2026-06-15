@@ -5,7 +5,6 @@ import { routes } from './app.routes';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 
 // Importamos AMBOS guardias
-import { apiKeyInterceptor } from './interceptors/api-key.interceptor';
 import { authInterceptor } from './interceptors/auth.interceptor';
 
 export const appConfig: ApplicationConfig = {
@@ -13,6 +12,6 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
     // ¡Listos para trabajar juntos!
-    provideHttpClient(withInterceptors([apiKeyInterceptor, authInterceptor])), 
+    provideHttpClient(withInterceptors([ authInterceptor])), 
   ],
 };
