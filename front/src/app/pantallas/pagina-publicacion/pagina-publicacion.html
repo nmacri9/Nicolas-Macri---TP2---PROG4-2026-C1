@@ -28,16 +28,20 @@
     </div>
 
     <div class="lista-comentarios">
-      @for (coment of comentarios; track coment.id) {
-        <div class="comentario-item">
-          <strong>{{ coment.autor }}</strong> 
-          <span class="etiqueta-editado" *ngIf="coment.editado">(Editado)</span>
-          <p>{{ coment.texto }}</p>
-          
-          <button class="btn-chico" (click)="editarComentario(coment)">Editar</button>
-        </div>
+  @for (coment of comentarios; track coment.id) {
+    <div class="comentario-item">
+      <strong>{{ coment.autor }}</strong> 
+      
+      @if (coment.editado) {
+        <span class="etiqueta-editado">(Editado)</span>
       }
+      
+      <p>{{ coment.texto }}</p>
+      
+      <button class="btn-chico" (click)="editarComentario(coment)">Editar</button>
     </div>
+  }
+</div>
 
     <button class="btn-cargar-mas" (click)="cargarMasComentarios()">Cargar más comentarios</button>
   </div>
