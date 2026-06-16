@@ -50,7 +50,7 @@ export class PublicacionesService {
         .sort(criterioOrden) 
         .skip(offset)        
         .limit(limit)        
-        .populate('autor', 'nombre apellido username imagenPerfilUrl') 
+        .populate('autor', 'nombre apellido username imagenPerfilUrl fotoPerfil') 
         .exec();
 
       const total = await this.publicacionModel.countDocuments(filtro).exec();
@@ -73,11 +73,10 @@ export class PublicacionesService {
 
   async findOne(id: string) {
     try {
-      // Buscamos la publicación por ID y que esté activa, trayendo también los datos del autor
+      // Busco la publicación por ID y que esté activa, trayendo también los datos del autor
       const publicacion = await this.publicacionModel.findOne({ _id: id, activo: true })
-        .populate('autor', 'nombre apellido username imagenPerfilUrl')
-        .exec();
-
+      .populate('autor', 'nombre apellido username imagenPerfilUrl fotoPerfil') 
+      .exec();
       if (!publicacion) {
         throw new BadRequestException('La publicación no existe o fue eliminada.');
       }

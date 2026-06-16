@@ -1,14 +1,18 @@
 <div class="publicacion-tarjeta" *ngIf="publicacion" [routerLink]="['/publicacion', publicacion.id || publicacion._id]">
   
   <div class="columna-avatar">
-    @if (publicacion.usuario?.fotoPerfil || publicacion.autor?.fotoPerfil) {
-      <img [src]="publicacion.usuario?.fotoPerfil || publicacion.autor?.fotoPerfil" alt="Avatar" class="avatar-foto">
-    } @else {
-      <div class="avatar-inicial">
-        {{ (publicacion.usuario?.nombre || publicacion.autor?.nombre || 'U').substring(0, 1) | uppercase }}
-      </div>
-    }
-  </div>
+  @if (publicacion.usuario?.imagenPerfilUrl || publicacion.autor?.imagenPerfilUrl || publicacion.usuario?.fotoPerfil || publicacion.autor?.fotoPerfil) {
+    <img 
+      [src]="publicacion.usuario?.imagenPerfilUrl || publicacion.autor?.imagenPerfilUrl || publicacion.usuario?.fotoPerfil || publicacion.autor?.fotoPerfil" 
+      alt="Avatar" 
+      class="avatar-foto"
+    >
+  } @else {
+    <div class="avatar-inicial">
+      {{ (publicacion.usuario?.nombre || publicacion.autor?.nombre || 'U').substring(0, 1) | uppercase }}
+    </div>
+  }
+</div>
 
   <div class="columna-contenido">
     
