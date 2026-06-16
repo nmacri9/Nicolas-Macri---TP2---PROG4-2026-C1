@@ -1,28 +1,27 @@
 <div class="perfil-contenedor">
   
   <div class="perfil-cabecera">
-    <h2>{{ usuarioPerfil.nombre }}</h2>
-    <span class="subtitulo">{{ misPublicaciones.length }} posts</span>
+    <h2>{{ usuarioPerfil().nombre }}</h2>
+    <span class="subtitulo">{{ misPublicaciones().length }} posts</span>
   </div>
 
   <div class="perfil-portada"></div>
   
   <div class="perfil-info-seccion">
     <div class="perfil-avatar-fila">
-      <img [src]="usuarioPerfil.imagenPerfilUrl" alt="Foto de perfil" class="avatar-grande">
-      
+      <img [src]="usuarioPerfil().imagenPerfilUrl" alt="Foto de perfil">      
       <button class="btn-editar">Editar perfil</button>
     </div>
 
     <div class="perfil-datos">
-      <h1 class="nombre-grande">{{ usuarioPerfil.nombre }}</h1>
-      <span class="arroba">{{ usuarioPerfil.username }}</span>
-      <span class="correo">{{ usuarioPerfil.correo }}</span>
+      <h1 class="nombre-grande">{{ usuarioPerfil().nombre }}</h1>
+      <span class="arroba">{{ usuarioPerfil().username }}</span>
+      <span class="correo">{{ usuarioPerfil().correo }}</span>
       
-      <p class="biografia">{{ usuarioPerfil.biografia }}</p>
+      <p class="biografia">{{ usuarioPerfil().biografia }}</p>
       
       <div class="fecha-union">
-        Se unió en {{ usuarioPerfil.fechaUnion }}
+        Se unió en {{ usuarioPerfil().fechaUnion }}
       </div>
     </div>
   </div>
@@ -34,7 +33,7 @@
   </div>
 
   <div class="perfil-lista-posts">
-    @for (posteo of misPublicaciones; track posteo.id) {
+    @for (posteo of misPublicaciones(); track posteo.id) {
       <app-publicacion
         [publicacion]="posteo" 
         (darLike)="manejarLike($event)"
