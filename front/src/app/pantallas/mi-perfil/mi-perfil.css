@@ -20,31 +20,34 @@
   font-size: 13px;
 }
 
-.perfil-portada {
-  height: 180px;
-  background-color: #333639; /* Color gris de portada por defecto */
-}
-
+/* 🌟 Centramos todo el contenedor de información */
 .perfil-info-seccion {
-  padding: 0 16px;
-  position: relative;
-}
-
-/* 🌟 Fila que hace la magia de Twitter: sube el avatar y tira el botón a la derecha */
-.perfil-avatar-fila {
+  padding: 30px 16px 15px 16px;
   display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  margin-top: -65px; /* Sube el avatar para que pise la portada */
-  margin-bottom: 16px;
+  flex-direction: column;
+  align-items: center; /* Centra la foto y los bloques hijos */
+  text-align: center;  /* Centra las líneas de texto */
 }
 
-.perfil-avatar-img, .perfil-avatar-inicial {
+/* Contenedor estricto para que la foto no sufra deformaciones */
+.perfil-avatar-centrado {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 16px;
   width: 120px;
   height: 120px;
-  border-radius: 50%;
-  border: 4px solid #000000; /* Borde negro para separarlo del fondo */
+}
+
+/* 🌟 Círculo perfecto blindado: flex-shrink impide que flexbox lo aplaste */
+.perfil-avatar-img, .perfil-avatar-inicial {
+  width: 120px !important;
+  height: 120px !important;
+  border-radius: 50% !important;
+  border: 2px solid #2f3336;
   object-fit: cover;
+  box-sizing: border-box;
+  flex-shrink: 0; 
 }
 
 .perfil-avatar-inicial {
@@ -57,30 +60,13 @@
   font-size: 45px;
 }
 
-/* Botón de editar discreto a la derecha */
-.btn-editar {
-  background: transparent;
-  border: 1px solid #536471;
-  color: #ffffff;
-  padding: 8px 16px;
-  border-radius: 9999px;
-  font-weight: bold;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-  margin-bottom: 10px;
-}
-
-.btn-editar:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-/* Sección de textos */
+/* Distribución de los textos de usuario */
 .perfil-datos {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 4px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .nombre-grande {
@@ -104,6 +90,8 @@
   color: #e7e9ea;
   font-size: 15px;
   margin: 12px 0 8px 0;
+  max-width: 450px; /* Evita que la biografía se estire demasiado hacia los lados */
+  line-height: 1.4;
 }
 
 .fecha-union {
@@ -111,10 +99,11 @@
   font-size: 14px;
 }
 
-/* Pestañas */
+/* Estilos de las pestañas */
 .perfil-pestanas {
   display: flex;
   border-bottom: 1px solid #2f3336;
+  margin-top: 10px;
 }
 
 .pestana {
@@ -133,7 +122,7 @@
 }
 
 .perfil-lista-posts {
-  padding-top: 16px;
+  padding: 16px 0;
 }
 
 .mensaje-vacio {

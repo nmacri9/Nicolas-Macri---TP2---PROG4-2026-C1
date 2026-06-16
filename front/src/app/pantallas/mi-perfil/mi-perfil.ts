@@ -2,11 +2,12 @@ import { Component, inject, effect, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Publicacion } from '../../componentes/publicacion/publicacion';
 import { AuthService } from '../../services/auth.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-perfil',
   standalone: true,
-  imports: [Publicacion], 
+  imports: [Publicacion, CommonModule], 
   templateUrl: './mi-perfil.html',
   styleUrls: ['./mi-perfil.css']
 })
