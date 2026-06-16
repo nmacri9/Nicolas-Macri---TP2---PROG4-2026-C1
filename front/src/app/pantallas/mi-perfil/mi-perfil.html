@@ -8,8 +8,17 @@
   <div class="perfil-portada"></div>
   
   <div class="perfil-info-seccion">
+    
     <div class="perfil-avatar-fila">
-      <img [src]="usuarioPerfil().imagenPerfilUrl" alt="Foto de perfil">      
+      
+      @if (usuarioPerfil().imagenPerfilUrl && usuarioPerfil().imagenPerfilUrl !== 'assets/avatar-por-defecto.png') {
+        <img [src]="usuarioPerfil().imagenPerfilUrl" alt="Foto de perfil" class="perfil-avatar-img">
+      } @else {
+        <div class="perfil-avatar-inicial">
+          {{ usuarioPerfil().nombre.substring(0, 1).toUpperCase() }}
+        </div>
+      }
+      
       <button class="btn-editar">Editar perfil</button>
     </div>
 
@@ -40,7 +49,7 @@
         (eliminarPost)="manejarEliminar($event)">
       </app-publicacion>
     } @empty {
-      <div class="mensaje-vacio">Aún no publicaste nada.</div>
+      <div class="mensaje-vacio"> Todavia no publicaste nada.</div>
     }
   </div>
 

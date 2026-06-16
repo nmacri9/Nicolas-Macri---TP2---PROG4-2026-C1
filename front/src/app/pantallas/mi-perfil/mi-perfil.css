@@ -1,133 +1,144 @@
- /* Contenedor tipo Tarjeta Flotante */
 .perfil-contenedor {
-  width: 100%; 
-  margin: 0; 
-  background-color: transparent; 
-  border: none; 
-  border-radius: 0; 
-  overflow: hidden; 
-  color: #e7e9ea;
+  background-color: #000000;
+  min-height: 100vh;
 }
 
 .perfil-cabecera {
-  display: none; 
+  padding: 10px 16px;
+  border-bottom: 1px solid #2f3336;
 }
 
-/* Portada con degradado en vez de gris plano */
+.perfil-cabecera h2 {
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.subtitulo {
+  color: #71767b;
+  font-size: 13px;
+}
+
 .perfil-portada {
-  height: 150px;
-  background: linear-gradient(135deg, #0f2841, #0f2841, #15181c);
+  height: 180px;
+  background-color: #333639; /* Color gris de portada por defecto */
 }
 
 .perfil-info-seccion {
-  padding: 15px 30px;
-}
-
-.perfil-avatar-fila {
-  display: flex;
-  flex-direction: column; /* Apila uno arriba del otro */
-  align-items: center; /* Centra todo */
-  margin-top: -75px; 
+  padding: 0 16px;
   position: relative;
 }
 
-.avatar-grande {
-  width: 140px;
-  height: 140px;
-  background-color: #15202b;
-  border: 4px solid #38444d;
+/* 🌟 Fila que hace la magia de Twitter: sube el avatar y tira el botón a la derecha */
+.perfil-avatar-fila {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: -65px; /* Sube el avatar para que pise la portada */
+  margin-bottom: 16px;
+}
+
+.perfil-avatar-img, .perfil-avatar-inicial {
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  border: 4px solid #000000; /* Borde negro para separarlo del fondo */
   object-fit: cover;
 }
 
+.perfil-avatar-inicial {
+  background-color: #1d9bf0;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 45px;
+}
+
+/* Botón de editar discreto a la derecha */
 .btn-editar {
-  margin-top: 15px;
   background: transparent;
-  color: #068ddb;
-  border: 1px solid #00a2ff;
-  padding: 8px 24px;
-  border-radius: 20px;
+  border: 1px solid #536471;
+  color: #ffffff;
+  padding: 8px 16px;
+  border-radius: 9999px;
   font-weight: bold;
   font-size: 14px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background-color 0.2s;
+  margin-bottom: 10px;
 }
 
 .btn-editar:hover {
-  background-color: #252525;
-  color: #ffffff;
-  box-shadow: 0 0 10px rgba(0, 162, 255, 0.4);
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Textos e Info centrada */
+/* Sección de textos */
 .perfil-datos {
-  text-align: center;
-  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 20px;
 }
 
 .nombre-grande {
-  margin: 0;
+  color: #ffffff;
   font-size: 24px;
   font-weight: 800;
-  letter-spacing: 0.5px;
+  margin: 0;
 }
 
-.arroba, .correo {
-  display: block;
-  color: #8b9298;
+.arroba {
+  color: #71767b;
+  font-size: 15px;
+}
+
+.correo {
+  color: #1d9bf0;
   font-size: 14px;
-  margin-top: 3px;
 }
 
 .biografia {
-  margin: 20px auto;
+  color: #e7e9ea;
   font-size: 15px;
-  line-height: 1.6;
-  max-width: 85%;
-  color: #d1d5d8;
+  margin: 12px 0 8px 0;
 }
 
 .fecha-union {
-  color: #8b9298;
+  color: #71767b;
   font-size: 14px;
-  margin-bottom: 25px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 6px;
 }
 
-/* Pestañas modernas */
+/* Pestañas */
 .perfil-pestanas {
   display: flex;
-  border-top: 1px solid #2f3336;
-  background-color: #0d1013; 
+  border-bottom: 1px solid #2f3336;
 }
 
 .pestana {
   flex: 1;
   text-align: center;
-  padding: 16px 0;
-  color: #8b9298;
-  font-weight: 600;
+  padding: 15px 0;
+  color: #71767b;
+  font-weight: bold;
+  font-size: 15px;
   cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.pestana:hover {
-  background-color: rgba(0, 162, 255, 0.05);
-  color: #00a2ff;
 }
 
 .pestana.activa {
-  color: #00a2ff;
-  background-color: rgba(0, 162, 255, 0.05);
-  border-bottom: 3px solid #00a2ff;
+  color: #ffffff;
+  border-bottom: 4px solid #1d9bf0;
+}
+
+.perfil-lista-posts {
+  padding-top: 16px;
 }
 
 .mensaje-vacio {
+  color: #71767b;
   text-align: center;
   padding: 40px;
-  color: #71767b;
+  font-size: 15px;
 }
