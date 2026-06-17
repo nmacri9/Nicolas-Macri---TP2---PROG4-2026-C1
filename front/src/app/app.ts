@@ -63,15 +63,9 @@ export class App implements OnInit {
 
   async extenderSesion() {
     try {
-      // 1. Renovamos en el backend
-      const respuesta: any = await this.authService.renovarSesion(); 
-      
-      if (respuesta && respuesta.token) {
-        localStorage.setItem('token', respuesta.token);
-      }
-      
+      await this.authService.renovarSesion(); 
       this.mostrarModalRenovar = false;
-      this.iniciarCronometro(); // Reiniciamos el reloj desde cero
+      this.iniciarCronometro(); // vuelve a empezar el contador de 10 min de cero
       this.cdr.detectChanges();
     } catch (error) {
       this.mostrarModalRenovar = false;

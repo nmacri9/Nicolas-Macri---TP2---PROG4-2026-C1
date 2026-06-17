@@ -24,26 +24,22 @@ export class AuthService {
   }
 
   async loguear(datos: ILogin) {
-    try {
-      const respuesta: any = await firstValueFrom(
-        this.http.post(`${this.apiUrl}/auth/login`, datos, { withCredentials: true })
-      );
-      
-      if (respuesta && respuesta.usuario) {
-        localStorage.setItem('usuario_data', JSON.stringify(respuesta.usuario));
-        this.usuarioActual.set(respuesta.usuario); 
-        
-        // Guardamos el token para que el interceptor lo tome
-        if (respuesta.token) {
-          localStorage.setItem('token', respuesta.token);
-        }
-      }
-      
-      return respuesta;
-    } catch (error) {
-      throw error;
+  try {
+    const respuesta: any = await firstValueFrom(
+      this.http.post(`${this.apiUrl}/auth/login`, datos, { withCredentials: true })
+    );
+    
+    if (respuesta && respuesta.token) {
+      console.log("DEBUG: Token recibido del servidor:", respuesta.token);
+      localStorage.setItem('token', respuesta.token); // <--- LA LLAVE ES 'token'
+      localStorage.setItem('usuario_data', JSON.stringify(respuesta.usuario));
+      this.usuarioActual.set(respuesta.usuario);
     }
+    return respuesta;
+  } catch (error) {
+    throw error;
   }
+}
 
   async autorizar() {
     try {

@@ -16,7 +16,6 @@ async function bootstrap() {
     origin: [
       'https://nicolas-macri-tp-2-prog-4-2026-c1-rho.vercel.app'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-    allowedHeaders: 'Content-Type, Accept, Authorization',
     credentials: true, 
   });
   

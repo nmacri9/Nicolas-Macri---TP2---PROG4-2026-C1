@@ -15,7 +15,7 @@ import { ComentariosModule } from './comentarios/comentarios.module';
     UsuariosModule,
     AutenticacionModule,
     PublicacionesModule,
-    ComentariosModule, // Conexión de mongo
+    ComentariosModule, 
   ],
   controllers: [AppController],
   providers: [AppService],
