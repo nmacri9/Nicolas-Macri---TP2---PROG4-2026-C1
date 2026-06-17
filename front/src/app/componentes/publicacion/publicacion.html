@@ -44,10 +44,8 @@
         </button>
 
         @if (authService.usuarioActual()?.perfil === 'administrador' || authService.usuarioActual()?._id === publicacion.usuario?._id) {
-        <button class="btn-eliminar" (click)="clickEliminar()">🗑 Eliminar</button>
+        <button class="btn-accion-basico btn-borrar-basico" (click)="clickEliminar()">🗑 Eliminar</button>
       }
-        
-        🗑 Eliminar
       </div>
 
     </div>
