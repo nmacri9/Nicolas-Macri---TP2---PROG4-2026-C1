@@ -5,68 +5,79 @@ import { AuthService } from './services/auth.service';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterLink], 
+  imports: [RouterOutlet, RouterLink],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class App implements OnInit {
   private router = inject(Router);
   public authService = inject(AuthService);
-  
-  private cdr = inject(ChangeDetectorRef); 
 
-  cargando: boolean = true; 
+  private cdr = inject(ChangeDetectorRef);
+
+  cargando: boolean = true;
   mostrarModalRenovar: boolean = false;
   relojAviso: any;
+
   constructor() {
-    // El 'effect' vigila si el usuario inicia o cierra sesión en tiempo real
     effect(() => {
       const usuario = this.authService.usuarioActual();
       if (usuario) {
-        this.iniciarCronometro(); // Si hay usuario logueado, arranca el reloj
+        this.iniciarCronometro();
       } else {
-        clearTimeout(this.relojAviso); // Si se desloguea, lo frenamos
+        clearTimeout(this.relojAviso);
       }
     });
   }
 
   ngOnInit() {
+    const esRutaPublica = this.router.url === '/login' || this.router.url === '/registro' || this.router.url === '/inicio';
+
+    // Si ya hay un usuario en el signal (por ejemplo, justo se logueó,
+    // o ya había datos guardados de una sesión previa en localStorage),
+    // no hace falta pegarle al backend para autorizar de nuevo.
+    // Esto evita la carrera entre este chequeo inicial y un login recién hecho.
+    if (this.authService.usuarioActual()) {
+      this.cargando = false;
+      return;
+    }
+
     this.authService.autorizar()
       .then(() => {
-        // SI EL TOKEN ES VÁLIDO: Saca el spinner y entramos
         this.cargando = false;
-        if (this.router.url === '/login' || this.router.url === '/registro' || this.router.url === '/') {
+        if (esRutaPublica) {
           this.router.navigate(['/publicaciones']);
         }
         this.cdr.detectChanges();
       })
-      .catch(() => {
-      console.log("Ruta actual intentando acceder:", this.router.url);
-      console.error("El servidor rechazó la autorización. Error:",Error);        
-      this.cargando = false;
-        // this.router.navigate(['/login']);
-        this.cdr.detectChanges(); 
+      .catch((error) => {
+        console.log("Autorización inicial fallida o no necesaria:", error);
+        this.cargando = false;
+        // Solo expulsamos si intentábamos acceder a una ruta protegida.
+        // Si autorizar() falla, recién ahí limpiamos cualquier resto de sesión inválida.
+        this.authService.CerrarSesion();
+        if (!esRutaPublica) {
+          this.router.navigate(['/login']);
+        }
+        this.cdr.detectChanges();
       });
   }
-  // Logica del cronometro
 
   iniciarCronometro() {
     clearTimeout(this.relojAviso);
-    // PARA LA ENTREGA FINAL (10 minutos):
     const TIEMPO_ESPERA = 10 * 60 * 1000;
-    // const TIEMPO_ESPERA = 5000; para mostrarlo rapido
-    
+
     this.relojAviso = setTimeout(() => {
       this.mostrarModalRenovar = true;
-      this.cdr.detectChanges(); 
+      this.cdr.detectChanges();
     }, TIEMPO_ESPERA);
   }
 
   async extenderSesion() {
     try {
-      await this.authService.renovarSesion(); 
+      await this.authService.renovarSesion();
       this.mostrarModalRenovar = false;
-      this.iniciarCronometro(); // vuelve a empezar el contador de 10 min de cero
+      this.iniciarCronometro();
       this.cdr.detectChanges();
     } catch (error) {
       this.mostrarModalRenovar = false;
@@ -79,7 +90,6 @@ export class App implements OnInit {
     this.CerrarSesion();
   }
 
-  
   mostrarSidebar(): boolean {
     const rutasOcultas = ['/login', '/registro'];
     return !rutasOcultas.includes(this.router.url);
