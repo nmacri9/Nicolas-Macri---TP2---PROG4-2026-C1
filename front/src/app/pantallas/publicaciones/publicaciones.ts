@@ -143,15 +143,16 @@ manejarLike(idPublicacion: string) {
   }
 
   manejarEliminar(idPublicacion: string) {
-    const idUsuarioActual = this.authService.usuarioActual()?._id;
-    if (!idUsuarioActual) return;
-
-    const url = `https://nicolas-macri-tp-2-prog-4-2026-c1.vercel.app/publicaciones/${idPublicacion}?usuarioId=${idUsuarioActual}&rol=usuario`;
+    const usuarioLogueado = this.authService.usuarioActual();
     
-    this.http.delete(url).subscribe({
+    if (!usuarioLogueado) return;
+
+    const idUsuarioActual = usuarioLogueado._id;
+    const rolUsuario = usuarioLogueado.perfil;
+    const url = `https://nicolas-macri-tp-2-prog-4-2026-c1.vercel.app/publicaciones/${idPublicacion}?usuarioId=${idUsuarioActual}&rol=${rolUsuario}`;    this.http.delete(url).subscribe({
+      
       next: () => {
-        this.listaPublicaciones = this.listaPublicaciones.filter(p => p.id !== idPublicacion);
-      },
+        this.listaPublicaciones = this.listaPublicaciones.filter(p => p.id !== idPublicacion);      },
       error: (err) => console.error('Error al borrar desde el feed:', err)
     });
   }
