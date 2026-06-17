@@ -61,7 +61,7 @@ export class AuthService {
   async renovarSesion() {
     try {
       const respuesta: any = await firstValueFrom(
-        this.http.post(`${this.apiUrl}/auth/renovar-sesion`, {}, { withCredentials: true })
+        this.http.post(`${this.apiUrl}/auth/refrescar`, {}, { withCredentials: true })
       );
 
       if (respuesta && respuesta.token) {
