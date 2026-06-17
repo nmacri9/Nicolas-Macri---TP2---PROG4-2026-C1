@@ -10,21 +10,20 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   const token = localStorage.getItem('token');
 
-  //Si hay token, lo agregamos al encabezado (Authorization)
-  let peticionClonada = req;
+  // Solo clonamos la petición si hay un token válido
   if (token) {
-    peticionClonada = req.clone({
+    req = req.clone({
       setHeaders: {
         Authorization: `Bearer ${token}`
       }
     });
   }
 
-  return next(peticionClonada).pipe(
+  return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
       if (error.status === 401) {
-        authService.CerrarSesion(); 
-        router.navigate(['/login']); 
+        authService.CerrarSesion();
+        router.navigate(['/login']);
       }
       return throwError(() => error);
     })

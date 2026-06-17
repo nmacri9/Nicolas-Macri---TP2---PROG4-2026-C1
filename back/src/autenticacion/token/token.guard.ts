@@ -7,10 +7,10 @@ export class TokenGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean {
     const request = context.switchToHttp().getRequest<Request>();
     
-    const authHeader = request.headers.authorization; 
+    const authHeader = request.headers['authorization'];
 
     if (!authHeader) {
-      throw new UnauthorizedException('No enviaste el token para entrar.');
+      throw new UnauthorizedException('No se envió el token de autenticación.');
     }
 
     const token = authHeader.split(' ')[1];
@@ -25,11 +25,10 @@ export class TokenGuard implements CanActivate {
       if (payload.perfil !== 'administrador') {
         throw new UnauthorizedException('Acceso denegado. Se requieren permisos de administrador.');
       }
-
-
-      return true;
+      
+      return true; 
     } catch (error) {
-      throw new UnauthorizedException('Token inválido, vencido o sin permisos.');
+      throw new UnauthorizedException('Token inválido o expirado.');
     }
   }
 }
