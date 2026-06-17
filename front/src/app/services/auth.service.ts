@@ -15,7 +15,8 @@ export class AuthService {
   async registrar(datos: IRegistro | FormData) {
     try {
       const respuesta = await firstValueFrom(
-      this.http.post(`${this.apiUrl}/auth/registro`, datos, { withCredentials: true }));
+        this.http.post(`${this.apiUrl}/auth/registro`, datos, { withCredentials: true })
+      );
       return respuesta;
     } catch (error) {
       throw error;
@@ -32,7 +33,10 @@ export class AuthService {
         localStorage.setItem('usuario_data', JSON.stringify(respuesta.usuario));
         this.usuarioActual.set(respuesta.usuario); 
         
-        localStorage.setItem('token', respuesta.token);
+        // Guardamos el token para que el interceptor lo tome
+        if (respuesta.token) {
+          localStorage.setItem('token', respuesta.token);
+        }
       }
       
       return respuesta;
@@ -47,7 +51,6 @@ export class AuthService {
         this.http.post(`${this.apiUrl}/auth/autorizar`, {}, { withCredentials: true })
       );
       
-      // Si el backend dice que es válido, actualizo 
       if (respuesta && respuesta.usuario) {
         localStorage.setItem('usuario_data', JSON.stringify(respuesta.usuario));
         this.usuarioActual.set(respuesta.usuario); 
@@ -59,11 +62,18 @@ export class AuthService {
       throw error;
     }
   }
+
   async renovarSesion() {
     try {
-      const respuesta = await firstValueFrom(
-        this.http.post(`${this.apiUrl}/auth/refrescar`, {}, { withCredentials: true })
+      const respuesta: any = await firstValueFrom(
+        this.http.post(`${this.apiUrl}/auth/renovar-sesion`, {}, { withCredentials: true })
       );
+      
+      // Actualizamos el token nuevo
+      if (respuesta && respuesta.token) {
+        localStorage.setItem('token', respuesta.token);
+      }
+      
       return respuesta;
     } catch (error) {
       throw error;
@@ -72,6 +82,7 @@ export class AuthService {
 
   CerrarSesion() {
     localStorage.removeItem('usuario_data');
-    this.usuarioActual.set(null); 
+    localStorage.removeItem('token');
+    this.usuarioActual.set(null);
   }
 }

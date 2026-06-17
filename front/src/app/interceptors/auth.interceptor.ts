@@ -10,7 +10,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   const token = localStorage.getItem('token');
 
-  // Solo clonamos la petición si hay un token válido
+  // Si hay token, lo inyectamos. Si no, dejamos que la petición pase sin header.
   if (token) {
     req = req.clone({
       setHeaders: {
@@ -21,6 +21,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
+      // Si el backend nos dice 401, es que el token venció o es inválido
       if (error.status === 401) {
         authService.CerrarSesion();
         router.navigate(['/login']);
