@@ -6,24 +6,30 @@ import { Request } from 'express';
 export class TokenGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean {
     const request = context.switchToHttp().getRequest<Request>();
-    const token = request.cookies['Authorization']; 
+    
+    const authHeader = request.headers.authorization; 
+
+    if (!authHeader) {
+      throw new UnauthorizedException('No enviaste el token para entrar.');
+    }
+
+    const token = authHeader.split(' ')[1];
 
     if (!token) {
-      throw new UnauthorizedException('No tenés la cookie para entrar.');
+      throw new UnauthorizedException('Formato de token inválido.');
     }
 
     try {
-      // 1. Decodifica el token
-      const payload: any = verify(token, process.env.CLAVE_SUPERSECRETA!);
+      const payload: any = verify(token, process.env.CLAVE_SECRETA!);
       
-      //Si NO es administrador, lo rebota 
       if (payload.perfil !== 'administrador') {
         throw new UnauthorizedException('Acceso denegado. Se requieren permisos de administrador.');
       }
-      
-      return true; // Si es admin pasa
+
+
+      return true;
     } catch (error) {
-      throw new UnauthorizedException('Cookie inválida, vencida o sin permisos.');
+      throw new UnauthorizedException('Token inválido, vencido o sin permisos.');
     }
   }
 }
