@@ -8,12 +8,23 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
   const authService = inject(AuthService);
 
-  return next(req).pipe(
+  const token = localStorage.getItem('token');
+
+  //Si hay token, lo agregamos al encabezado (Authorization)
+  let peticionClonada = req;
+  if (token) {
+    peticionClonada = req.clone({
+      setHeaders: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+  }
+
+  return next(peticionClonada).pipe(
     catchError((error: HttpErrorResponse) => {
-      // Si el servidor responde con 401 
       if (error.status === 401) {
-        authService.CerrarSesion(); // limpia los datos guardados
-        router.navigate(['/login']); // de nuevo al login
+        authService.CerrarSesion(); 
+        router.navigate(['/login']); 
       }
       return throwError(() => error);
     })

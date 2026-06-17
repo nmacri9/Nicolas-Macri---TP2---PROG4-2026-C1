@@ -20,6 +20,11 @@
             <span class="material-symbols-outlined">person</span> Mi Perfil
           </a>
         </nav>
+        @if (authService.usuarioActual()?.perfil === 'administrador') {
+          <a routerLink="/dashboard-usuarios" class="nav-item">
+            <span class="material-symbols-outlined">group</span> Usuarios
+          </a>
+        }
 
         <button class="btn-cerrar-sesion" (click)="CerrarSesion()">
           Cerrar Sesión
