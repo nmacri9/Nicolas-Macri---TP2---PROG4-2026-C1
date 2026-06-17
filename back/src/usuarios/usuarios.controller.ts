@@ -1,9 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common'; // 👈 Agregamos 'UseGuards' acá
 import { UsuariosService } from './usuarios.service';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
+import { TokenGuard } from 'src/autenticacion/token/token.guard';
 
 @Controller('usuarios')
+@UseGuards(TokenGuard)
 export class UsuariosController {
   constructor(private readonly usuariosService: UsuariosService) {}
 
@@ -29,6 +31,11 @@ export class UsuariosController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.usuariosService.remove(+id);
+    return this.usuariosService.remove(id);
+  }
+
+  @Post(':id/activar')
+  activar(@Param('id') id: string) {
+    return this.usuariosService.activar(id); 
   }
 }

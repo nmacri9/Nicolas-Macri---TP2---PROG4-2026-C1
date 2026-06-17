@@ -28,6 +28,9 @@ export class Usuario {
 
   @Prop({ required: true, default: 'usuario', enum: ['usuario', 'administrador'] })
   perfil!: string;
+  // Controla la baja lógica: t= cuenta habilitada f= cuenta deshabilitada
+  @Prop({ required: true, default: true })
+  activo!: boolean;
 
   @Prop()
   imagenPerfilUrl?: string; 

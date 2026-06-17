@@ -45,7 +45,7 @@ export class AutenticacionService {
     }
   }
 
-  async loginUsuario(body: any) {
+  async loginUsuario (body: any) {
     const usuario = await this.usuarioModel.findOne({
       $or: [{ correo: body.identificador }, { username: body.identificador }]
     });
@@ -54,11 +54,16 @@ export class AutenticacionService {
       throw new UnauthorizedException('Usuario o contraseña incorrectos.');
     }
 
+    if (!usuario.activo){
+      throw new UnauthorizedException ('El usuario ha sido deshabilitado por el administrador')
+    }
+
     const passwordGenerada = await bcrypt.compare(body.password, usuario.password);
 
     if (!passwordGenerada) {
       throw new UnauthorizedException('Usuario o contraseña incorrectos.');
     }
+
 
     // JWT ACÁ 
     const payload = {

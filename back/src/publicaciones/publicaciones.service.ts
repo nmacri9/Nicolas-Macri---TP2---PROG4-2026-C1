@@ -1,8 +1,8 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { CreatePublicacionDto } from './dto/create-publicacione.dto';
-import { Publicacion, PublicacionDocument } from './entities/publicacione.schema'; 
+import { CreatePublicacionDto } from './dto/create-publicaciones.dto';
+import { Publicacion, PublicacionDocument } from './entities/publicaciones.schema'; 
 @Injectable()
 export class PublicacionesService {
   // Inyectamos el molde de la base de datos
@@ -21,18 +21,15 @@ export class PublicacionesService {
         mensaje: '¡Publicación creada con éxito!',
         data: publicacionGuardada
       };
-    } catch (error) {
-      if (error instanceof Error) {
-        throw new BadRequestException('Error al crear la publicación: ' + error.message);
-      }
-      throw new BadRequestException('Error desconocido al crear la publicación');
+    } catch (error: any) {
+      throw new BadRequestException('No se pudo crear la publicación: ' + error.message);
     }
   }
   async findAll(opciones: { limit: number; offset: number; orden: 'fecha' | 'likes'; autor?: string }) {
     try {
       const { limit, offset, orden, autor } = opciones;
 
-      // traigo publicaciones con "activo: true" 
+      // traigo publicaciones
       const filtro: any = { activo: true };
       if (autor) {
         filtro.autor = autor;
@@ -63,17 +60,14 @@ export class PublicacionesService {
         data: publicaciones
       };
 
-    } catch (error) {
-      if (error instanceof Error) {
-        throw new BadRequestException('Error al listar publicaciones: ' + error.message);
-      }
-      throw new BadRequestException('Error desconocido al listar publicaciones');
+    } catch (error: any) {
+      throw new BadRequestException('No se pudieron listar las publicaciones: ' + error.message);
     }
   }
 
   async findOne(id: string) {
     try {
-      // Busco la publicación por ID y que esté activa, trayendo también los datos del autor
+      // Busco la publicación por ID y que esté activa, trayendo los datos del autor
       const publicacion = await this.publicacionModel.findOne({ _id: id, activo: true })
       .populate('autor', 'nombre apellido username imagenPerfilUrl fotoPerfil') 
       .exec();
@@ -86,12 +80,10 @@ export class PublicacionesService {
         data: publicacion
       };
 
-    } catch (error) {
-      if (error instanceof Error) {
-        throw new BadRequestException('Error al buscar la publicación: ' + error.message);
-      }
-      throw new BadRequestException('Error desconocido al buscar la publicación');
-    }}
+    } catch (error: any) {
+      throw new BadRequestException('No se pudo encontrar la publicación: ' + error.message);
+    }
+  }
 
 
   async update(id: string, updatePublicacionDto: any) {
@@ -111,11 +103,8 @@ export class PublicacionesService {
         mensaje: 'Publicación actualizada correctamente',
         data: publicacionActualizada
       };
-    } catch (error) {
-      if (error instanceof Error) {
-        throw new BadRequestException('Error al actualizar la publicación: ' + error.message);
-      }
-      throw new BadRequestException('Error desconocido al actualizar la publicación');
+    } catch (error: any) {
+      throw new BadRequestException('No se pudo actualizar la publicación: ' + error.message);
     }
   }
 
@@ -143,14 +132,11 @@ export class PublicacionesService {
         mensaje: 'Publicación eliminada correctamente'
       };
 
-    } catch (error) {
-      if (error instanceof Error) {
-        throw new BadRequestException(error.message);
-      }
-      throw new BadRequestException('Error desconocido al intentar eliminar la publi');
+    } catch (error: any) {
+      throw new BadRequestException('No se pudo eliminar la publicación: ' + error.message);
     }
   }
-  // --- SISTEMA DE LIKES ---
+  // SISTEMA DE LIKES 
 
   async darLike(idPublicacion: string, idUsuario: string) {
     try {
@@ -162,7 +148,7 @@ export class PublicacionesService {
 
       const yaLeDioLike = publicacion.likes.some(id => id.toString() === idUsuario);
       if (yaLeDioLike) {
-        throw new BadRequestException('Ya le diste me gusta a esta publicación.'); // Cumplimos la regla de "un solo like"
+        throw new BadRequestException('Ya le diste me gusta a esta publicación.'); // Cumple la regla de "un solo like"
       }
 
   

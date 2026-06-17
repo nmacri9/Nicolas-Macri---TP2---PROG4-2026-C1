@@ -12,8 +12,8 @@ import {
   Query 
 } from '@nestjs/common';
 import { PublicacionesService } from './publicaciones.service';
-import { CreatePublicacionDto } from './dto/create-publicacione.dto';
-import { UpdatePublicacioneDto } from './dto/update-publicacione.dto';
+import { CreatePublicacionDto } from './dto/create-publicaciones.dto';
+import { UpdatePublicacioneDto } from './dto/update-publicaciones.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 
 import { CloudinaryStorage } from 'multer-storage-cloudinary';
@@ -45,12 +45,12 @@ export class PublicacionesController {
     @UploadedFile() file?: Express.Multer.File,
   ) {
     try {
-      // 1. Si el usuario subió una foto, Cloudinary  devuelve la URL en file.path
+      // Cloudinary  devuelve la URL en file.path
       if (file) {
         createPublicacionDto.imagenUrl = file.path;
       }
 
-      // 2. Le paso los datos limpios al servicio
+      // datos limpios al servicio
       return await this.publicacionesService.create(createPublicacionDto);
       
     } catch (error) {
@@ -60,8 +60,6 @@ export class PublicacionesController {
       throw new BadRequestException('Error desconocido al crear la publicación');
     }
   }
-
-  // --- MÉTODOS POR DEFECTO ---
 
   @Get()
   findAll(
@@ -99,14 +97,12 @@ export class PublicacionesController {
     @Query('rol') rol: string 
   ) {
     
-    // Validamos que por Postman no nos hayamos olvidado de mandar estos datos
     if (!usuarioId || !rol) {
       throw new BadRequestException('Falta enviar el usuarioId o el rol por la URL para validar permisos.');
     }
 
     return await this.publicacionesService.remove(id, usuarioId, rol);
   }
-  // --- RUTAS PARA LIKES ---
 
   // Uso para agregar el me gusta
   @Post(':id/like')
