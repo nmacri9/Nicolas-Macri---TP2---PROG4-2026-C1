@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreatePublicacionDto } from './dto/create-publicaciones.dto';
 import { Publicacion, PublicacionDocument } from './entities/publicaciones.schema'; 
-import { Comentario, ComentarioSchema } from 'src/comentarios/entities/comentario.schema';
+import { Comentario, ComentarioSchema } from '../comentarios/entities/comentario.schema';
 
 @Injectable()
 export class PublicacionesService {
