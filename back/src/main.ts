@@ -13,10 +13,9 @@ async function bootstrap() {
   app.use(cookieParser());
 
   app.enableCors({
-    origin: [
-      'https://nicolas-macri-tp-2-prog-4-2026-c1-rho.vercel.app',
-    ],
-    credentials: true,
+    origin: true, 
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    credentials: true, 
   });
   
   await app.listen(process.env.PORT ?? 3000);

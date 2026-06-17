@@ -1,5 +1,5 @@
 import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -17,6 +17,8 @@ export class PaginaPublicacion implements OnInit {
   private http = inject(HttpClient); 
   private authService = inject(AuthService); 
   private cdr = inject(ChangeDetectorRef);
+  private router = inject(Router);
+
 
   idPublicacion: string | null = null;
   nuevoComentario: string = '';
@@ -64,6 +66,21 @@ export class PaginaPublicacion implements OnInit {
       error: (err) => console.error('Error al cargar la publicación', err)
     });
   }
+
+  manejarEliminar(idPublicacion: string) {
+  const usuario = this.authService.usuarioActual();
+  if (!usuario) return;
+
+  const url = `https://nicolas-macri-tp-2-prog-4-2026-c1.vercel.app/publicaciones/${idPublicacion}?usuarioId=${usuario._id}&rol=${usuario.perfil}`;
+  
+  this.http.delete(url).subscribe({
+    next: () => {
+      console.log('Publicación borrada con éxito');
+      this.router.navigate(['/publicaciones']); 
+    },
+    error: (err) => console.error('Error al borrar la publicación:', err)
+  });
+}
 
 
   cargarComentarios(resetear: boolean = false) {
