@@ -3,11 +3,13 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreatePublicacionDto } from './dto/create-publicaciones.dto';
 import { Publicacion, PublicacionDocument } from './entities/publicaciones.schema'; 
+import { Comentario, ComentarioSchema } from 'src/comentarios/entities/comentario.schema';
+
 @Injectable()
 export class PublicacionesService {
-  // Inyectamos el molde de la base de datos
   constructor(
     @InjectModel(Publicacion.name) private readonly publicacionModel: Model<PublicacionDocument>,
+    @InjectModel(Comentario.name) private readonly comentarioModel: Model<Comentario>,
   ) {}
 
   async create(createPublicacionDto: CreatePublicacionDto) {
@@ -116,20 +118,21 @@ export class PublicacionesService {
         throw new BadRequestException('La publicación no fue encontrada.');
       }
 
-      
       const idAutorDeLaPublicacion = publicacion.autor.toString();
 
+      // Validación de permisos (¡Esto ya lo tenés perfecto!)
       if (idAutorDeLaPublicacion !== idUsuarioSolicitante && rolUsuario !== 'administrador') {
         throw new BadRequestException('No tienes permiso para eliminar esta publicación. Solo el autor o un admin pueden hacerlo.');
       }
 
-      
+      // 3. Apagamos la publicación
       publicacion.activo = false;
       await publicacion.save();
+      await this.comentarioModel.deleteMany({ publicacion: idPublicacion });
 
       return {
         status: 'success',
-        mensaje: 'Publicación eliminada correctamente'
+        mensaje: 'Publicación y sus comentarios eliminados correctamente'
       };
 
     } catch (error: any) {

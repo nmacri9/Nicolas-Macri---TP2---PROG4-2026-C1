@@ -43,12 +43,11 @@
           ♥ Fav {{ publicacion.likes || publicacion.cantidadLikes || 0 }}
         </button>
 
-        @if (publicacion.usuario?._id === authService.usuarioActual()?._id || publicacion.autor?._id === authService.usuarioActual()?._id || authService.usuarioActual()?.perfil === 'administrador') {
-          <button class="btn-accion-basico btn-borrar-basico" (click)="clickEliminar()">
-            🗑 Eliminar
-          </button>
-        }
-
+        @if (authService.usuarioActual()?.perfil === 'administrador' || authService.usuarioActual()?._id === publicacion.usuario?._id) {
+        <button class="btn-eliminar" (click)="clickEliminar()">🗑 Eliminar</button>
+      }
+        
+        🗑 Eliminar
       </div>
 
     </div>

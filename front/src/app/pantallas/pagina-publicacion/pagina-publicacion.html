@@ -11,10 +11,18 @@
       @if (datosDeLaPublicacion.imagenUrl || datosDeLaPublicacion.url || datosDeLaPublicacion.imagen || datosDeLaPublicacion.data?.imagenUrl) {
         <img [src]="datosDeLaPublicacion.imagenUrl || datosDeLaPublicacion.url || datosDeLaPublicacion.imagen || datosDeLaPublicacion.data?.imagenUrl" alt="Imagen de la publicación" class="imagen-publicacion">
       }
+
+      @if (authService.usuarioActual()?.perfil === 'administrador' || authService.usuarioActual()?._id === datosDeLaPublicacion.usuario?._id) {
+        <div class="acciones-admin" style="margin-top: 20px;">
+          <button class="btn-eliminar" style="padding: 10px; background-color: #dc3545; color: white; border: none; border-radius: 5px; cursor: pointer;" (click)="manejarEliminar(datosDeLaPublicacion.id)">
+            Dar de baja publicación
+          </button>
+        </div>
+      }
     </div>
   } @else {
     <div class="publicacion-grande">
-      <p>Cargando contenido de la publicación</p>
+      <p>Cargando contenido de la publicación...</p>
     </div>
   }
 
@@ -28,25 +36,25 @@
     </div>
 
     <div class="lista-comentarios">
-  @for (coment of comentarios; track coment.id) {
-    <div class="comentario-item">
-      <strong>{{ coment.autor }}</strong> 
-      
-      @if (coment.editado) {
-        <span class="etiqueta-editado">(Editado)</span>
-      }
-      
-      <p>{{ coment.texto }}</p>
-      
-      @if (esAutorDelComentario(coment)) {
-        <button class="btn-chico" (click)="editarComentario(coment)">Editar</button>
-      }
-      @if (puedeEditarOBorrar(coment)) {
-        <button class="btn-chico btn-eliminar" (click)="eliminarComentario(coment)">Eliminar</button>
+      @for (coment of comentarios; track coment.id) {
+        <div class="comentario-item">
+          <strong>{{ coment.autor }}</strong> 
+          
+          @if (coment.editado) {
+            <span class="etiqueta-editado">(Editado)</span>
+          }
+          
+          <p>{{ coment.texto }}</p>
+          
+          @if (esAutorDelComentario(coment)) {
+            <button class="btn-chico" (click)="editarComentario(coment)">Editar</button>
+          }
+          @if (puedeEditarOBorrar(coment)) {
+            <button class="btn-chico btn-eliminar" (click)="eliminarComentario(coment)">Eliminar</button>
+          }
+        </div>
       }
     </div>
-  }
-</div>
 
     <button class="btn-cargar-mas" (click)="cargarMasComentarios()">Cargar más comentarios</button>
   </div>

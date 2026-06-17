@@ -15,10 +15,9 @@ import { AuthService } from '../../services/auth.service';
 export class PaginaPublicacion implements OnInit {
   private route = inject(ActivatedRoute);
   private http = inject(HttpClient); 
-  private authService = inject(AuthService); 
+  public authService = inject(AuthService); // Cambiado a public para usarlo en el HTML
   private cdr = inject(ChangeDetectorRef);
   private router = inject(Router);
-
 
   idPublicacion: string | null = null;
   nuevoComentario: string = '';
@@ -67,21 +66,23 @@ export class PaginaPublicacion implements OnInit {
     });
   }
 
+  // Lógica de borrado con confirmación
   manejarEliminar(idPublicacion: string) {
-  const usuario = this.authService.usuarioActual();
-  if (!usuario) return;
+    const usuario = this.authService.usuarioActual();
+    if (!usuario) return;
 
-  const url = `https://nicolas-macri-tp-2-prog-4-2026-c1.vercel.app/publicaciones/${idPublicacion}?usuarioId=${usuario._id}&rol=${usuario.perfil}`;
-  
-  this.http.delete(url).subscribe({
-    next: () => {
-      console.log('Publicación borrada con éxito');
-      this.router.navigate(['/publicaciones']); 
-    },
-    error: (err) => console.error('Error al borrar la publicación:', err)
-  });
-}
-
+    if (confirm('¿Estás seguro de que querés dar de baja esta publicación? Se eliminarán todos sus comentarios.')) {
+      const url = `https://nicolas-macri-tp-2-prog-4-2026-c1.vercel.app/publicaciones/${idPublicacion}?usuarioId=${usuario._id}&rol=${usuario.perfil}`;
+      
+      this.http.delete(url).subscribe({
+        next: () => {
+          console.log('Publicación borrada con éxito');
+          this.router.navigate(['/publicaciones']); 
+        },
+        error: (err) => console.error('Error al borrar la publicación:', err)
+      });
+    }
+  }
 
   cargarComentarios(resetear: boolean = false) {
     if (!this.idPublicacion) return;
@@ -137,7 +138,6 @@ export class PaginaPublicacion implements OnInit {
     });
   }
 
-
   editarComentario(coment: any) {
     this.comentarioEditando = coment;
     this.textoEditado = coment.texto;
@@ -162,15 +162,17 @@ export class PaginaPublicacion implements OnInit {
     const usuario = this.authService.usuarioActual();
     if (!usuario) return;
 
-    const url = `https://nicolas-macri-tp-2-prog-4-2026-c1.vercel.app/comentarios/${coment.id}?usuarioId=${usuario._id}&rol=${usuario.perfil}`;
+    if (confirm('¿Seguro que querés eliminar este comentario?')) {
+      const url = `https://nicolas-macri-tp-2-prog-4-2026-c1.vercel.app/comentarios/${coment.id}?usuarioId=${usuario._id}&rol=${usuario.perfil}`;
 
-    this.http.delete(url).subscribe({
-      next: () => {
-        this.comentarios = this.comentarios.filter(c => c.id !== coment.id);
-        this.cdr.detectChanges();
-      },
-      error: (err) => console.error('Error al eliminar comentario:', err)
-    });
+      this.http.delete(url).subscribe({
+        next: () => {
+          this.comentarios = this.comentarios.filter(c => c.id !== coment.id);
+          this.cdr.detectChanges();
+        },
+        error: (err) => console.error('Error al eliminar comentario:', err)
+      });
+    }
   }
 
   cerrarModal() {
@@ -182,7 +184,6 @@ export class PaginaPublicacion implements OnInit {
   guardarEdicion() {
     if (this.comentarioEditando && this.textoEditado.trim() !== '') {
       if (this.textoEditado !== this.comentarioEditando.texto) {
-
         const url = `https://nicolas-macri-tp-2-prog-4-2026-c1.vercel.app/comentarios/${this.comentarioEditando.id}`;
         const usuario = this.authService.usuarioActual();
 
