@@ -41,9 +41,10 @@ export class App implements OnInit {
         this.cdr.detectChanges();
       })
       .catch(() => {
-        //si vencio  (401): Lo mandamos al Login
-        this.cargando = false;
-        this.router.navigate(['/login']);
+      console.log("Ruta actual intentando acceder:", this.router.url);
+      console.error("El servidor rechazó la autorización. Error:",Error);        
+      this.cargando = false;
+        // this.router.navigate(['/login']);
         this.cdr.detectChanges(); 
       });
   }
