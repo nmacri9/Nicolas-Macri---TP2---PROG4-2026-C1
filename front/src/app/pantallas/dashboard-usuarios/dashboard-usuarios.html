@@ -1,7 +1,6 @@
 <div class="dashboard-contenedor">
   <div class="cabecera-dashboard">
     <h2>Gestión de Usuarios</h2>
-    <button class="btn-accion-basico btn-nuevo">Crear Usuario</button>
   </div>
 
   @if (cargando) {
@@ -26,7 +25,7 @@
                   <span class="nombre">{{ user.nombre || user.username }}</span>
                 </div>
               </td>
-              <td>{{ user.email || user.correo }}</td>
+              <td>{{ user.correo }}</td>
               <td>
                 <span class="badge" [class.badge-admin]="user.perfil === 'administrador'">
                   {{ user.perfil | uppercase }}
@@ -38,8 +37,8 @@
                 </span>
               </td>
               <td>
-                <button 
-                  class="btn-estado" 
+                <button
+                  class="btn-estado"
                   [class.btn-deshabilitar]="user.activo"
                   [class.btn-habilitar]="!user.activo"
                   (click)="cambiarEstado(user)">
@@ -54,27 +53,94 @@
           }
         </tbody>
       </table>
+
       <hr class="separador">
 
-  <div class="contenedor-formulario">
-    <h3>Crear Nuevo Usuario</h3>
-    <div class="formulario-grid">
-      <input type="text" [formControl]="nuevoNombre" placeholder="Nombre o Username" class="input-form">
-      <input type="email" [formControl]="nuevoEmail" placeholder="Correo electrónico" class="input-form">
-      <input type="password" [formControl]="nuevaPassword" placeholder="Contraseña" class="input-form">
-      
-      <div class="grupo-radios">
-        <label>
-          <input type="radio" value="usuario" [formControl]="nuevoPerfil"> Usuario Normal
-        </label>
-        <label>
-          <input type="radio" value="administrador" [formControl]="nuevoPerfil"> Administrador
-        </label>
-      </div>
+      <div class="contenedor-formulario">
+        <h3>Crear Nuevo Usuario</h3>
+        <form [formGroup]="formulario" (ngSubmit)="crearUsuario()">
 
-      <button class="btn-accion-basico btn-guardar" (click)="crearUsuario()">Guardar Usuario</button>
-    </div>
-    </div>
+          <div>
+            <input type="text" formControlName="nombre" placeholder="Nombre" class="input-form" />
+            @if (formulario.get('nombre')?.invalid && formulario.get('nombre')?.touched) {
+              <div class="mensaje-error-input"><span>El nombre es obligatorio y solo letras.</span></div>
+            }
+          </div>
+
+          <div>
+            <input type="text" formControlName="apellido" placeholder="Apellido" class="input-form" />
+            @if (formulario.get('apellido')?.invalid && formulario.get('apellido')?.touched) {
+              <div class="mensaje-error-input"><span>El apellido es obligatorio y solo letras.</span></div>
+            }
+          </div>
+
+          <div>
+            <input type="email" formControlName="correo" placeholder="Correo electrónico" class="input-form" />
+            @if (formulario.get('correo')?.invalid && formulario.get('correo')?.touched) {
+              <div class="mensaje-error-input"><span>Email obligatorio y válido.</span></div>
+            }
+          </div>
+
+          <div>
+            <input type="text" formControlName="username" placeholder="Nombre de usuario" class="input-form" />
+            @if (formulario.get('username')?.invalid && formulario.get('username')?.touched) {
+              <div class="mensaje-error-input"><span>El nombre de usuario es obligatorio.</span></div>
+            }
+          </div>
+
+          <div>
+            <input type="date" formControlName="fechaNacimiento" class="input-form" />
+            @if (formulario.get('fechaNacimiento')?.invalid && formulario.get('fechaNacimiento')?.touched) {
+              <div class="mensaje-error-input"><span>La fecha de nacimiento es obligatoria.</span></div>
+            }
+          </div>
+
+          <div>
+            <textarea formControlName="descripcion" placeholder="Descripción breve..." class="input-form"></textarea>
+          </div>
+
+          <div>
+            <label>Imagen de Perfil:</label>
+            <input type="file" (change)="onFileSelected($event)" accept="image/*" />
+          </div>
+
+          <div>
+            <input type="password" formControlName="password" placeholder="Contraseña" class="input-form" />
+            @if (formulario.get('password')?.invalid && formulario.get('password')?.touched) {
+              <div class="mensaje-error-input">
+                <span>Debe tener al menos 8 caracteres, 1 mayúscula y 1 número.</span>
+              </div>
+            }
+          </div>
+
+          <div>
+            <input type="password" formControlName="repetirPassword" placeholder="Repetir Contraseña" class="input-form" />
+            @if (formulario.errors?.['passwordMismatch'] && formulario.get('repetirPassword')?.touched) {
+              <div class="mensaje-error-input">
+                <span>Las contraseñas no coinciden.</span>
+              </div>
+            }
+          </div>
+
+          <div class="grupo-radios">
+            <label>
+              <input type="radio" value="usuario" formControlName="perfil"> Usuario Normal
+            </label>
+            <label>
+              <input type="radio" value="administrador" formControlName="perfil"> Administrador
+            </label>
+          </div>
+
+          @if (mensajeError) {
+            <div class="mensaje-error">{{ mensajeError }}</div>
+          }
+
+          <button type="submit" class="btn-accion-basico btn-guardar" [disabled]="formulario.invalid">
+            Guardar Usuario
+          </button>
+
+        </form>
+      </div>
     </div>
   }
 </div>

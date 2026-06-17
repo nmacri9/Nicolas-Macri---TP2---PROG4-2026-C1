@@ -10,12 +10,40 @@ export class UsuariosService {
   constructor(
     @InjectModel(Usuario.name) private usuarioModel: Model<UsuarioDocument>
   ) {}
-  create(createUsuarioDto: CreateUsuarioDto) {
-    return 'This action adds a new usuario';
+  async create(createUsuarioDto: CreateUsuarioDto, file?: Express.Multer.File) {
+    const bcrypt = await import('bcrypt');
+    const hashedPassword = await bcrypt.hash(createUsuarioDto.password, 10);
+
+    const urlFoto = file ? file.path : undefined;
+
+    const datosNuevoUsuario: any = {
+      ...createUsuarioDto,
+      password: hashedPassword,
+    };
+
+    if (urlFoto) {
+      datosNuevoUsuario.imagenPerfilUrl = urlFoto;
+    }
+
+    const nuevoUsuario = new this.usuarioModel(datosNuevoUsuario);
+    const usuarioGuardado = await nuevoUsuario.save();
+
+    // No devolvemos la password en la respuesta
+    const { password, ...usuarioSinPassword } = usuarioGuardado.toObject();
+
+    return {
+      status: 'success',
+      mensaje: 'Usuario creado correctamente',
+      usuario: usuarioSinPassword
+    };
   }
 
-  findAll() {
-    return `This action returns all usuarios`;
+  async findAll() {
+    const usuarios = await this.usuarioModel.find().select('-password').exec();
+    return {
+      status: 'success',
+      data: usuarios
+    };
   }
   async findOne(id: string) {
     //  ID y que NO  devuelva la contraseña 
