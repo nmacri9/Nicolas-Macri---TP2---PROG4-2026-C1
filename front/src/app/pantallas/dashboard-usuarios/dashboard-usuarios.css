@@ -1,0 +1,145 @@
+.dashboard-contenedor {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 0 20px;
+  color: white;
+}
+
+.cabecera-dashboard {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.btn-nuevo {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.texto-cargando {
+  color: white;
+  text-align: center;
+}
+
+.texto-vacio {
+  text-align: center;
+}
+
+.tabla-contenedor {
+  background-color: #16181c;
+  border-radius: 12px;
+  border: 1px solid #2f3336;
+  overflow: hidden;
+}
+
+.tabla-usuarios {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.tabla-usuarios th, .tabla-usuarios td {
+  padding: 15px;
+  border-bottom: 1px solid #2f3336;
+}
+
+.tabla-usuarios th {
+  background-color: #1c1f23;
+  color: #71767b;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+
+.badge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.badge-admin { background-color: #ffd700; color: #000; }
+.badge-activo { background-color: #17bf63; color: white; }
+.badge-inactivo { background-color: #e0245e; color: white; }
+
+.btn-estado {
+  border: none;
+  padding: 6px 12px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.btn-deshabilitar { 
+ background-color: 
+ transparent; 
+ border: 1px solid #e0245e; 
+ color: #e0245e; }
+ 
+.btn-deshabilitar:hover { 
+ background-color: #e0245e; 
+ color: white; }
+
+.btn-habilitar { 
+ background-color: transparent; 
+ border: 1px solid #17bf63; 
+ color: #17bf63; }
+
+.btn-habilitar:hover { 
+ background-color: #17bf63; 
+ color: white; }
+
+ .separador {
+  border: 0;
+  border-top: 1px solid #2f3336;
+  margin: 30px 0;
+}
+
+.contenedor-formulario h3 {
+  margin-bottom: 15px;
+  color: #e0e0e0;
+}
+
+.formulario-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  max-width: 400px;
+  background-color: #16181c;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #2f3336;
+}
+
+.input-form {
+  background-color: transparent;
+  border: 1px solid #2f3336;
+  color: white;
+  padding: 10px;
+  border-radius: 6px;
+}
+
+.grupo-radios {
+  display: flex;
+  gap: 20px;
+  color: #e0e0e0;
+  font-size: 14px;
+}
+
+.btn-guardar {
+  background-color: #1d9bf0;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+}

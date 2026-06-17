@@ -45,6 +45,7 @@ export class Publicaciones implements OnInit {
           id: publi._id,
           usuario: publi.autor,
           titulo: publi.titulo,
+          imagenUrl: publi.imagenUrl,
           texto: publi.descripcion,
           likes: publi.cantidadLikes,
           leDiLike: publi.likes ? publi.likes.includes(this.miUsuarioId) : false,
@@ -133,6 +134,7 @@ manejarLike(idPublicacion: string) {
             usuario: pub.autor,
             texto: pub.descripcion,
             likes: pub.cantidadLikes,
+            imagenUrl: pub.imagenUrl,
             leDiLike: pub.likes.includes(this.authService.usuarioActual()?._id),
             fecha: pub.createdAt
           };

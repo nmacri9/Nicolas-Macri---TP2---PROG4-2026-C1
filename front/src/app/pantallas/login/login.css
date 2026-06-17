@@ -21,3 +21,34 @@
   margin-top: 20px;
   width: 100%;
 }
+.contenedor-registro {
+  display: flex;
+  justify-content: center; /* Centra el contenido horizontalmente */
+  align-items: center;     /* Alinea los elementos verticalmente */
+  gap: 12px;               
+  margin-top: 25px;
+  margin-bottom: 20px;
+}
+
+.texto-registro {
+  color: #e0e0e0; 
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.btn-registro {
+  background-color: transparent;
+  color: #3ea6ff;           
+  border: 1px solid #3ea6ff;
+  border-radius: 10px;      
+  padding: 6px 16px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease; 
+}
+
+.btn-registro:hover {
+  background-color: #3ea6ff; 
+  color: #000000;
+}

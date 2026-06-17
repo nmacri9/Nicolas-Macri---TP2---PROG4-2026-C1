@@ -1,5 +1,7 @@
 import { Routes } from '@angular/router';
 import { estaLogueadoGuard, noEstaLogueadoGuard } from './guards/esta-logueado-guard';
+import { adminGuard } from './guards/admin-guard';
+
 export const routes: Routes = [
     { 
         path: 'inicio', 
@@ -31,6 +33,13 @@ export const routes: Routes = [
         loadComponent: () => import('./pantallas/pagina-publicacion/pagina-publicacion').then(m => m.PaginaPublicacion), 
         canActivate: [estaLogueadoGuard]
       },
+
+      { 
+        path: 'dashboard-usuarios', 
+        loadComponent: () => import('./pantallas/dashboard-usuarios/dashboard-usuarios').then(m => m.DashboardUsuarios), 
+        canActivate: [adminGuard]
+      },
+
      { path: '', redirectTo: 'inicio', pathMatch: 'full' }, // Ruta vacía va al inicio
 ];
 

@@ -13,42 +13,44 @@
           {{ (publicacion.usuario?.nombre || publicacion.autor?.nombre || 'U').substring(0, 1).toUpperCase() }}
         </div>
       }
-    </div> </div>
-}
-  <div class="columna-contenido">
+    </div> 
     
-    <div class="tarjeta-cabecera">
-      <span class="usuario-nombre">{{ publicacion.usuario?.nombre || publicacion.autor?.nombre }}</span>
-      <span class="usuario-arroba">@{{ publicacion.usuario?.username || publicacion.autor?.username }}</span>
-      <span class="tarjeta-fecha">· {{ publicacion.fecha | date:'shortDate' }}</span>
-    </div>
-
-    <div class="tarjeta-titulo">
-      {{ publicacion.titulo }}
-    </div>
-
-    <div class="tarjeta-texto">
-      {{ publicacion.texto || publicacion.descripcion }}
-    </div>
-
-    @if (publicacion.imagenUrl || publicacion.url || publicacion.imagen) {
-      <div class="tarjeta-imagen-wrapper" (click)="$event.stopPropagation()">
-        <img [src]="publicacion.imagenUrl || publicacion.url || publicacion.imagen" alt="Post" class="tarjeta-img">
-      </div>
-    }
-
-    <div class="tarjeta-acciones" (click)="$event.stopPropagation()">
+    <div class="columna-contenido">
       
-      <button class="btn-accion-basico" [class.activo-like]="publicacion.leDiLike" (click)="clickLike()">
-        ♥ Fav {{ publicacion.likes || publicacion.cantidadLikes || 0 }}
-      </button>
+      <div class="tarjeta-cabecera">
+        <span class="usuario-nombre">{{ publicacion.usuario?.nombre || publicacion.autor?.nombre }}</span>
+        <span class="usuario-arroba">@{{ publicacion.usuario?.username || publicacion.autor?.username }}</span>
+        <span class="tarjeta-fecha">· {{ publicacion.fecha | date:'shortDate' }}</span>
+      </div>
 
-      @if (publicacion.usuario?._id === authService.usuarioActual()?._id || publicacion.autor?._id === authService.usuarioActual()?._id || authService.usuarioActual()?.perfil === 'administrador') {
-      <button class="btn-accion-basico btn-borrar-basico" (click)="clickEliminar()">
-        🗑 Eliminar
-      </button>
+      <div class="tarjeta-titulo">
+        {{ publicacion.titulo }}
+      </div>
+
+      <div class="tarjeta-texto">
+        {{ publicacion.texto || publicacion.descripcion }}
+      </div>
+
+      @if (publicacion.imagenUrl || publicacion.url || publicacion.imagen) {
+        <div class="tarjeta-imagen-wrapper" (click)="$event.stopPropagation()">
+          <img [src]="publicacion.imagenUrl || publicacion.url || publicacion.imagen" alt="Post" class="tarjeta-img">
+        </div>
       }
 
+      <div class="tarjeta-acciones" (click)="$event.stopPropagation()">
+        
+        <button class="btn-accion-basico" [class.activo-like]="publicacion.leDiLike" (click)="clickLike()">
+          ♥ Fav {{ publicacion.likes || publicacion.cantidadLikes || 0 }}
+        </button>
+
+        @if (publicacion.usuario?._id === authService.usuarioActual()?._id || publicacion.autor?._id === authService.usuarioActual()?._id || authService.usuarioActual()?.perfil === 'administrador') {
+          <button class="btn-accion-basico btn-borrar-basico" (click)="clickEliminar()">
+            🗑 Eliminar
+          </button>
+        }
+
+      </div>
+
     </div>
 
-  </div>
+  </div> }

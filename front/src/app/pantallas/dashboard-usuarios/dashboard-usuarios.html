@@ -1,0 +1,80 @@
+<div class="dashboard-contenedor">
+  <div class="cabecera-dashboard">
+    <h2>Gestión de Usuarios</h2>
+    <button class="btn-accion-basico btn-nuevo">Crear Usuario</button>
+  </div>
+
+  @if (cargando) {
+    <p class="texto-cargando">Cargando usuarios</p>
+  } @else {
+    <div class="tabla-contenedor">
+      <table class="tabla-usuarios">
+        <thead>
+          <tr>
+            <th>Usuario</th>
+            <th>Email</th>
+            <th>Perfil</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (user of listaUsuarios; track user._id || user.id) {
+            <tr>
+              <td>
+                <div class="usuario-info">
+                  <span class="nombre">{{ user.nombre || user.username }}</span>
+                </div>
+              </td>
+              <td>{{ user.email || user.correo }}</td>
+              <td>
+                <span class="badge" [class.badge-admin]="user.perfil === 'administrador'">
+                  {{ user.perfil | uppercase }}
+                </span>
+              </td>
+              <td>
+                <span class="badge" [class.badge-activo]="user.activo" [class.badge-inactivo]="!user.activo">
+                  {{ user.activo ? 'ACTIVO' : 'INACTIVO' }}
+                </span>
+              </td>
+              <td>
+                <button 
+                  class="btn-estado" 
+                  [class.btn-deshabilitar]="user.activo"
+                  [class.btn-habilitar]="!user.activo"
+                  (click)="cambiarEstado(user)">
+                  {{ user.activo ? 'Deshabilitar' : 'Habilitar' }}
+                </button>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="5" class="texto-vacio">No se encontraron usuarios.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+      <hr class="separador">
+
+  <div class="contenedor-formulario">
+    <h3>Crear Nuevo Usuario</h3>
+    <div class="formulario-grid">
+      <input type="text" [formControl]="nuevoNombre" placeholder="Nombre o Username" class="input-form">
+      <input type="email" [formControl]="nuevoEmail" placeholder="Correo electrónico" class="input-form">
+      <input type="password" [formControl]="nuevaPassword" placeholder="Contraseña" class="input-form">
+      
+      <div class="grupo-radios">
+        <label>
+          <input type="radio" value="usuario" [formControl]="nuevoPerfil"> Usuario Normal
+        </label>
+        <label>
+          <input type="radio" value="administrador" [formControl]="nuevoPerfil"> Administrador
+        </label>
+      </div>
+
+      <button class="btn-accion-basico btn-guardar" (click)="cargarUsuarios()">Guardar Usuario</button>
+    </div>
+    </div>
+    </div>
+  }
+</div>
