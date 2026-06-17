@@ -1,6 +1,6 @@
 import { Controller, Get, UseGuards } from '@nestjs/common';
 import { EstadisticasService } from './estadisticas.service';
-import { TokenGuard } from 'src/autenticacion/token/token.guard';
+import { TokenGuard } from '../autenticacion/token/token.guard';
 
 @Controller('estadisticas')
 @UseGuards(TokenGuard) 
