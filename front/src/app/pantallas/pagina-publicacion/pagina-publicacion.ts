@@ -96,6 +96,7 @@ export class PaginaPublicacion implements OnInit {
       next: (respuesta) => {
         const comentariosTraidos = respuesta.map(c => ({
           id: c._id,
+          autorId: c.autor?._id || c.autor,
           autor: c.autor?.username || 'Usuario',
           texto: c.texto,
           editado: c.modificado
@@ -106,6 +107,7 @@ export class PaginaPublicacion implements OnInit {
         } else {
           this.comentarios = [...this.comentarios, ...comentariosTraidos];
         }
+        this.cdr.detectChanges();
       },
       error: (err) => console.error('Error al cargar comentarios reales', err)
     });
@@ -129,6 +131,7 @@ export class PaginaPublicacion implements OnInit {
       next: () => {
         this.nuevoComentario = ''; 
         this.cargarComentarios(true); 
+        this.cdr.detectChanges();
       },
       error: (err) => console.error('Error al publicar comentario', err)
     });
@@ -137,8 +140,37 @@ export class PaginaPublicacion implements OnInit {
 
   editarComentario(coment: any) {
     this.comentarioEditando = coment;
-    this.textoEditado = coment.texto; 
-    this.modalAbierto = true; 
+    this.textoEditado = coment.texto;
+    this.modalAbierto = true;
+  }
+
+  puedeEditarOBorrar(coment: any): boolean {
+    const usuario = this.authService.usuarioActual();
+    if (!usuario) return false;
+    const esAutor = coment.autorId === usuario._id;
+    const esAdmin = usuario.perfil === 'administrador';
+    return esAutor || esAdmin;
+  }
+
+  esAutorDelComentario(coment: any): boolean {
+    const usuario = this.authService.usuarioActual();
+    if (!usuario) return false;
+    return coment.autorId === usuario._id;
+  }
+
+  eliminarComentario(coment: any) {
+    const usuario = this.authService.usuarioActual();
+    if (!usuario) return;
+
+    const url = `https://nicolas-macri-tp-2-prog-4-2026-c1.vercel.app/comentarios/${coment.id}?usuarioId=${usuario._id}&rol=${usuario.perfil}`;
+
+    this.http.delete(url).subscribe({
+      next: () => {
+        this.comentarios = this.comentarios.filter(c => c.id !== coment.id);
+        this.cdr.detectChanges();
+      },
+      error: (err) => console.error('Error al eliminar comentario:', err)
+    });
   }
 
   cerrarModal() {
@@ -150,14 +182,16 @@ export class PaginaPublicacion implements OnInit {
   guardarEdicion() {
     if (this.comentarioEditando && this.textoEditado.trim() !== '') {
       if (this.textoEditado !== this.comentarioEditando.texto) {
-        
+
         const url = `https://nicolas-macri-tp-2-prog-4-2026-c1.vercel.app/comentarios/${this.comentarioEditando.id}`;
-        
-        this.http.put(url, { texto: this.textoEditado }).subscribe({
+        const usuario = this.authService.usuarioActual();
+
+        this.http.put(url, { texto: this.textoEditado, usuarioId: usuario?._id }).subscribe({
           next: () => {
             this.comentarioEditando.texto = this.textoEditado;
             this.comentarioEditando.editado = true;
-            this.cerrarModal(); 
+            this.cdr.detectChanges();
+            this.cerrarModal();
           },
           error: (err) => console.error('Error al editar en el backend', err)
         });

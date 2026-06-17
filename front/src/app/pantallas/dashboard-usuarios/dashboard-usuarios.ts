@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
@@ -28,6 +28,7 @@ export const passwordMatchValidator: ValidatorFn = (control: AbstractControl): V
 })
 export class DashboardUsuarios implements OnInit {
   private http = inject(HttpClient);
+  private cdr = inject(ChangeDetectorRef);
 
   listaUsuarios: any[] = [];
   cargando: boolean = true;
@@ -68,10 +69,12 @@ export class DashboardUsuarios implements OnInit {
       next: (respuesta) => {
         this.listaUsuarios = respuesta.data || respuesta;
         this.cargando = false;
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error al cargar usuarios:', err);
         this.cargando = false;
+        this.cdr.detectChanges();
       }
     });
   }
@@ -82,12 +85,12 @@ export class DashboardUsuarios implements OnInit {
 
     if (usuario.activo === true) {
       this.http.delete(url).subscribe({
-        next: () => usuario.activo = false,
+        next: () => { usuario.activo = false; this.cdr.detectChanges(); },
         error: (err) => console.error('Error al deshabilitar:', err)
       });
     } else {
       this.http.post(`${url}/activar`, {}).subscribe({
-        next: () => usuario.activo = true,
+        next: () => { usuario.activo = true; this.cdr.detectChanges(); },
         error: (err) => console.error('Error al habilitar:', err)
       });
     }
@@ -127,6 +130,7 @@ export class DashboardUsuarios implements OnInit {
       error: (err) => {
         console.error('Error al crear el usuario:', err);
         this.mensajeError = err.error?.message || 'Ocurrió un error al crear el usuario.';
+        this.cdr.detectChanges();
       }
     });
   }

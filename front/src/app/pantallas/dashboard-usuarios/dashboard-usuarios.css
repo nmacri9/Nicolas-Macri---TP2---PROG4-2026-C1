@@ -1,8 +1,10 @@
 .dashboard-contenedor {
   max-width: 1000px;
+  width: 100%;
   margin: 40px auto;
   padding: 0 20px;
   color: white;
+  box-sizing: border-box;
 }
 
 .cabecera-dashboard {
@@ -35,18 +37,22 @@
   background-color: #16181c;
   border-radius: 12px;
   border: 1px solid #2f3336;
-  overflow: hidden;
+  overflow-x: auto;
+  max-width: 100%;
 }
 
 .tabla-usuarios {
   width: 100%;
+  min-width: 600px;
   border-collapse: collapse;
   text-align: left;
+  font-size: 14px;
 }
 
 .tabla-usuarios th, .tabla-usuarios td {
-  padding: 15px;
+  padding: 10px 12px;
   border-bottom: 1px solid #2f3336;
+  white-space: nowrap;
 }
 
 .tabla-usuarios th {
@@ -70,8 +76,8 @@
 
 .btn-estado {
   border: none;
-  padding: 6px 12px;
-  border-radius: 20px;
+  padding: 5px 10px;
+  border-radius: 6px;
   cursor: pointer;
   font-weight: bold;
   font-size: 12px;
@@ -110,12 +116,28 @@
 .formulario-grid {
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  max-width: 400px;
+  gap: 12px;
+  max-width: 100%;
   background-color: #16181c;
-  padding: 20px;
-  border-radius: 12px;
+  padding: 16px;
+  border-radius: 8px;
   border: 1px solid #2f3336;
+  box-sizing: border-box;
+}
+
+.contenedor-formulario {
+  max-width: 500px;
+}
+
+.contenedor-formulario form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background-color: #16181c;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #2f3336;
+  box-sizing: border-box;
 }
 
 .input-form {
@@ -124,6 +146,8 @@
   color: white;
   padding: 10px;
   border-radius: 6px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .grupo-radios {

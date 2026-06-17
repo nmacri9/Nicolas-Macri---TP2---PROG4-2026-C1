@@ -38,7 +38,12 @@
       
       <p>{{ coment.texto }}</p>
       
-      <button class="btn-chico" (click)="editarComentario(coment)">Editar</button>
+      @if (esAutorDelComentario(coment)) {
+        <button class="btn-chico" (click)="editarComentario(coment)">Editar</button>
+      }
+      @if (puedeEditarOBorrar(coment)) {
+        <button class="btn-chico btn-eliminar" (click)="eliminarComentario(coment)">Eliminar</button>
+      }
     </div>
   }
 </div>
