@@ -5,24 +5,26 @@ import { catchError, throwError } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  const router = inject(Router);
   const authService = inject(AuthService);
+  const router = inject(Router);
 
+  // --- DEBUG AGRESIVO ---
   const token = localStorage.getItem('token');
+  console.log("Interceptor: Token en localStorage es:", token);
 
-  // Si hay token, lo inyectamos. Si no, dejamos que la petición pase sin header.
   if (token) {
+    console.log("Interceptor: ¡Token detectado! Adjuntando header...");
     req = req.clone({
-      setHeaders: {
-        Authorization: `Bearer ${token}`
-      }
+      setHeaders: { Authorization: `Bearer ${token}` }
     });
+  } else {
+    console.warn("Interceptor: NO HAY TOKEN en localStorage.");
   }
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
-      // Si el backend nos dice 401, es que el token venció o es inválido
       if (error.status === 401) {
+        console.error("Interceptor: Error 401 detectado, cerrando sesión...");
         authService.CerrarSesion();
         router.navigate(['/login']);
       }
