@@ -31,32 +31,26 @@ export class App implements OnInit {
   }
 
   ngOnInit() {
-    const esRutaPublica = this.router.url === '/login' || this.router.url === '/registro' || this.router.url === '/inicio';
+  const esRutaPublica = this.router.url === '/login' || this.router.url === '/registro' || this.router.url === '/inicio';
 
-    // Si ya hay un usuario en el signal (por ejemplo, justo se logueó,
-    // o ya había datos guardados de una sesión previa en localStorage),
-    // no hace falta pegarle al backend para autorizar de nuevo.
-    // Esto evita la carrera entre este chequeo inicial y un login recién hecho.
-    if (this.authService.usuarioActual()) {
+  this.authService.autorizar()
+    .then(() => {
       this.cargando = false;
-      return;
-    }
-
-    this.authService.autorizar()
-      .then(() => {
-        this.cargando = false;
-        this.cdr.detectChanges();
-      })
-      .catch((error) => {
-        console.error("No se pudo autorizar:", error);
-        this.authService.CerrarSesion();
-        this.cargando = false; 
-        if (!esRutaPublica) {
-          this.router.navigate(['/login']);
-        }
-        this.cdr.detectChanges();
-      });
-    }
+      if (esRutaPublica) {
+        this.router.navigate(['/publicaciones']);
+      }
+      this.cdr.detectChanges();
+    })
+    .catch((error) => {
+      console.log("No logueado o token inválido");
+      this.authService.CerrarSesion();
+      this.cargando = false; // <-- Esto asegura que se apague incluso con error
+      if (!esRutaPublica) {
+        this.router.navigate(['/login']);
+      }
+      this.cdr.detectChanges();
+    });
+}
 
   iniciarCronometro() {
     clearTimeout(this.relojAviso);
