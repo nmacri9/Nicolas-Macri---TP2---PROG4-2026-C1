@@ -77,17 +77,16 @@ export class PaginaPublicacion implements OnInit {
     const usuario = this.authService.usuarioActual();
     if (!usuario) return;
 
-    if (confirm('¿Estás seguro de que querés dar de baja esta publicación? Se eliminarán todos sus comentarios.')) {
-      const url = `https://nicolas-macri-tp-2-prog-4-2026-c1.vercel.app/publicaciones/${idPublicacion}?usuarioId=${usuario._id}&rol=${usuario.perfil}`;
-      
-      this.http.delete(url).subscribe({
-        next: () => {
-          console.log('Publicación borrada con éxito');
-          this.router.navigate(['/publicaciones']); 
-        },
-        error: (err) => console.error('Error al borrar la publicación:', err)
-      });
-    }
+    // Ejecuta el borrado 
+    const url = `https://nicolas-macri-tp-2-prog-4-2026-c1.vercel.app/publicaciones/${idPublicacion}?usuarioId=${usuario._id}&rol=${usuario.perfil}`;
+    
+    this.http.delete(url).subscribe({
+      next: () => {
+        console.log('Publicación borrada con éxito');
+        this.router.navigate(['/publicaciones']); 
+      },
+      error: (err) => console.error('Error al borrar la publicación:', err)
+    });
   }
 
   cargarComentarios(resetear: boolean = false) {
