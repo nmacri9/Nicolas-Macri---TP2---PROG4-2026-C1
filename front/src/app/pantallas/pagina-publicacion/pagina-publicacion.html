@@ -7,6 +7,8 @@
       <h1 class="post-titulo-detalle">{{ datosDeLaPublicacion.titulo || datosDeLaPublicacion.data?.titulo }}</h1>
       
       <p class="post-descripcion-detalle">{{ datosDeLaPublicacion.texto || datosDeLaPublicacion.descripcion || datosDeLaPublicacion.data?.descripcion }}</p>
+
+      <span class="post-fecha">{{ datosDeLaPublicacion.fecha | tiempo }}</span>
       
       @if (datosDeLaPublicacion.imagenUrl || datosDeLaPublicacion.url || datosDeLaPublicacion.imagen || datosDeLaPublicacion.data?.imagenUrl) {
         <img [src]="datosDeLaPublicacion.imagenUrl || datosDeLaPublicacion.url || datosDeLaPublicacion.imagen || datosDeLaPublicacion.data?.imagenUrl" alt="Imagen de la publicación" class="imagen-publicacion">
@@ -29,7 +31,7 @@
   <hr class="divisor-comentarios">
   
   <div class="seccion-comentarios">
-    <h3>Comentarios</h3>
+    <h3>{{ comentarios.length | pluralizar:'comentario' }}</h3>
     <div class="caja-escribir">
       <textarea [(ngModel)]="nuevoComentario" placeholder="Escribí un comentario..."></textarea>
       <button class="btn-celeste" (click)="publicarComentario()">Comentar</button>
@@ -37,8 +39,9 @@
 
     <div class="lista-comentarios">
       @for (coment of comentarios; track coment.id) {
-        <div class="comentario-item">
-          <strong>{{ coment.autor }}</strong> 
+        <div class="comentario-item" appResaltarComentario>
+          <strong>{{ coment.autor }}</strong>
+          <span class="comentario-fecha"> · {{ coment.fecha | tiempo }}</span>
           
           @if (coment.editado) {
             <span class="etiqueta-editado">(Editado)</span>
@@ -50,7 +53,12 @@
             <button class="btn-chico" (click)="editarComentario(coment)">Editar</button>
           }
           @if (puedeEditarOBorrar(coment)) {
-            <button class="btn-chico btn-eliminar" (click)="eliminarComentario(coment)">Eliminar</button>
+            <button class="btn-chico btn-eliminar"
+                    appBotonConfirmar
+                    mensaje="¿Seguro que querés eliminar este comentario?"
+                    (confirmado)="eliminarComentario(coment)">
+              Eliminar
+            </button>
           }
         </div>
       }
@@ -64,7 +72,7 @@
   <div class="modal-overlay">
     <div class="modal-contenido">
       <h3 class="modal-titulo-edicion">Editar Comentario</h3>
-      <textarea [(ngModel)]="textoEditado" rows="4" class="textarea-modal"></textarea>
+      <textarea [(ngModel)]="textoEditado" rows="4" class="textarea-modal" [appAutoFocus]="true"></textarea>
       
       <div class="modal-botones">
         <button class="btn-cancelar" (click)="cerrarModal()">Cancelar</button>

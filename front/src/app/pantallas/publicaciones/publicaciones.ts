@@ -4,10 +4,11 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Publicacion } from '../../componentes/publicacion/publicacion';
 import { AuthService } from '../../services/auth.service';
 
+
 @Component({
   selector: 'app-publicaciones',
   standalone: true,
-  imports: [Publicacion, ReactiveFormsModule], 
+  imports: [Publicacion, ReactiveFormsModule,],
   templateUrl: './publicaciones.html',
   styleUrl: './publicaciones.css',
 })

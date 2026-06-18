@@ -3,12 +3,18 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { AuthService } from '../../services/auth.service'; 
+import { AuthService } from '../../services/auth.service';
+import { TiempoPipe } from '../../pipes/tiempo.pipe';
+import { PluralizarPipe } from '../../pipes/pluralizar.pipe';
+import { ResaltarComentarioDirective } from '../../directives/resaltar-comentario.directive';
+import { AutoFocusDirective } from '../../directives/auto-focus.directive';
+import { ConfirmarDirective } from '../../directives/confirmar.directive';
 
 @Component({
   selector: 'app-pagina-publicacion',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TiempoPipe, PluralizarPipe,
+            ResaltarComentarioDirective, AutoFocusDirective, ConfirmarDirective],
   templateUrl: './pagina-publicacion.html',
   styleUrls: ['./pagina-publicacion.css']
 })
@@ -100,7 +106,8 @@ export class PaginaPublicacion implements OnInit {
           autorId: c.autor?._id || c.autor,
           autor: c.autor?.username || 'Usuario',
           texto: c.texto,
-          editado: c.modificado
+          editado: c.modificado,
+          fecha: c.createdAt
         }));
 
         if (resetear) {
@@ -162,17 +169,15 @@ export class PaginaPublicacion implements OnInit {
     const usuario = this.authService.usuarioActual();
     if (!usuario) return;
 
-    if (confirm('¿Seguro que querés eliminar este comentario?')) {
-      const url = `https://nicolas-macri-tp-2-prog-4-2026-c1.vercel.app/comentarios/${coment.id}?usuarioId=${usuario._id}&rol=${usuario.perfil}`;
+    const url = `https://nicolas-macri-tp-2-prog-4-2026-c1.vercel.app/comentarios/${coment.id}?usuarioId=${usuario._id}&rol=${usuario.perfil}`;
 
-      this.http.delete(url).subscribe({
-        next: () => {
-          this.comentarios = this.comentarios.filter(c => c.id !== coment.id);
-          this.cdr.detectChanges();
-        },
-        error: (err) => console.error('Error al eliminar comentario:', err)
-      });
-    }
+    this.http.delete(url).subscribe({
+      next: () => {
+        this.comentarios = this.comentarios.filter(c => c.id !== coment.id);
+        this.cdr.detectChanges();
+      },
+      error: (err) => console.error('Error al eliminar comentario:', err)
+    });
   }
 
   cerrarModal() {

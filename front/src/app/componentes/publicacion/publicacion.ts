@@ -2,10 +2,13 @@ import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
 import { CommonModule } from '@angular/common'; 
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { TiempoPipe } from '../../pipes/tiempo.pipe';
+import { TrabarTextoPipe } from '../../pipes/trabar-texto.pipe';
+
 @Component({
   selector: 'app-publicacion',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, TiempoPipe, TrabarTextoPipe],
   templateUrl: './publicacion.html',
   styleUrls: ['./publicacion.css']
 })

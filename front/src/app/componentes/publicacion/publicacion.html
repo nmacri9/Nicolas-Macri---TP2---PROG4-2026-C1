@@ -20,15 +20,15 @@
       <div class="tarjeta-cabecera">
         <span class="usuario-nombre">{{ publicacion.usuario?.nombre || publicacion.autor?.nombre }}</span>
         <span class="usuario-arroba">@{{ publicacion.usuario?.username || publicacion.autor?.username }}</span>
-        <span class="tarjeta-fecha">· {{ publicacion.fecha | date:'shortDate' }}</span>
+        <span class="tarjeta-fecha">· {{ publicacion.fecha | tiempo }}</span>
       </div>
 
       <div class="tarjeta-titulo">
         {{ publicacion.titulo }}
       </div>
 
-      <div class="tarjeta-texto">
-        {{ publicacion.texto || publicacion.descripcion }}
+      <<div class="tarjeta-texto">
+        {{ (publicacion.texto || publicacion.descripcion) | TrabarTexto }}
       </div>
 
       @if (publicacion.imagenUrl || publicacion.url || publicacion.imagen) {
