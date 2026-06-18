@@ -16,21 +16,11 @@
 
       @if (authService.usuarioActual()?.perfil === 'administrador' || authService.usuarioActual()?._id === datosDeLaPublicacion.usuario?._id) {
         <div class="acciones-admin">
-          
-          @if (!datosDeLaPublicacion.confirmandoBaja) {
-            <button class="btn-baja-publicacion" (click)="datosDeLaPublicacion.confirmandoBaja = true">
-              Dar de baja publicación
-            </button>
-          } 
-          
-          @else {
-            <div class="caja-confirmacion">
-              <span class="texto-seguro">¿Dar de baja? (Se van a eliminar los comentarios)</span>
-              <button class="btn-chico btn-rojo" (click)="manejarEliminar(datosDeLaPublicacion.id)">Sí, eliminar</button>
-              <button class="btn-chico" (click)="datosDeLaPublicacion.confirmandoBaja = false">No, cancelar</button>
-            </div>
-          }
-
+          <button class="btn-baja-publicacion" 
+                  appBotonConfirmar 
+                  (confirmado)="manejarEliminar(datosDeLaPublicacion.id)">
+            Dar de baja publicación
+          </button>
         </div>
       }
     </div>
@@ -64,19 +54,13 @@
           @if (esAutorDelComentario(coment)) {
             <button class="btn-chico" (click)="editarComentario(coment)">Editar</button>
           }
+          
           @if (puedeEditarOBorrar(coment)) {
-            @if (!coment.mostrarConfirmacion) {
-              <button class="btn-chico btn-eliminar" (click)="coment.mostrarConfirmacion = true">
-                Eliminar
-              </button>
-            } 
-            @else {
-              <div class="caja-confirmacion">
-                <span class="texto-seguro">¿Seguro queres eliminar?</span>
-                <button class="btn-chico btn-rojo" (click)="eliminarComentario(coment)">Sí</button>
-                <button class="btn-chico" (click)="coment.mostrarConfirmacion = false">No</button>
-              </div>
-            }
+            <button class="btn-chico btn-eliminar" 
+                    appBotonConfirmar 
+                    (confirmado)="eliminarComentario(coment)">
+              Eliminar
+            </button>
           }
         </div>
       }
