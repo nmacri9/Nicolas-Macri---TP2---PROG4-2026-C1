@@ -46,13 +46,13 @@
     } @empty {
       <div class="mensaje-vacio">Aún no publicaste nada.</div>
     }
-    
+
     @if (misPublicaciones().length >= limit) {
-      <button class="btn-cargar-mas" style="margin: 20px auto; display: block; padding: 10px 20px; border-radius: 20px; border: none; background-color: #1da1f2; color: white; cursor: pointer; font-weight: bold;" (click)="cargarMas()">
-        Cargar más posteos
+      <button class="btn-cargar-mas" (click)="cargarMas()" style="margin: 20px auto; display: block; padding: 10px 20px;">
+        Cargar más publis
       </button>
     }
-  </div>
+</div>
 
 </div>
 
