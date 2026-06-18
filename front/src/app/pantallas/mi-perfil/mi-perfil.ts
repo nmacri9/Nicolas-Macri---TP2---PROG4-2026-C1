@@ -27,6 +27,7 @@ export class MiPerfil {
   misPublicaciones = signal<any[]>([]); 
   totalPosts = signal(0); 
 
+
   limit = 3;
   offset = 0;
 
