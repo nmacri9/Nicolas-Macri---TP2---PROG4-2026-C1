@@ -25,8 +25,8 @@ export class MiPerfil {
   });
 
   misPublicaciones = signal<any[]>([]); 
+  totalPosts = signal(0); // <--- Señal agregada para controlar el botón
 
-  // Agregamos paginación
   limit = 10;
   offset = 0;
 
@@ -43,45 +43,32 @@ export class MiPerfil {
   cargarDatosUsuario(id: string) {
     this.http.get<any>(`https://nicolas-macri-tp-2-prog-4-2026-c1.vercel.app/usuarios/${id}`).subscribe({
       next: (usuarioDeMongo) => {
-        this.usuarioPerfil.set({
-          nombre: `${usuarioDeMongo.nombre} ${usuarioDeMongo.apellido}`,
-          username: `@${usuarioDeMongo.username}`,
-          correo: usuarioDeMongo.correo,
-          biografia: usuarioDeMongo.descripcion || '¡Hola! Estoy usando esta red social.',
-          imagenPerfilUrl: usuarioDeMongo.imagenPerfilUrl || 'assets/avatar-por-defecto.png', 
-          fechaUnion: 'Junio 2026' 
-        });
-      },
-      error: (err) => console.error('Error al traer datos del usuario', err)
+        this.usuarioPerfil.set(usuarioDeMongo);
+      }
     });
   }
 
-  // Ahora acepta límite y offset, y un booleano para saber si resetea la lista
   cargarMisPublicaciones(id: string, reset: boolean = false) {
-    if (reset) {
-      this.offset = 0;
-    }
-
     const url = `https://nicolas-macri-tp-2-prog-4-2026-c1.vercel.app/publicaciones?autor=${id}&limit=${this.limit}&offset=${this.offset}`;
     
     this.http.get<any>(url).subscribe({
       next: (respuesta) => {
-        const mapeadas = respuesta.data.map((publi: any) => {
-          return {
+        // Guardamos el total que devuelve el backend
+        this.totalPosts.set(respuesta.total); 
+
+        const mapeadas = respuesta.data.map((publi: any) => ({
             id: publi._id,
-            usuario: publi.autor,
-            texto: publi.descripcion,
+            titulo: publi.titulo,
+            contenido: publi.contenido,
             likes: publi.cantidadLikes,
-            leDiLike: publi.likes.includes(id),
-            fecha: publi.createdAt
-          };
-        });
-        
+            leDiLike: publi.likes.includes(this.authService.usuarioActual()?._id),
+            fecha: publi.fecha
+        }));
+
         if (reset) {
           this.misPublicaciones.set(mapeadas);
         } else {
-          // Si es cargar más, junta las viejas con las nuevas
-          this.misPublicaciones.update(viejas => [...viejas, ...mapeadas]);
+          this.misPublicaciones.update(lista => [...lista, ...mapeadas]);
         }
       },
       error: (err) => console.error('Error al traer publicaciones', err)
@@ -120,13 +107,9 @@ export class MiPerfil {
 
   manejarEliminar(idPublicacion: string) {
     const idActual = this.authService.usuarioActual()?._id;
-    const url = `https://nicolas-macri-tp-2-prog-4-2026-c1.vercel.app/publicaciones/${idPublicacion}?usuarioId=${idActual}&rol=usuario`;
-    
-    this.http.delete(url).subscribe({
-      next: () => {
-        this.misPublicaciones.update(posts => posts.filter(p => p.id !== idPublicacion));
-      },
-      error: (err) => console.error('Error al borrar', err)
+    const url = `https://nicolas-macri-tp-2-prog-4-2026-c1.vercel.app/publicaciones/${idPublicacion}?usuarioId=${idActual}`;
+    this.http.delete(url).subscribe(() => {
+        this.misPublicaciones.update(lista => lista.filter(p => p.id !== idPublicacion));
     });
   }
 }

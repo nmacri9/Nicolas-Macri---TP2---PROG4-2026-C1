@@ -6,7 +6,6 @@
   </div>
 
   <div class="perfil-info-seccion">
-    
     <div class="perfil-avatar-centrado">
       @if (usuarioPerfil().imagenPerfilUrl && usuarioPerfil().imagenPerfilUrl !== 'assets/avatar-por-defecto.png') {
         <img [src]="usuarioPerfil().imagenPerfilUrl" alt="Foto de perfil" class="perfil-avatar-img">
@@ -47,12 +46,10 @@
       <div class="mensaje-vacio">Aún no publicaste nada.</div>
     }
 
-    @if (misPublicaciones().length >= limit) {
+    @if (misPublicaciones().length < totalPosts()) {
       <button class="btn-cargar-mas" (click)="cargarMas()" style="margin: 20px auto; display: block; padding: 10px 20px;">
         Cargar más publis
       </button>
     }
+  </div>
 </div>
-
-</div>
-
