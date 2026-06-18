@@ -26,12 +26,16 @@ export class MiPerfil {
 
   misPublicaciones = signal<any[]>([]); 
 
+  // Agregamos paginación
+  limit = 10;
+  offset = 0;
+
   constructor() {
     effect(() => {
       const usuario = this.authService.usuarioActual();
       if (usuario?._id) {
         this.cargarDatosUsuario(usuario._id);
-        this.cargarMisPublicaciones(usuario._id);
+        this.cargarMisPublicaciones(usuario._id, true);
       }
     });
   }
@@ -52,8 +56,14 @@ export class MiPerfil {
     });
   }
 
-  cargarMisPublicaciones(id: string) {
-    const url = `https://nicolas-macri-tp-2-prog-4-2026-c1.vercel.app/publicaciones?autor=${id}&limit=3`;
+  // Ahora acepta límite y offset, y un booleano para saber si resetea la lista
+  cargarMisPublicaciones(id: string, reset: boolean = false) {
+    if (reset) {
+      this.offset = 0;
+    }
+
+    const url = `https://nicolas-macri-tp-2-prog-4-2026-c1.vercel.app/publicaciones?autor=${id}&limit=${this.limit}&offset=${this.offset}`;
+    
     this.http.get<any>(url).subscribe({
       next: (respuesta) => {
         const mapeadas = respuesta.data.map((publi: any) => {
@@ -66,11 +76,24 @@ export class MiPerfil {
             fecha: publi.createdAt
           };
         });
-        // 🌟 Guardamos las publicaciones reactivamente
-        this.misPublicaciones.set(mapeadas);
+        
+        if (reset) {
+          this.misPublicaciones.set(mapeadas);
+        } else {
+          // Si es cargar más, junta las viejas con las nuevas
+          this.misPublicaciones.update(viejas => [...viejas, ...mapeadas]);
+        }
       },
       error: (err) => console.error('Error al traer publicaciones', err)
     });
+  }
+
+  cargarMas() {
+    const usuario = this.authService.usuarioActual();
+    if (usuario?._id) {
+      this.offset += this.limit;
+      this.cargarMisPublicaciones(usuario._id, false);
+    }
   }
 
   manejarLike(idPublicacion: string) {
