@@ -15,10 +15,22 @@
       }
 
       @if (authService.usuarioActual()?.perfil === 'administrador' || authService.usuarioActual()?._id === datosDeLaPublicacion.usuario?._id) {
-        <div class="acciones-admin" style="margin-top: 20px;">
-          <button class="btn-eliminar" style="padding: 10px; background-color: #dc3545; color: white; border: none; border-radius: 5px; cursor: pointer;" (click)="manejarEliminar(datosDeLaPublicacion.id)">
-            Dar de baja publicación
-          </button>
+        <div class="acciones-admin">
+          
+          @if (!datosDeLaPublicacion.confirmandoBaja) {
+            <button class="btn-baja-publicacion" (click)="datosDeLaPublicacion.confirmandoBaja = true">
+              Dar de baja publicación
+            </button>
+          } 
+          
+          @else {
+            <div class="caja-confirmacion">
+              <span class="texto-seguro">¿Dar de baja? (Se van a eliminar los comentarios)</span>
+              <button class="btn-chico btn-rojo" (click)="manejarEliminar(datosDeLaPublicacion.id)">Sí, eliminar</button>
+              <button class="btn-chico" (click)="datosDeLaPublicacion.confirmandoBaja = false">No, cancelar</button>
+            </div>
+          }
+
         </div>
       }
     </div>
@@ -33,7 +45,7 @@
   <div class="seccion-comentarios">
     <h3>{{ comentarios.length | pluralizar:'comentario' }}</h3>
     <div class="caja-escribir">
-      <textarea [(ngModel)]="nuevoComentario" placeholder="Escribí un comentario..."></textarea>
+      <textarea [(ngModel)]="nuevoComentario" placeholder="Escribí un comentario..." [appAutoFocus]="true"></textarea>   
       <button class="btn-celeste" (click)="publicarComentario()">Comentar</button>
     </div>
 
@@ -53,12 +65,18 @@
             <button class="btn-chico" (click)="editarComentario(coment)">Editar</button>
           }
           @if (puedeEditarOBorrar(coment)) {
-            <button class="btn-chico btn-eliminar"
-                    appBotonConfirmar
-                    mensaje="¿Seguro que querés eliminar este comentario?"
-                    (confirmado)="eliminarComentario(coment)">
-              Eliminar
-            </button>
+            @if (!coment.mostrarConfirmacion) {
+              <button class="btn-chico btn-eliminar" (click)="coment.mostrarConfirmacion = true">
+                Eliminar
+              </button>
+            } 
+            @else {
+              <div class="caja-confirmacion">
+                <span class="texto-seguro">¿Seguro queres eliminar?</span>
+                <button class="btn-chico btn-rojo" (click)="eliminarComentario(coment)">Sí</button>
+                <button class="btn-chico" (click)="coment.mostrarConfirmacion = false">No</button>
+              </div>
+            }
           }
         </div>
       }

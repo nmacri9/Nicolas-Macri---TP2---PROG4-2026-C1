@@ -191,3 +191,46 @@ hr {
 .btn-cancelar:hover {
   background-color: #555;
 }
+
+.caja-confirmacion {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #1e2732; /* Un fondo gris oscurito para resaltarlo */
+  padding: 4px 8px;
+  border-radius: 6px;
+  margin-left: 8px;
+}
+
+.texto-seguro {
+  color: #e7e9ea;
+  font-size: 13px;
+  margin-right: 4px;
+}
+
+.btn-rojo {
+  background-color: #f4212e;
+  color: white;
+  border: none;
+}
+
+.btn-rojo:hover {
+  background-color: #dc1f29;
+}
+.acciones-admin {
+  margin-top: 20px;
+}
+
+.btn-baja-publicacion {
+  padding: 10px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-baja-publicacion:hover {
+  background-color: #c82333;
+}
