@@ -46,17 +46,6 @@
     } @empty {
       <div class="mensaje-vacio">Aún no publicaste nada.</div>
     }
-  </div>
-  <div class="perfil-lista-posts">
-    @for (posteo of misPublicaciones(); track posteo.id) {
-      <app-publicacion
-        [publicacion]="posteo" 
-        (darLike)="manejarLike($event)"
-        (eliminarPost)="manejarEliminar($event)">
-      </app-publicacion>
-    } @empty {
-      <div class="mensaje-vacio">Aún no publicaste nada.</div>
-    }
     
     @if (misPublicaciones().length >= limit) {
       <button class="btn-cargar-mas" style="margin: 20px auto; display: block; padding: 10px 20px; border-radius: 20px; border: none; background-color: #1da1f2; color: white; cursor: pointer; font-weight: bold;" (click)="cargarMas()">

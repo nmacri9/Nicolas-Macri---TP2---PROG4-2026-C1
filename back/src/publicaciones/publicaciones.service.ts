@@ -29,7 +29,10 @@ export class PublicacionesService {
   }
   async findAll(opciones: { limit: number; offset: number; orden: 'fecha' | 'likes'; autor?: string }) {
     try {
-      const { limit, offset, orden, autor } = opciones;
+      const limit = Number(opciones.limit) || 10;
+      const offset = Number(opciones.offset) || 0;
+      const orden = opciones.orden || 'fecha';
+      const autor = opciones.autor;
 
       // traigo publicaciones
       const filtro: any = { activo: true };

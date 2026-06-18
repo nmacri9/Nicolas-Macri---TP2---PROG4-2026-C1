@@ -45,23 +45,18 @@ export class App implements OnInit {
     this.authService.autorizar()
       .then(() => {
         this.cargando = false;
-        if (esRutaPublica) {
-          this.router.navigate(['/publicaciones']);
-        }
         this.cdr.detectChanges();
       })
       .catch((error) => {
-        console.log("Autorización inicial fallida o no necesaria:", error);
-        this.cargando = false;
-        // Solo expulsamos si intentábamos acceder a una ruta protegida.
-        // Si autorizar() falla, recién ahí limpiamos cualquier resto de sesión inválida.
+        console.error("No se pudo autorizar:", error);
         this.authService.CerrarSesion();
+        this.cargando = false; 
         if (!esRutaPublica) {
           this.router.navigate(['/login']);
         }
         this.cdr.detectChanges();
       });
-  }
+    }
 
   iniciarCronometro() {
     clearTimeout(this.relojAviso);
