@@ -41,13 +41,16 @@ export class AuthService {
   }
 
   async autorizar() {
-    // OJO: ya NO llamamos a CerrarSesion() en el catch.
-    // Este método se usa para validar la sesión al arrancar la app.
-    // Si falla (por ejemplo, por una carrera con un login recién hecho,
-    // o por un token vencido), dejamos que quien llama decida qué hacer,
-    // en lugar de borrar la sesión a ciegas.
+    const token = localStorage.getItem('token');
+    
+    // Armamos las opciones de forma segura para que Angular no llore
+    let opciones: any = { withCredentials: true };
+    if (token) {
+      opciones.headers = { Authorization: `Bearer ${token}` };
+    }
+
     const respuesta: any = await firstValueFrom(
-      this.http.post(`${this.apiUrl}/auth/autorizar`, {}, { withCredentials: true })
+      this.http.post(`${this.apiUrl}/auth/autorizar`, {}, opciones)
     );
 
     if (respuesta && respuesta.usuario) {
@@ -59,9 +62,16 @@ export class AuthService {
   }
 
   async renovarSesion() {
+    const token = localStorage.getItem('token');
+    
+    let opciones: any = { withCredentials: true };
+    if (token) {
+      opciones.headers = { Authorization: `Bearer ${token}` };
+    }
+
     try {
       const respuesta: any = await firstValueFrom(
-        this.http.post(`${this.apiUrl}/auth/refrescar`, {}, { withCredentials: true })
+        this.http.post(`${this.apiUrl}/auth/refrescar`, {}, opciones)
       );
 
       if (respuesta && respuesta.token) {
