@@ -1,0 +1,42 @@
+<div class="estadisticas-contenedor">
+  <h1 class="titulo-dashboard">Dashboard de Estadísticas</h1>
+
+  <div class="filtros-tarjeta">
+    <div class="input-grupo">
+      <label>Desde:</label>
+      <input type="date" [ngModel]="fechaDesde()" (ngModelChange)="fechaDesde.set($event)">
+    </div>
+    
+    <div class="input-grupo">
+      <label>Hasta:</label>
+      <input type="date" [ngModel]="fechaHasta()" (ngModelChange)="fechaHasta.set($event)">
+    </div>
+    
+    <button class="btn-filtrar" (click)="cargarTodo()">Aplicar Filtro</button>
+  </div>
+
+  <div class="grilla-estadisticas">
+
+    <div class="tarjeta-stat">
+      <h3>Posts por Usuario</h3>
+      <div class="contenedor-canvas">
+        <canvas id="canvasUsuarios"></canvas>
+      </div>
+    </div>
+
+    <div class="tarjeta-stat">
+      <h3>Comentarios en el Tiempo</h3>
+      <div class="contenedor-canvas">
+        <canvas id="canvasTiempo"></canvas>
+      </div>
+    </div>
+
+    <div class="tarjeta-stat">
+      <h3>Comentarios por Publicación</h3>
+      <div class="contenedor-canvas">
+        <canvas id="canvasPublicaciones"></canvas>
+      </div>
+    </div>
+
+  </div>
+</div>
