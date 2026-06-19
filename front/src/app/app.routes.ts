@@ -39,6 +39,12 @@ export const routes: Routes = [
         loadComponent: () => import('./pantallas/dashboard-usuarios/dashboard-usuarios').then(m => m.DashboardUsuarios), 
         canActivate: [adminGuard]
       },
+      { 
+        path: 'dashboard-estadisticas', 
+        loadComponent: () => import('./pantallas/dashboard-estadisticas/dashboard-estadisticas').then(m => m.DashboardEstadisticas), 
+        canActivate: [adminGuard]
+      },
+
 
      { path: '', redirectTo: 'inicio', pathMatch: 'full' }, // Ruta vacía va al inicio
 ];
