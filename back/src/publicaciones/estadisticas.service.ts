@@ -55,22 +55,33 @@ export class EstadisticasService {
     return filtro;
   }
 
-  // 3. Grafico torta: publicaciones por usuario en un lapso (VERSIÓN SIMPLE)
+  // 3. Grafico torta
   async getPublicacionesPorUsuario(desde?: string, hasta?: string) {
     const match = this.armarFiltroFechas(desde, hasta);
 
     const resultados = await this.publicacionModel.aggregate([
       { $match: match },
-      { $group: { _id: '$autor', cantidad: { $sum: 1 } } }
+      { $group: { _id: '$autor', cantidad: { $sum: 1 } } },
+      { $addFields: { autorId: { $toObjectId: "$_id" } } },
+      {
+        $lookup: {
+          from: 'usuarios', 
+          localField: 'autorId',
+          foreignField: '_id',
+          as: 'datosUsuario'
+        }
+      },
+      { $unwind: { path: '$datosUsuario', preserveNullAndEmptyArrays: true } },
+      { $project: { _id: 0, usuario: { $ifNull: ['$datosUsuario.username', 'Usuario Desconocido'] }, cantidad: 1 } }
     ]);
 
     return {
-      labels: resultados.map(r => r._id), // Devuelve el ID directamente
+      labels: resultados.map(r => r.usuario), // Devuelve el Nombre del usuario
       datasets: resultados.map(r => r.cantidad)
     };
   }
 
-  // 4. Grafico líneas: comentarios totales en un lapso
+  // 4. Grafico líneas
   async getComentariosTotales(desde?: string, hasta?: string) {
     const match = this.armarFiltroFechas(desde, hasta);
 
@@ -91,19 +102,30 @@ export class EstadisticasService {
     };
   }
 
-  // 5. Grafico barras: comentarios por publicacion en un lapso (VERSIÓN SIMPLE)
+  // 5. Grafico barras
   async getComentariosPorPublicacion(desde?: string, hasta?: string) {
     const match = this.armarFiltroFechas(desde, hasta);
 
     const resultados = await this.comentarioModel.aggregate([
       { $match: match },
       { $group: { _id: '$publicacion', cantidad: { $sum: 1 } } },
-      { $sort: { cantidad: -1 } }, // Ordenamos de mayor a menor
-      { $limit: 10 }               // Nos quedamos con el top 10
+      { $addFields: { postId: { $toObjectId: "$_id" } } },
+      {
+        $lookup: {
+          from: 'publicacions', 
+          localField: 'postId',
+          foreignField: '_id',
+          as: 'datosPublicacion'
+        }
+      },
+      { $unwind: { path: '$datosPublicacion', preserveNullAndEmptyArrays: true } },
+      { $project: { _id: 0, titulo: { $ifNull: ['$datosPublicacion.titulo', 'Post Desconocido'] }, cantidad: 1 } },
+      { $sort: { cantidad: -1 } }, 
+      { $limit: 10 } 
     ]);
 
     return {
-      labels: resultados.map(r => r._id), // Devuelve el ID de la publicación directamente
+      labels: resultados.map(r => r.titulo), // Devuelve el Título del post
       datasets: resultados.map(r => r.cantidad)
     };
   }
