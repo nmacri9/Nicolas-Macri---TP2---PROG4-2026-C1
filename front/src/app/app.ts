@@ -54,8 +54,7 @@ export class App implements OnInit {
 
   iniciarCronometro() {
     clearTimeout(this.relojAviso);
-    // const TIEMPO_ESPERA = 10 * 60 * 1000;
-    const TIEMPO_ESPERA = 5000 
+    const TIEMPO_ESPERA = 10 * 60 * 1000;
 
     this.relojAviso = setTimeout(() => {
       this.mostrarModalRenovar = true;
