@@ -15,11 +15,14 @@
       placeholder="Título de la publicación"
       class="input-titulo">
 
-    <input 
-      type="text"
-      [formControl]="imagenNuevaPublicacion" 
-      placeholder="URL de la imagen (opcional)"
-      class="input-titulo input-imagen-separador">
+      <label class="label-archivo">
+      Subir imagen:
+        <input 
+          type="file" 
+          (change)="onFileSelected($event)" 
+          accept="image/*"
+          class="input-imagen">
+      </label>
 
     <textarea 
       [formControl]="textoNuevaPublicacion" 

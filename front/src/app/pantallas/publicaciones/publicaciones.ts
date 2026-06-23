@@ -22,7 +22,7 @@ export class Publicaciones implements OnInit {
   limit = 10;
   offset = 0;
   orden = 'fecha';
-
+  imagenSeleccionada: File | null = null;
 
   tituloNuevaPublicacion = new FormControl('');
   textoNuevaPublicacion = new FormControl('');
@@ -66,39 +66,42 @@ export class Publicaciones implements OnInit {
       error: (err) => console.error('Error al cargar el feed', err)
     });
   }
+  onFileSelected(event: Event) {
+  const input = event.target as HTMLInputElement;
+  if (input.files && input.files.length > 0) {
+    this.imagenSeleccionada = input.files[0];
+  }
+}
 
   crearPublicacion() {
-    const titulo = this.tituloNuevaPublicacion.value; 
-    const texto = this.textoNuevaPublicacion.value;
-    const imagenUrl = this.imagenNuevaPublicacion.value;
-    
-    const idUsuarioActual = this.authService.usuarioActual()?._id; 
+  const titulo = this.tituloNuevaPublicacion.value; 
+  const texto = this.textoNuevaPublicacion.value;
+  const idUsuarioActual = this.authService.usuarioActual()?._id; 
 
-    if (!texto || !titulo || !idUsuarioActual) {
-      console.error('Error: Faltan datos para publicar.');
-      return;
-    }
+  if (!texto || !titulo || !idUsuarioActual) return;
 
-    const nuevaPubli = {
-      titulo: titulo, 
-      descripcion: texto, 
-      autor: idUsuarioActual,
-      imagenUrl: imagenUrl || ''
-    };
+  const formData = new FormData();
+  formData.append('titulo', titulo);
+  formData.append('descripcion', texto);
+  formData.append('autor', idUsuarioActual);
+  
+  if (this.imagenSeleccionada) {
+    formData.append('imagen', this.imagenSeleccionada);
+  }
 
-    console.log('Enviando a Vercel...', nuevaPubli);
-
-    this.http.post('https://nicolas-macri-tp-2-prog-4-2026-c1.vercel.app/publicaciones', nuevaPubli).subscribe({
+  this.http.post('https://nicolas-macri-tp-2-prog-4-2026-c1.vercel.app/publicaciones', formData)
+    .subscribe({
       next: () => {
         this.tituloNuevaPublicacion.setValue(''); 
-        this.textoNuevaPublicacion.setValue(''); 
-        this.imagenNuevaPublicacion.setValue(''); 
-        
-        this.cargarFeed(true); // Recarga el feed y volvemos a la pag 1
+        this.textoNuevaPublicacion.setValue('');
+        // Limpia el input de file en el HTML si es necesario
+        this.imagenSeleccionada = null; 
+        this.cargarFeed(true);
       },
       error: (err) => console.error('Error al crear la publicación', err)
     });
-  }
+}
+
 
 manejarLike(idPublicacion: string) {
     const post = this.listaPublicaciones.find(p => p.id === idPublicacion);
